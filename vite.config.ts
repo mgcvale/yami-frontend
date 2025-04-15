@@ -1,12 +1,14 @@
 import { VitePWA } from 'vite-plugin-pwa';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
 
 export default {
   plugins: [
     sveltekit(),
+    tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-	    injectRegister: 'auto',
+      injectRegister: 'script',
       manifest: {
         name: 'Yami',
         short_name: 'Yami',
@@ -18,19 +20,34 @@ export default {
           {
             src: '/icon/icon-192.jpeg',
             sizes: '192x192',
-            type: 'image/jpeg'
-          }
-        ]
+            type: 'image/jpeg',
+          },
+        ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,jpeg,webmanifest}']
+        globPatterns: ['**/*.{js,css,html,ico,png,jpeg,webmanifest}'],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.destination === 'document',
+            handler: 'NetworkFirst',
+            options: {
+                cacheName: 'pages',
+                expiration: {
+                    maxEntries: 10,
+                    maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
+                },
+            },
+          },
+        ],
       },
-	  devOptions: {
-		enabled: true
-	  }
-    })
+      includeAssets: ['yami/yami-logo.svg'],
+      devOptions: {
+        enabled: true,
+        type: 'module',
+      },
+    }),
   ],
   build: {
     target: 'es2015',
-  }
+  },
 };

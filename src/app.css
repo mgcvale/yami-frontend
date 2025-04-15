@@ -1,1 +1,49 @@
 @import 'tailwindcss';
+
+@theme {
+  /* General */
+  --color-test: #ff0000;
+
+  /* Dark Theme */
+  --color-dark-bg: #151311;
+  --color-dark-accent: #f5e0c7;
+  --color-dark-fg-500: #f5e0c7;
+  --color-dark-fg-300: #fcefd8;
+  --color-dark-fg-100: #FBF4E7;
+  --color-dark-fg-50: #FFF6E5;
+  --color-dark-card-1: #211f1d;
+  --color-dark-card-2: #3e3833;
+  --color-dark-card-3: #50483b;
+  --color-dark-placeholder: #5a5247;
+  --color-dark-field-bg: #373431;
+  --color-dark-field-placeholder: #70685A;
+  --color-dark-field-accent: #C2B7A6;
+  --color-dark-button-accent: #50483B;
+  --color-dark-fg-hc: #ffffff;
+  --color-dark-bg-hc: #000000;
+
+  /* Light Theme */
+  --color-light-bg: #FAF9F6;
+  --color-light-accent: #3c2f1d;
+  --color-light-fg-500: #3c2f1d;
+  --color-light-fg-300: #52402a;
+  --color-light-fg-100: #6a5332;
+  --color-light-fg-50: #7f633b;
+  --color-light-card-1: #ffffff;
+  --color-light-card-2: #f3f0ec;
+  --color-light-card-3: #e6e1d9;
+  --color-light-placeholder: #a29788;
+  --color-light-field-bg: #f0ede8;
+  --color-light-field-placeholder: #938976;
+  --color-light-field-accent: #6a5c4b;
+  --color-light-button-accent: #7f633b;
+  --color-light-fg-hc: #000000;
+  --color-light-bg-hc: #ffffff;
+
+  --font-alegreya-sans: 'Alegreya Sans', sans-serif;
+  --font-alegreya: 'Alegreya', serif;
+  --font-dm-sans: 'DM Sans', sans-serif;
+  
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
