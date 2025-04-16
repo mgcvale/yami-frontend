@@ -7,6 +7,8 @@
   /* Dark Theme */
   --color-dark-bg: #151311;
   --color-dark-accent: #f5e0c7;
+  --color-dark-fg-900: #a5987f;
+  --color-dark-fg-700: #c1b19d;
   --color-dark-fg-500: #f5e0c7;
   --color-dark-fg-300: #fcefd8;
   --color-dark-fg-100: #FBF4E7;
@@ -25,6 +27,8 @@
   /* Light Theme */
   --color-light-bg: #FAF9F6;
   --color-light-accent: #3c2f1d;
+  --color-light-fg-900: #85786f
+  --color-light-fg-700: #65584f;
   --color-light-fg-500: #3c2f1d;
   --color-light-fg-300: #52402a;
   --color-light-fg-100: #6a5332;
@@ -43,6 +47,10 @@
   --font-alegreya-sans: 'Alegreya Sans', sans-serif;
   --font-alegreya: 'Alegreya', serif;
   --font-dm-sans: 'DM Sans', sans-serif;
+
+  --text-2.5xl: 1.7rem;
+
+  --spacing-90dvw: 90dvw; 
   
 }
 

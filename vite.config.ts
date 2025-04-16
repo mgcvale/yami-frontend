@@ -40,7 +40,7 @@ export default {
           },
         ],
       },
-      includeAssets: ['yami/yami-logo.svg'],
+      includeAssets: [],
       devOptions: {
         enabled: true,
         type: 'module',
