@@ -1,15 +1,8 @@
 <script lang="ts">
-    import { currentUserStore, modalStore } from "$lib";
-    import LoginAsker from "$lib/components/ui/LoginAsker.svelte";
+    import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
     onMount(() => {
-        if ($currentUserStore == null) {
-            modalStore.set(LoginAsker);
-        }
-    });
+        goto('/app');
+    })
 </script>
-
-{#if $currentUserStore === null}
-
-{/if}

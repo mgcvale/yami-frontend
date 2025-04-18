@@ -23,6 +23,7 @@
   --color-dark-button-accent: #50483B;
   --color-dark-fg-hc: #ffffff;
   --color-dark-bg-hc: #000000;
+  --color-dark-error: #FF6644;
 
   /* Light Theme */
   --color-light-bg: #FAF9F6;
@@ -43,6 +44,8 @@
   --color-light-button-accent: #7f633b;
   --color-light-fg-hc: #000000;
   --color-light-bg-hc: #ffffff;
+  --color-light-error: #FF6644;
+
 
   --font-alegreya-sans: 'Alegreya Sans', sans-serif;
   --font-alegreya: 'Alegreya', serif;
