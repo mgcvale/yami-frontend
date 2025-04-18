@@ -61,7 +61,7 @@ export async function createAccount(username: string, email: string, password: s
         }
         return response.json();
     }).then((data) => {
-        Cookies.set('access_token', data.accessToken);
+        Cookies.set('accessToken', data.accessToken);
         currentUserStore.set({
             id: data.id,
             username: data.username,
@@ -79,6 +79,5 @@ export async function createAccount(username: string, email: string, password: s
         }
         HandleAllGeneric(error);
     });
-    
     return retval;
 }

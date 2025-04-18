@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { currentUserStore, modalStore } from "$lib";
     import Button from "$lib/components/ui/Button.svelte";
     import Card1 from "$lib/components/ui/Card1.svelte";
     import Logo from "$lib/components/ui/Logo.svelte";
