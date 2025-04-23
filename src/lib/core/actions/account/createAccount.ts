@@ -69,6 +69,9 @@ export async function createAccount(username: string, email: string, password: s
             email: data.email,
             bio: "",
             location: "",
+            followerCount: data.followerCount,
+            followingCount: data.followingCount,
+            reviewCount: data.reviewCount,
         });
         goto("/account/details");
     }).catch((error: ErrorResponse) => {

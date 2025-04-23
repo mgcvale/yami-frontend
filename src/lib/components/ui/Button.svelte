@@ -10,9 +10,9 @@
             "border-light-button-accent dark:border-dark-button-accent bg-transparent"
     :
         accent ?
-            "bg-light-fg-50 dark:bg-dark-fg-500/80 border-none"
+            "bg-light-fg-50 dark:bg-dark-fg-500/80 border-none text-light-card-2 dark:text-dark-card-1"
         :
-            "bg-light-button-accent dark:bg-dark-accent border-none"
+            "bg-light-card-3 dark:bg-dark-card-3 border-none dark:text-fg-700"
     }    
     border-2 rounded-md p-1 cursor-pointer {className}
 "

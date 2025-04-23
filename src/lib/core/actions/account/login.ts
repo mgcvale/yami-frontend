@@ -21,6 +21,8 @@ export async function login(usernameOrEmail: string, password: string): Promise<
         password,
     };
 
+    console.log("LOGGING IN");
+
     let retval = [""];
 
     await fetch(config.apiPaths.login(), {
@@ -47,7 +49,10 @@ export async function login(usernameOrEmail: string, password: string): Promise<
             email: data.email,
             accessToken: data.accessToken,
             bio: data.bio,
-            location: data.location
+            location: data.location,
+            followerCount: data.followerCount,
+            followingCount: data.followingCount,
+            reviewCount: data.reviewCount,
         });
         goto('/app');
     }).catch((error: ErrorResponse) => {

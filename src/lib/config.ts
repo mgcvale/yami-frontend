@@ -1,3 +1,5 @@
+import { ImageUp } from "@lucide/svelte";
+
 const apiUrl = 'http://localhost:8080';
 
 export default {

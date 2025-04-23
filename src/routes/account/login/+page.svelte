@@ -26,7 +26,7 @@
         let valid: boolean;
         [usernameOrEmailErrorMessage, passwordErrorMessage, valid] = validateInputs(usernameOrEmail, password);
         if (!valid) return;
-
+        console.log("IS VALID");
         [loginErrorMessage] = await login(usernameOrEmail, password);
     }
     

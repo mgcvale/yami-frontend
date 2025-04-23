@@ -23,7 +23,7 @@ export async function finishAccount(bio: string, location: string): Promise<[str
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${Cookies.get('access_token')}`
+            "Authorization": `Bearer ${Cookies.get('accessToken')}`
         },
         body: JSON.stringify({
             bio: bio,
@@ -47,6 +47,9 @@ export async function finishAccount(bio: string, location: string): Promise<[str
             accessToken: data.accessToken,
             bio: data.bio,
             location: data.location,
+            followerCount: data.followerCount,
+            followingCount: data.followingCount,
+            reviewCount: data.reviewCount,
         });
         goto('/app');
     }).catch((error: ErrorResponse) => {

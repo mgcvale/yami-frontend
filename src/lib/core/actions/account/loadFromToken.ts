@@ -32,7 +32,10 @@ export async function load() {
             email: data.email,
             accessToken: data.accessToken,
             bio: data.bio,
-            location: data.location
+            location: data.location,
+            followerCount: data.followerCount,
+            followingCount: data.followingCount,
+            reviewCount: data.reviewCount,
         });
     }).catch((error: ErrorResponse) => {
         console.log(error);

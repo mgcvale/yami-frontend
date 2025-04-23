@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Bolt, Search, Home, PlusCircle, User } from '@lucide/svelte';
+    import { Search, Home, PlusCircle, User } from '@lucide/svelte';
     import { page } from '$app/state';
     import { Modal } from '$lib';
     import Logo from '$lib/components/ui/Logo.svelte';
@@ -19,7 +19,7 @@
 
     <div class="flex justify-cent gap-5 px-2">
         <Search width={32}/>
-        <Bolt className="h-full w-auto"/>
+        <User className="h-full w-auto"/>
     </div>
 </header>
 
