@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/state";   
     import { currentUserStore, LoginAsker, modalStore, type PublicUser } from "$lib";
-    import EntityStatsHeader from "$lib/components/ui/EntityStatsHeader.svelte";
+    import RatingStats from "$lib/components/ui/RatingStats.svelte";
     import UserHeader from "$lib/components/ui/UserHeader.svelte";
     import { loadPublicUser } from "$lib/core/actions/account/loadPublicAccount";
     import type { ErrorResponse } from "$lib/core/types/errorResponse";
@@ -50,5 +50,28 @@
 {:else}
     <div class="flex flex-col py-4 pt-6 px-2 gap-3">
         <UserHeader user={(thisUser as PublicUser)} viewingSelf={viewingSelf} />
+        <RatingStats className={"p-2"} name={(thisUser as PublicUser).username} stats={{averageRating: 5.6, ratingDistribution: {
+            0: 2,
+            1: 2,
+            2: 1,
+            3: 1,
+            4: 3,
+            5: 2,
+            6: 3,
+            7: 5,
+            8: 4,
+            9: 7,
+            10: 9,
+            11: 9,
+            12: 10,
+            13: 12,
+            14: 8,
+            15: 7,
+            16: 4,
+            17: 5,
+            18: 3,
+            19: 3,
+            20: 1
+        }}}></RatingStats>
     </div>
 {/if}
