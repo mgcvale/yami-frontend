@@ -6,7 +6,10 @@
     import TextField from "$lib/components/ui/TextField.svelte";
     import Modal from "$lib/components/util/Modal.svelte";
     import { Eye, EyeOff } from "@lucide/svelte";
-    import { login, validateInputs } from "$lib/core/actions/account/login";
+    import { login, loginResponse, validateInputs } from "$lib/core/actions/account/login";
+    import { writable, type Writable } from "svelte/store";
+    import type { AsyncState } from "$lib/core/types/asyncState";
+    import { HandleAllGeneric } from "$lib/core/actions/genericErrorHandler";
 
     let usernameOrEmail = $state("");
     let usernameOrEmailErrorMessage = $state("");
@@ -14,7 +17,6 @@
     let passwordErrorMessage = $state("");
 
     let loginErrorMessage = $state("");
-
     let passwordHide = $state(true);
     let passwordIcon = $derived(passwordHide ? EyeOff : Eye);
 
@@ -22,13 +24,27 @@
         passwordHide = !passwordHide;
     }
 
-    async function loginClick() {
+    function loginClick() {
         let valid: boolean;
         [usernameOrEmailErrorMessage, passwordErrorMessage, valid] = validateInputs(usernameOrEmail, password);
         if (!valid) return;
-        console.log("IS VALID");
-        [loginErrorMessage] = await login(usernameOrEmail, password);
+
+        login(usernameOrEmail, password);
     }
+
+    loginResponse.subscribe(newResponse => {
+        if (newResponse.loading) return;
+        loginErrorMessage = "";
+
+        if (newResponse.error !== null) {
+            if (newResponse.error.status === 401) {
+                loginErrorMessage = "Your username or password are incorrect.";
+                return;
+            } else {
+                HandleAllGeneric(newResponse.error);
+            }
+        }
+    });
     
 </script>
 

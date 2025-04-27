@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import { HandleAllGeneric } from "../genericErrorHandler";
 import { currentUserStore } from "$lib/core/store/currentUserStore";
 
-
 export function validateInputs(bio: string, location: string): [string, string, boolean] {
     if (bio.length > 128) {
         return ["The bio must be at most 128 characters long", "", false];

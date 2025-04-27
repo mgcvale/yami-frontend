@@ -2,8 +2,16 @@ import { goto } from "$app/navigation";
 import config from "$lib/config";
 import { currentUserStore } from "$lib/core/store/currentUserStore";
 import type { ErrorResponse } from "$lib/core/types/errorResponse";
-import { HandleAllGeneric } from "../genericErrorHandler";
+import { writable, type Writable } from "svelte/store";
 import Cookies from 'js-cookie';
+import type { AsyncState } from "$lib/core/types/asyncState";
+import type CurrentUser from "$lib/core/model/currentUser";
+
+export const loginResponse: Writable<AsyncState<null>> = writable({
+    data: null,
+    loading: true,
+    error: null
+});
 
 export function validateInputs(usernameOrEmail: string, password: string): [string, string, boolean] {
     if (usernameOrEmail.length === 0) {
@@ -15,17 +23,18 @@ export function validateInputs(usernameOrEmail: string, password: string): [stri
     return ["", "", true];
 }
 
-export async function login(usernameOrEmail: string, password: string): Promise<[string]> {
+export function login(usernameOrEmail: string, password: string): void {
+    loginResponse.set({
+        loading: true,
+        data: null,
+        error: null
+    });
     const jsonData = {
         [usernameOrEmail.match(config.emailRegex) ? 'email' : 'username']: usernameOrEmail,
         password,
     };
 
-    console.log("LOGGING IN");
-
-    let retval = [""];
-
-    await fetch(config.apiPaths.login(), {
+    fetch(config.apiPaths.login(), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -43,7 +52,7 @@ export async function login(usernameOrEmail: string, password: string): Promise<
         return response.json();
     }).then((data) => {
         Cookies.set('accessToken', data.accessToken);
-        currentUserStore.set({
+        const user: CurrentUser = {
             id: data.id,
             username: data.username,
             email: data.email,
@@ -53,17 +62,24 @@ export async function login(usernameOrEmail: string, password: string): Promise<
             followerCount: data.followerCount,
             followingCount: data.followingCount,
             reviewCount: data.reviewCount,
+        }
+        currentUserStore.set({
+            data: user,
+            loading: false,
+            error: null
+        });
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        loginResponse.set({
+            loading: false,
+            error: null,
+            data: null,
         });
         goto('/app');
-    }).catch((error: ErrorResponse) => {
-        console.log("handling error");
-        if (error.status === 401) {
-            console.log("handling 401");
-            retval[0] = "You have entered invalid credentials. Check your password and try again";
-            return;
-        }
-        HandleAllGeneric(error);
+    }).catch((error) => {
+        loginResponse.set({
+            error: error,
+            data: null,
+            loading: false,
+        });
     });
-
-    return [retval[0]];
 }

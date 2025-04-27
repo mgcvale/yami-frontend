@@ -1,33 +1,44 @@
 import config from "$lib/config";
 import type PublicUser from "$lib/core/model/publicUser";
-import type { ErrorResponse } from "$lib/core/types/errorResponse";
+import type { AsyncState } from "$lib/core/types/asyncState";
+import { writable, type Writable } from "svelte/store";
 
-export async function loadPublicUser(userid: number): PublicUser | ErrorResponse {
-    let user: PublicUser | ErrorResponse = {status: 500, json: ''};
+export const loadPublicAccountStore: Writable<AsyncState<PublicUser>> = writable({
+    loading: true,
+    error: null,
+    data: null
+});
 
-    await fetch(config.apiPaths.user(userid), {
-        method: 'GET',
-    }).then(response => {
-        if (!response.ok) {
-            return response.json().then((data) => {
-                throw {
-                    status: response.status,
-                    json: data
-                } as ErrorResponse;
-            });
+export function loadPublicUser(userid: number): void {
+    
+    fetch(config.apiPaths.user(userid))
+    .then(async res => {
+        if (!res.ok) {
+            const data = await res.json();
+            throw { status: res.status, json: data };
         }
-        return response.json();
-    }).then((data) => {
-        user = {
-            username: data.username,
-            id: data.id,
-            bio: data.bio,
-            location: data.location,
-            followerCount: data.followerCount,
-            followingCount: data.followingCount,
-            reviewCount: data.reviewCount,
-        }
-    }).catch((error: ErrorResponse) => {
-        user = error;
+        return res.json();
+    })
+    .then(json => {
+        loadPublicAccountStore.set({
+            loading: false,
+            error: null,
+            data: {
+                username: json.username,
+                id: json.id,
+                bio: json.bio,
+                location: json.location,
+                followerCount: json.followerCount,
+                followingCount: json.followingCount,
+                reviewCount: json.reviewCount,
+            }
+        });
+    })
+    .catch(error => {
+        loadPublicAccountStore.set({
+            loading: false,
+            error: error,
+            data: null
+        });
     });
 }

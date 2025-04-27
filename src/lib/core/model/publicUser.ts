@@ -7,3 +7,16 @@ export default interface PublicUser {
     followerCount: number,
     reviewCount: number,
 };
+
+export function isPublicUser(obj: any): obj is PublicUser {
+    return (
+        typeof obj === "object" &&
+        typeof obj.id === "number" &&
+        typeof obj.username === "string" &&
+        typeof obj.bio === "string" &&
+        typeof obj.location === "string" &&
+        typeof obj.followerCount === "number" &&
+        typeof obj.followingCount === "number" &&
+        typeof obj.reviewCount === "number"
+    );
+}
