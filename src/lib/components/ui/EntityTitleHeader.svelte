@@ -19,7 +19,7 @@
             Edit profile
         </Button>
     {:else}
-        <Button onclick={onFollowClick} accent={following} outline={!following} className="w-full rounded-ml py-0.5 mt-2">
+        <Button onclick={onFollowClick} accent={following} outline={following} className="w-full rounded-ml py-0.5 mt-2">
             {following ? "Unfollow" : "Follow"}
         </Button>
     {/if}

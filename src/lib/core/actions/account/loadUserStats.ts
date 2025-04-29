@@ -2,6 +2,7 @@ import config from "$lib/config";
 import type ReviewStats from "$lib/core/model/reviewStats";
 import type { AsyncState } from "$lib/core/types/asyncState";
 import type { ErrorResponse } from "$lib/core/types/errorResponse";
+import { fetchWithTimeout } from "$lib/core/util/util";
 import { writable, type Writable } from "svelte/store";
 
 export function getUserStats(id: number): Writable<AsyncState<ReviewStats>> {
@@ -12,7 +13,7 @@ export function getUserStats(id: number): Writable<AsyncState<ReviewStats>> {
         data: null,
     });
 
-    fetch(config.apiPaths.userStats(id))
+    fetchWithTimeout(config.apiPaths.userStats(id), {}, config.fetchTimeout)
     .then(res => {
         console.log("got response");
         if (!res.ok) {

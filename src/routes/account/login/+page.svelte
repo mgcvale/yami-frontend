@@ -58,8 +58,8 @@
             Welcome back!
         </h2>
         
-        <TextField placeholder={"Username or Email"} className="w-80 max-w-full" bind:value={usernameOrEmail} noDecoration=true bind:errorMessage={usernameOrEmailErrorMessage} />
-        <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration=true bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
+        <TextField placeholder={"Username or Email"} className="w-80 max-w-full" bind:value={usernameOrEmail} noDecoration={true} bind:errorMessage={usernameOrEmailErrorMessage} />
+        <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration={true} bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
         {#if loginErrorMessage}
             <p class="text-light-error dark:text-dark-error text-sm text-center">{loginErrorMessage}</p>
         {/if}

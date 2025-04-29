@@ -2,6 +2,7 @@ import config from "$lib/config";
 import type PublicUser from "$lib/core/model/publicUser";
 import type { AsyncState } from "$lib/core/types/asyncState";
 import { writable, type Writable } from "svelte/store";
+import { fetchWithTimeout } from '$lib/core/util/util';
 
 export const loadPublicAccountStore: Writable<AsyncState<PublicUser>> = writable({
     loading: true,
@@ -10,12 +11,15 @@ export const loadPublicAccountStore: Writable<AsyncState<PublicUser>> = writable
 });
 
 export function loadPublicUser(userid: number): void {
-    
-    fetch(config.apiPaths.user(userid))
+    fetchWithTimeout(config.apiPaths.user(userid), {}, config.fetchTimeout)
     .then(async res => {
         if (!res.ok) {
-            const data = await res.json();
-            throw { status: res.status, json: data };
+            return res.json().then(data => {
+                throw { 
+                    status: res.status, 
+                    json: data 
+                };
+            });
         }
         return res.json();
     })

@@ -1,12 +1,83 @@
 <script lang="ts">
-    import { Search, Home, PlusCircle, User } from '@lucide/svelte';
+    import { Search, Home, PlusCircle, User, LogOut, Bolt } from '@lucide/svelte';
     import { page } from '$app/state';
-    import { Modal } from '$lib';
+    import { currentUserStore, Modal } from '$lib';
     import Logo from '$lib/components/ui/Logo.svelte';
+    import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
+    import { appState } from '$lib/core/util/appState';
+    import { onMount } from 'svelte';
+    import type ContextMenuEntry from '$lib/core/types/contextMenuEntry';
+    import { logout } from '$lib/core/actions/account/logout';
+    import { goto } from '$app/navigation';
 
     let { children } = $props();
 
-    console.log(page.url.pathname);
+    let showingUserContextMenu = $state(false);
+
+    onMount(() => { 
+        $appState.globalOnClick.push(e => {
+            showingUserContextMenu = false;
+        });
+    });
+
+    let contextMenuEntries: ContextMenuEntry[] = $state([
+        {
+            name: "loading...",
+            action: () => {}
+        }
+    ]);
+
+    currentUserStore.subscribe(change => {
+        if (change.loading) {
+            contextMenuEntries = [{
+                name: "loading...",
+                action: () => {}
+            }];
+            return;
+        }
+
+        if (change.data !== null) {
+            contextMenuEntries = [
+                {
+                    name: "Log out",
+                    action: () => {
+                        logout();
+                    },
+                    icon: LogOut
+                },
+                {
+                    name: "Your profile",
+                    action: () => {
+                        goto('/app/user');
+                    },
+                    icon: User
+                },
+                {
+                    name: "Settings",
+                    action: () => {
+                        goto('/app/settings');
+                    },
+                    icon: Bolt
+                }
+            ];
+        } else {
+            contextMenuEntries = [
+                {
+                    name: "Log in",
+                    action: () => {
+                        goto('/account/login');
+                    }
+                },
+                {
+                    name: "Register",
+                    action: () => {
+                        goto('/account/register');
+                    }
+                }
+            ]
+        }
+    })
+
 </script>
 
 <header 
@@ -17,9 +88,19 @@
         <Logo />
     </a>
 
-    <div class="flex justify-cent gap-5 px-2">
+    <div class="flex justify-center gap-5 px-2">
         <Search width={32}/>
-        <User className="h-full w-auto"/>
+        <div class="relative flex justify-center items-center">
+            <ContextMenu bind:entries={contextMenuEntries}
+                bind:showing={showingUserContextMenu}>
+            </ContextMenu>
+            <User className="h-full w-auto" onclick={e => {
+                showingUserContextMenu = true;
+                e.stopPropagation();
+            }}>
+                
+            </User>
+        </div>
     </div>
 </header>
 

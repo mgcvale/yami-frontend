@@ -6,13 +6,12 @@
     import { loadPublicAccountStore, loadPublicUser } from "$lib/core/actions/account/loadPublicAccount";
     import type { AsyncState } from "$lib/core/types/asyncState";
     import { onMount } from "svelte";
-    import { writable, type Writable } from "svelte/store";
 
     let isPageViewable: boolean = $state(true);
     let viewingSelf: boolean = $state(false);
     let thisUser: AsyncState<PublicUser> = $state({
         data: null,
-        loading: false,
+        loading: true,
         error: null,
     });
     /*
@@ -71,17 +70,17 @@
         
     onMount(() => {
         load($currentUserStore);
+
+        loadPublicAccountStore.subscribe(newPublicAccount => {
+            console.log(newPublicAccount);
+            thisUser = newPublicAccount;
+        });
+
+        currentUserStore.subscribe(newStore => {
+            console.log("reloading due to logged in user change: ", newStore.loading);
+            load(newStore);
+        });
     });
-
-    loadPublicAccountStore.subscribe(() => {
-        console.log($loadPublicAccountStore);
-        thisUser = $loadPublicAccountStore;
-    })
-
-    currentUserStore.subscribe(() => {
-        console.log("reloading due to logged in user change: ", $currentUserStore.loading);
-        load($currentUserStore);
-    })
 
 
 </script>
@@ -101,6 +100,8 @@
                 {:else if thisUser.error.status === 500}
                     <p> An error occourred on our end. You can try again later.</p>
                     <a class="underline" href="/app">Go to home</a>
+                {:else if thisUser.error instanceof TypeError}
+                    <p>A network error occourred. Check if you're connected to the internet</p>
                 {:else}
                     <p>An unknown error occourred.</p>
                     <p>Error status: {thisUser.error.status}</p>
