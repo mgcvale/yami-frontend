@@ -12,10 +12,8 @@ export const loadUserStatsStore: Writable<AsyncState<ReviewStats>> = writable({
 });
 
 export function loadUserStats(id: number): void {
-
     fetchWithTimeout(config.apiPaths.userStats(id), {}, config.fetchTimeout)
     .then(res => {
-        console.log("got response");
         if (!res.ok) {
             return res.json().then((data) => {
                 throw {

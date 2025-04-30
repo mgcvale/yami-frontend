@@ -21,8 +21,9 @@
         stats: AsyncState<ReviewStats>
     } = $props();
 
-    let canvas: HTMLCanvasElement;
-    function renderChart(darkmode: boolean) {
+    let canvas: HTMLCanvasElement | null = $state(null);
+    
+    function renderChart(darkmode: boolean, canvas: HTMLCanvasElement) {
         if (stats.loading) return;
         if (stats.data === null) return;
 
@@ -83,9 +84,10 @@
         });
     }
 
-    onMount(() => {
-        renderChart(true);
-    });
+    $effect(() => {
+        if (canvas === null) return;
+        renderChart(true, canvas);
+    })
 
 
 </script>

@@ -34,6 +34,7 @@
             console.log("REFUSED TO LOAD: current user wasn't yet loaded");
             return;
         }
+        if (thisUser.data !== null && thisUser.data.id === currentUser.data?.id) return;
         const searchParamsUserId = page.url.searchParams.get("id");
         
         // CASE 1, 2 AND 3: 
@@ -53,6 +54,7 @@
             }
             console.log("calling API");
             loadPublicUser(parseInt(searchParamsUserId));
+            loadUserStats(parseInt(searchParamsUserId));
             return;
         }
 
@@ -90,7 +92,6 @@
         load($currentUserStore);
 
         loadPublicAccountStore.subscribe(newPublicAccount => {
-            console.log(newPublicAccount);
             thisUser = newPublicAccount;
         });
 

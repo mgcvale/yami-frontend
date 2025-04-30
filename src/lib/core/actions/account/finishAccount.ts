@@ -15,10 +15,8 @@ export function validateInputs(bio: string, location: string): [string, string, 
     return ["", "", true];
 }
 
-export async function finishAccount(bio: string, location: string): Promise<[string, string]> {
-    let retval = ["", ""];
-
-    await fetch(config.apiPaths.user(), {
+export function finishAccount(bio: string, location: string): void {
+    fetch(config.apiPaths.user(), {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json",
@@ -40,20 +38,22 @@ export async function finishAccount(bio: string, location: string): Promise<[str
         return response.json();
     }).then((data) => {
         currentUserStore.set({
-            username: data.username,
-            email: data.email,
-            id: data.id,
-            accessToken: data.accessToken,
-            bio: data.bio,
-            location: data.location,
-            followerCount: data.followerCount,
-            followingCount: data.followingCount,
-            reviewCount: data.reviewCount,
+            loading: false,
+            error: null,
+            data: {
+                username: data.username,
+                email: data.email,
+                id: data.id,
+                accessToken: data.accessToken,
+                bio: data.bio,
+                location: data.location,
+                followerCount: data.followerCount,
+                followingCount: data.followingCount,
+                reviewCount: data.reviewCount,
+            }
         });
         goto('/app');
     }).catch((error: ErrorResponse) => {
         HandleAllGeneric(error);
     });
-
-    return [retval[0], retval[1]];
 }

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
     import Button from "$lib/components/ui/Button.svelte";
     import Card1 from "$lib/components/ui/Card1.svelte";
     import Logo from "$lib/components/ui/Logo.svelte";
@@ -15,8 +16,9 @@
         let valid: boolean = false;
         [bioError, locationError, valid] = validateInputs(bio, location);
         if (!valid) return;
-
-        [bioError, locationError] = await finishAccount(bio, location);
+        
+        finishAccount(bio, location);
+        goto('/app');
     }
 
 </script>
