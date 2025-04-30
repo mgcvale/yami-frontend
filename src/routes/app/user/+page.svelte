@@ -4,12 +4,19 @@
     import RatingStats from "$lib/components/ui/RatingStats.svelte";
     import UserHeader from "$lib/components/ui/UserHeader.svelte";
     import { loadPublicAccountStore, loadPublicUser } from "$lib/core/actions/account/loadPublicAccount";
+    import { loadUserStats, loadUserStatsStore } from "$lib/core/actions/account/loadUserStats";
+    import type ReviewStats from "$lib/core/model/reviewStats";
     import type { AsyncState } from "$lib/core/types/asyncState";
     import { onMount } from "svelte";
 
     let isPageViewable: boolean = $state(true);
     let viewingSelf: boolean = $state(false);
     let thisUser: AsyncState<PublicUser> = $state({
+        data: null,
+        loading: true,
+        error: null,
+    });
+    let thisUserStats: AsyncState<ReviewStats> = $state({
         data: null,
         loading: true,
         error: null,
@@ -34,11 +41,13 @@
         if (currentUser.data !== null) {
             if (searchParamsUserId === null) {
                 thisUser = currentUser;
+                loadUserStats(currentUser.data.id);
                 viewingSelf = true;
                 return;
             }
             if (searchParamsUserId === currentUser.data.id.toString()) {
                 thisUser = currentUser;
+                loadUserStats(currentUser.data.id);
                 viewingSelf = true;
                 return;
             }
@@ -52,11 +61,20 @@
         if (searchParamsUserId !== null) {
             console.log("calling API");
             loadPublicUser(parseInt(searchParamsUserId));
+            loadUserStats(parseInt(searchParamsUserId));
         } else {
             thisUser = {
                 loading: false,
                 data: null,
                 error: null
+            };
+            thisUserStats = {
+                loading: false,
+                data: null,
+                error: {
+                    status: 401,
+                    json: {}
+                }
             };
             modalStore.set({
                 component: LoginAsker,
@@ -80,6 +98,10 @@
             console.log("reloading due to logged in user change: ", newStore.loading);
             load(newStore);
         });
+
+        loadUserStatsStore.subscribe(newStore => {
+            thisUserStats = newStore;
+        })
     });
 
 
@@ -111,29 +133,7 @@
             {/if}
         {:else}
              <UserHeader user={thisUser.data} viewingSelf={viewingSelf} />
-            <RatingStats className={"p-2"} name={thisUser.data.username} stats={{averageRating: 5.6, ratingDistribution: {
-                0: 2,
-                1: 2,
-                2: 1,
-                3: 1,
-                4: 3,
-                5: 2,
-                6: 3,
-                7: 5,
-                8: 4,
-                9: 7,
-                10: 9,
-                11: 9,
-                12: 10,
-                13: 12,
-                14: 8,
-                15: 7,
-                16: 4,
-                17: 5,
-                18: 3,
-                19: 3,
-                20: 1
-            }}} />
+            <RatingStats className={"p-2"} name={thisUser.data.username} bind:stats={thisUserStats} />
         {/if}
     {/if}
 </div>

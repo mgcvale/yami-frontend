@@ -5,13 +5,13 @@ import type { ErrorResponse } from "$lib/core/types/errorResponse";
 import { fetchWithTimeout } from "$lib/core/util/util";
 import { writable, type Writable } from "svelte/store";
 
-export function getUserStats(id: number): Writable<AsyncState<ReviewStats>> {
-    console.log("loading user stats");
-    const state: Writable<AsyncState<ReviewStats>> = writable({
-        loading: true,
-        error: null,
-        data: null,
-    });
+export const loadUserStatsStore: Writable<AsyncState<ReviewStats>> = writable({
+    loading: true,
+    data: null,
+    error: null
+});
+
+export function loadUserStats(id: number): void {
 
     fetchWithTimeout(config.apiPaths.userStats(id), {}, config.fetchTimeout)
     .then(res => {
@@ -27,7 +27,7 @@ export function getUserStats(id: number): Writable<AsyncState<ReviewStats>> {
         return res.json();
     })
     .then(json => {
-        state.set({
+        loadUserStatsStore.set({
             data: {
                 averageRating: json.averageRating,
                 ratingDistribution: json.ratingDistribution,
@@ -37,12 +37,10 @@ export function getUserStats(id: number): Writable<AsyncState<ReviewStats>> {
         });
     })
     .catch(err => {
-        state.set({
+        loadUserStatsStore.set({
             data: null,
             error: err,
             loading: false,
         });
-    });
-    
-    return state;
+    });    
 }
