@@ -12,12 +12,12 @@ export const loadPublicAccountStore: Writable<AsyncState<PublicUser>> = writable
 
 export function loadPublicUser(userid: number): void {
     fetchWithTimeout(config.apiPaths.user(userid), {}, config.fetchTimeout)
-    .then(async res => {
+    .then(res => {
         if (!res.ok) {
             return res.json().then(data => {
                 throw { 
-                    status: res.status, 
-                    json: data 
+                    status: res.status,
+                    json: data
                 };
             });
         }

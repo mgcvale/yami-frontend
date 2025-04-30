@@ -23,15 +23,15 @@ headers={[
     },
     {
         name: "Followers",
-        nameClassName: "text-opacity-80 text-sm",
+        nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
         count: user.followerCount,
-        countClassName: "text-opacity-80 text-md",
+        countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md",
     },
     {
         name: "Following",
-        nameClassName: "text-opacity-80 text-sm",
+        nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
         count: user.followingCount,
-        countClassName: "text-opacity-80 text-md"
+        countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md"
     },
 ]}
 pictureUrl={"https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}

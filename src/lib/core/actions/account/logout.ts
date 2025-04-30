@@ -3,17 +3,20 @@ import { currentUserStore } from "$lib/core/store/currentUserStore";
 import type { AsyncState } from "$lib/core/types/asyncState";
 import { get } from "svelte/store";
 import Cookies from 'js-cookie';
+import { modalStore } from "$lib/core/store/modalStore";
 
-export function logout() {
+export function logout(intermediateAction: () => void) {
     const currentUser: AsyncState<CurrentUser> = get(currentUserStore);
-    if (currentUser.loading === false) return;
+    if (currentUser.loading) return;
     if (currentUser.data === null) return;
 
-    Cookies.delete('accessToken');
+    Cookies.remove('accessToken');
     localStorage.removeItem('currentUser');
+    intermediateAction();
     currentUserStore.set({
         loading: false,
         data: null,
         error :null
     });
+    modalStore.set(null);
 }

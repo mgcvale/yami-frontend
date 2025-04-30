@@ -41,7 +41,7 @@
                 {
                     name: "Log out",
                     action: () => {
-                        logout();
+                        logout(() => goto('/account/login'));
                     },
                     icon: LogOut
                 },

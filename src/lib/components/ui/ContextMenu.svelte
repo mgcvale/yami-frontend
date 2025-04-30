@@ -18,7 +18,7 @@
         <button class="w-full rounded-md p-2 flex gap-4 justify-between items-center hover:bg-light-card-1 dark:hover:bg-dark-card-1" onclick={entry.action}>
             <h3>{entry.name}</h3>
             {#if entry.icon !== null}
-                <svelte:component this={entry.icon}></svelte:component>
+                <svelte:component this={entry.icon} size={20}></svelte:component>
             {/if}
         </button>
     {/each}
