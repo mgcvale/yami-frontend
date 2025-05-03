@@ -9,7 +9,6 @@ import Cookies from 'js-cookie';
 export function load() {
     if (!browser) return;
 
-    console.log("loading from token");
     currentUserStore.set({
         loading: true,
         data: null,
@@ -19,14 +18,12 @@ export function load() {
     const accessToken = Cookies.get("accessToken");
 
     if (!accessToken) {
-        console.log("Ended loading from token; no user found because not token was present");
         currentUserStore.set({
             loading: false,
             data: null,
             error: null
         });
         localStorage.removeItem("currentUser");
-        console.log("not loaded due to missing cookie");
         return;
     }
 
@@ -64,16 +61,13 @@ export function load() {
         }
         return res.json();
     }).then(data => {
-        console.log("finished loading form API call, success");
         currentUserStore.set({
             loading: false,
             data: (data as CurrentUser),
             error: null,
         });
         localStorage.setItem("currentUser", JSON.stringify(data));
-        console.log("updated from API call: ", localStorage.getItem("currentUser"));
     }).catch(error => {
-        console.log("finished loading from api call; error");
         Cookies.remove("accessToken");
         currentUserStore.set({
             loading: false,

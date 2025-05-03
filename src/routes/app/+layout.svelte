@@ -9,6 +9,7 @@
     import type ContextMenuEntry from '$lib/core/types/contextMenuEntry';
     import { logout } from '$lib/core/actions/account/logout';
     import { goto } from '$app/navigation';
+    import SnackBar from '$lib/components/util/SnackBar.svelte';
 
     let { children } = $props();
 
@@ -109,6 +110,7 @@
 </main>
 
 <Modal />
+<SnackBar />
 
 <nav
     class="fixed bottom-0 left-0 w-dvw h-18 flex items-center justify-center p-3 px-0 rounded-t-lg 

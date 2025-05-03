@@ -5,6 +5,8 @@
     import { loadAppState } from '$lib/core/util/appState';
     import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
     import { initializeThemeManager } from '$lib/core/util/themeManager';
+    import { snackbarStore } from '$lib/core/store/snackbarStore';
+    import ErrorSnackbar from '$lib/components/ui/ErrorSnackbar.svelte';
     export const prerender = false;
 
     let { children } = $props();
