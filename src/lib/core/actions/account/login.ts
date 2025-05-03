@@ -62,6 +62,7 @@ export function login(usernameOrEmail: string, password: string): void {
             followerCount: data.followerCount,
             followingCount: data.followingCount,
             reviewCount: data.reviewCount,
+            following: false,
         }
         currentUserStore.set({
             data: user,

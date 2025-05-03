@@ -50,6 +50,7 @@ export function finishAccount(bio: string, location: string): void {
                 followerCount: data.followerCount,
                 followingCount: data.followingCount,
                 reviewCount: data.reviewCount,
+                following: false,
             }
         });
         goto('/app');

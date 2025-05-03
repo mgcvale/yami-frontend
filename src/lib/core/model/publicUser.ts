@@ -6,6 +6,7 @@ export default interface PublicUser {
     followingCount: number,
     followerCount: number,
     reviewCount: number,
+    following: boolean
 };
 
 export function isPublicUser(obj: any): obj is PublicUser {
@@ -17,6 +18,7 @@ export function isPublicUser(obj: any): obj is PublicUser {
         typeof obj.location === "string" &&
         typeof obj.followerCount === "number" &&
         typeof obj.followingCount === "number" &&
-        typeof obj.reviewCount === "number"
+        typeof obj.reviewCount === "number" &&
+        typeof obj.following === "boolean"
     );
 }

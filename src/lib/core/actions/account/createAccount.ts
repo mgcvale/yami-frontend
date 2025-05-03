@@ -74,6 +74,7 @@ export async function createAccount(username: string, email: string, password: s
                 followerCount: data.followerCount,
                 followingCount: data.followingCount,
                 reviewCount: data.reviewCount,
+                following: false,
             },
             error: null
         });
