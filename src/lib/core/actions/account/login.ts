@@ -51,7 +51,7 @@ export function login(usernameOrEmail: string, password: string): void {
         }
         return response.json();
     }).then((data) => {
-        Cookies.set('accessToken', data.accessToken);
+        Cookies.set('accessToken', data.accessToken, { expires: 180 });
         const user: CurrentUser = {
             id: data.id,
             username: data.username,

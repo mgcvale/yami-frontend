@@ -61,17 +61,21 @@ export async function createAccount(username: string, email: string, password: s
         }
         return response.json();
     }).then((data) => {
-        Cookies.set('accessToken', data.accessToken);
+        Cookies.set('accessToken', data.accessToken, { expires: 180 });
         currentUserStore.set({
-            id: data.id,
-            username: data.username,
-            accessToken: data.accessToken,
-            email: data.email,
-            bio: "",
-            location: "",
-            followerCount: data.followerCount,
-            followingCount: data.followingCount,
-            reviewCount: data.reviewCount,
+            loading: false,
+            data: {
+                id: data.id,
+                username: data.username,
+                accessToken: data.accessToken,
+                email: data.email,
+                bio: "",
+                location: "",
+                followerCount: data.followerCount,
+                followingCount: data.followingCount,
+                reviewCount: data.reviewCount,
+            },
+            error: null
         });
         goto("/account/details");
     }).catch((error: ErrorResponse) => {

@@ -4,11 +4,13 @@
     import '../app.css';
     import { loadAppState } from '$lib/core/util/appState';
     import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
+    import { initializeThemeManager } from '$lib/core/util/themeManager';
     export const prerender = false;
 
     let { children } = $props();
     load();
     onMount(() => {
+        initializeThemeManager(document);
         loadAppState(document);
     })
     
