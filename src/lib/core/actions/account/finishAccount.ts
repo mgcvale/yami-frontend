@@ -37,21 +37,11 @@ export function finishAccount(bio: string, location: string): void {
         }
         return response.json();
     }).then((data) => {
+        console.log("Finish account data: ", data);
         currentUserStore.set({
             loading: false,
             error: null,
-            data: {
-                username: data.username,
-                email: data.email,
-                id: data.id,
-                accessToken: data.accessToken,
-                bio: data.bio,
-                location: data.location,
-                followerCount: data.followerCount,
-                followingCount: data.followingCount,
-                reviewCount: data.reviewCount,
-                following: false,
-            }
+            data: data,
         });
         goto('/app');
     }).catch((error: ErrorResponse) => {
