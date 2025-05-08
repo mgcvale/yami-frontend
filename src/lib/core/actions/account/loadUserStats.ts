@@ -12,8 +12,10 @@ export const loadUserStatsStore: Writable<AsyncState<ReviewStats>> = writable({
 });
 
 export function loadUserStats(id: number): void {
+    console.log("SENDING REQUEST FROM STATS LOAD");
     fetchWithTimeout(config.apiPaths.userStats(id), {}, config.fetchTimeout)
     .then(res => {
+        console.log("GOT RESPONSE FROM STATS LOAD");
         if (!res.ok) {
             return res.json().then((data) => {
                 throw {
@@ -25,6 +27,7 @@ export function loadUserStats(id: number): void {
         return res.json();
     })
     .then(json => {
+        console.log("GOT SUCCESS FROM STATS LOAD");
         loadUserStatsStore.set({
             data: {
                 averageRating: json.averageRating,
@@ -35,6 +38,8 @@ export function loadUserStats(id: number): void {
         });
     })
     .catch(err => {
+        console.log("GOT ERROR FROM STATS LOAD");
+        console.log(err);
         loadUserStatsStore.set({
             data: null,
             error: err,

@@ -3,10 +3,7 @@
     import { onMount } from 'svelte';
     import '../app.css';
     import { loadAppState } from '$lib/core/util/appState';
-    import ContextMenu from '$lib/components/ui/ContextMenu.svelte';
     import { initializeThemeManager } from '$lib/core/util/themeManager';
-    import { snackbarStore } from '$lib/core/store/snackbarStore';
-    import ErrorSnackbar from '$lib/components/ui/ErrorSnackbar.svelte';
     export const prerender = false;
 
     let { children } = $props();
@@ -17,5 +14,6 @@
     })
     
 </script>
-
-{@render children()}
+<div class="yami-content h-full w-full max-w-[500px] bg-light-bg dark:bg-dark-bg">
+    {@render children()}
+</div>

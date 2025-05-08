@@ -3,6 +3,8 @@
     import { onMount } from "svelte";
 
     onMount(() => {
-        goto('/app');
+        goto('/app', {
+            replaceState: true
+        });
     })
 </script>

@@ -6,6 +6,7 @@
 
   /* Dark Theme */
   --color-dark-bg: #151311;
+  --color-dark-subbg: #0b0906;
   --color-dark-accent: #f5e0c7;
   --color-dark-fg-900: #a5987f;
   --color-dark-fg-700: #c1b19d;
@@ -27,6 +28,7 @@
 
   /* Light Theme */
   --color-light-bg: #FAF9F6;
+  --color-light-subbg: #FDFCF9;
   --color-light-accent: #3c2f1d;
   --color-light-fg-900: #85786f
   --color-light-fg-700: #65584f;
@@ -45,6 +47,13 @@
   --color-light-fg-hc: #000000;
   --color-light-bg-hc: #ffffff;
   --color-light-error: #FF6644;
+
+  --color-rating-terrible: #b90000;
+  --color-rating-bad: #d66a00;
+  --color-rating-good: #b9a100;
+  --color-rating-great: #549c00;
+  --color-rating-top: #007f8b;
+
 
 
   --font-alegreya-sans: 'Alegreya Sans', sans-serif;

@@ -26,7 +26,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: `You must be logged in to ${user?.following ? "follow" : "unfollow"} a user`
+                    warningMessage: `You must be logged in to follow a user`
                 }
             });
             return;

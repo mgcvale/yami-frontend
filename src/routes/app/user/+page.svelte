@@ -1,6 +1,9 @@
 <script lang="ts">
+    import { onNavigate } from "$app/navigation";
     import { page } from "$app/state";   
     import { currentUserStore, LoginAsker, modalStore, type CurrentUser, type PublicUser } from "$lib";
+    import Divisor from "$lib/components/ui/Divisor.svelte";
+    import FoodReviewList from "$lib/components/ui/FoodReviewList.svelte";
     import RatingStats from "$lib/components/ui/RatingStats.svelte";
     import UserHeader from "$lib/components/ui/UserHeader.svelte";
     import { loadPublicAccountStore, loadPublicUser } from "$lib/core/actions/account/loadPublicAccount";
@@ -73,6 +76,15 @@
         }
     }
 
+    $effect(() => {
+        void page.url.searchParams;
+        load($currentUserStore);
+    });
+
+    onNavigate(() => {
+        load($currentUserStore);
+    })
+
     onMount(() => {
         load($currentUserStore);
 
@@ -116,9 +128,14 @@
             {:else}
                 <h2 class="text-xl font-alegreya">An unknown error occurred!</h2>
             {/if}
-        {:else}
+        {:else if user !== null}
             <UserHeader bind:user={user} viewingSelf={viewingSelf} />
             <RatingStats className={"p-2"} name={user?.username ?? ''} bind:stats={thisUserStats} />
+            <Divisor lineClassName={"bg-light-card-2 dark:bg-dark-card-2"} containerClassName={"px-4"} />
+            <h1 class="font-alegreya text-2xl text-left px-3 pt-1"> {user.username}'s reviews</h1>
+            <FoodReviewList userId={user?.id} className={"p-2 pt-0"} />
+        {:else}
+            <h2 class="text-xl font-alegreya">An unknown error occurred - user is null</h2>
         {/if}
     {/if}
 </div>

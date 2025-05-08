@@ -94,13 +94,13 @@
 
 <div class="w-full h-fit flex {className}">
     <div class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl w-full px-2 py-1 flex gap-2 flex-col justify-start items-start min-h-24">
-        <span class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-x">
+        <span class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-xl">
             {#if stats.loading}
                 Loading data...
             {:else if stats.data === null}
                 Error loading stats
             {:else if name != null}
-                {name}'s average rating: {stats.data.averageRating / 2}/10
+                {name}'s average rating: {(stats.data.averageRating / 2).toFixed(1)} / 10
             {:else}
                 Rating distribution
             {/if}

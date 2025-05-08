@@ -48,7 +48,7 @@ export async function createAccount(username: string, email: string, password: s
         body: JSON.stringify({
             username: username,
             password: password,
-            email: email
+            email: email.toLowerCase()
         }),
     }).then(response => {
         if (!response.ok) {
