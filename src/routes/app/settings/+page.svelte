@@ -1,8 +1,8 @@
 <script lang="ts">
     import { currentUserStore, modalStore, type CurrentUser } from "$lib";
-    import Card1 from "$lib/components/ui/Card1.svelte";
+    import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import LoginAsker from "$lib/components/ui/LoginAsker.svelte";
-    import Switch from "$lib/components/ui/Switch.svelte";
+    import Switch from "$lib/components/ui/controls/Switch.svelte";
     import type { AsyncState } from "$lib/core/types/asyncState";
     import { currentThemeLight } from "$lib/core/util/themeManager";
 

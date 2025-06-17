@@ -2,7 +2,10 @@
     import { afterNavigate } from "$app/navigation";
     import { page } from "$app/state";
     import { currentUserStore, modalStore, type CurrentUser } from "$lib";
+    import Feed from "$lib/components/ui/Feed.svelte";
+    import FeedSearchPage from "$lib/components/ui/FeedSearchPage.svelte";
     import LoginAsker from "$lib/components/ui/LoginAsker.svelte";
+    import { isSearching } from "$lib/core/store/isSearchingStore";
     import type { AsyncState } from "$lib/core/types/asyncState";
     import { onMount } from "svelte";
 
@@ -25,6 +28,11 @@
         load($currentUserStore);
     });
 
+    $effect(() => {
+        mode = page.url.searchParams.get("context") ?? "feed";
+        load($currentUserStore);
+    })
+
     currentUserStore.subscribe(changed => {
         load(changed);
     })
@@ -36,8 +44,8 @@
             You can't access your feed without logging in first.
         </h2>
     {:else}
-        <h2>This is your feed</h2>
+        <Feed className={""}></Feed>
     {/if}
 {:else if mode === "search"}
-        <h2>You're searching</h2>
+    <FeedSearchPage />
 {/if}

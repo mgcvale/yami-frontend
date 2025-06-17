@@ -8,6 +8,7 @@
   --color-dark-bg: #151311;
   --color-dark-subbg: #0b0906;
   --color-dark-accent: #f5e0c7;
+  --color-dark-subaccent: #A29786;
   --color-dark-fg-900: #a5987f;
   --color-dark-fg-700: #c1b19d;
   --color-dark-fg-500: #f5e0c7;
@@ -30,7 +31,8 @@
   --color-light-bg: #FAF9F6;
   --color-light-subbg: #FDFCF9;
   --color-light-accent: #3c2f1d;
-  --color-light-fg-900: #85786f
+  --color-light-subaccent: #7d6f5e;
+  --color-light-fg-900: #85786f;
   --color-light-fg-700: #65584f;
   --color-light-fg-500: #3c2f1d;
   --color-light-fg-300: #52402a;
@@ -63,7 +65,7 @@
   --text-2.5xl: 1.7rem;
   --text-ml: 1.0625rem;
   --text-ms: 0.9375rem;
-  --radius-ml: 0.625rem; /* this didnt work */
+  --radius-ml: 0.625rem;
 
   --spacing-90dvw: 90dvw; 
   

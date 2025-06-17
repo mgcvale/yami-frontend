@@ -11,6 +11,7 @@
     import type ReviewStats from "$lib/core/model/reviewStats";
     import type { AsyncState } from "$lib/core/types/asyncState";
     import { onMount } from "svelte";
+    import { get } from "svelte/store";
 
     let isPageViewable: boolean = $state(true);
     let viewingSelf: boolean = $state(false);
@@ -25,34 +26,49 @@
         error: null,
     });
     let user: PublicUser | null = $state(null);
+    let hasAttemptedLoad: boolean = $state(false); // track load attempts
 
-    function load(currentUser: AsyncState<CurrentUser>) {
+    // Track the current user ID to prevent redundant loads
+    let currentViewedUserId: string | null = $state(null);
+
+    function load(currentUser: AsyncState<CurrentUser>, userid: string | null) {
+        
+        // Update the tracked user ID
+        currentViewedUserId = userid;
+
         if (currentUser.loading) {
             console.log("REFUSED TO LOAD: current user wasn't yet loaded");
             return;
         }
-        if (thisUser.data !== null && thisUser.data.id === currentUser.data?.id) return;
-        const searchParamsUserId = page.url.searchParams.get("id");
 
         if (currentUser.data !== null) {
-            if (searchParamsUserId === null || searchParamsUserId === currentUser.data.id.toString()) {
-                thisUser = currentUser;
-                user = currentUser.data; // Update reactive user
-                loadUserStats(currentUser.data.id);
-                viewingSelf = true;
+            if (userid === null || userid === currentUser.data.id.toString()) {
+                // Viewing own profile
+                if (!viewingSelf || thisUser.data?.id !== currentUser.data.id) {
+                    thisUser = currentUser;
+                    user = currentUser.data;
+                    loadUserStats(currentUser.data.id);
+                    viewingSelf = true;
+                }
                 return;
             }
-            console.log("calling API");
-            loadPublicUser(parseInt(searchParamsUserId));
-            loadUserStats(parseInt(searchParamsUserId));
+            
+            // Viewing someone else's profile
+            viewingSelf = false;
+            console.log("Loading public user data for ID:", userid);
+            loadPublicUser(parseInt(userid));
+            loadUserStats(parseInt(userid));
             return;
         }
 
-        if (searchParamsUserId !== null) {
-            console.log("calling API");
-            loadPublicUser(parseInt(searchParamsUserId));
-            loadUserStats(parseInt(searchParamsUserId));
+        if (userid !== null) {
+            // Not logged in but viewing a specific user
+            viewingSelf = false;
+            console.log("Loading public user data for ID:", userid);
+            loadPublicUser(parseInt(userid));
+            loadUserStats(parseInt(userid));
         } else {
+            // Not logged in and no specific user to view
             thisUser = {
                 loading: false,
                 data: null,
@@ -76,28 +92,42 @@
         }
     }
 
+    // Handle URL parameter changes
     $effect(() => {
-        void page.url.searchParams;
-        load($currentUserStore);
+        const id = page.url.searchParams.get('id');
+        // Only load if the ID actually changed
+        if (id !== currentViewedUserId) {
+            hasAttemptedLoad = false; // Reset attempt flag for new ID
+            load(get(currentUserStore), id);
+        }
     });
 
-    onNavigate(() => {
-        load($currentUserStore);
-    })
-
     onMount(() => {
-        load($currentUserStore);
 
+        // Subscribe to public account store changes
         loadPublicAccountStore.subscribe(newPublicAccount => {
-            thisUser = newPublicAccount;
-            user = newPublicAccount.data;
+            // Only update if this is for our current viewed user
+            const id = page.url.searchParams.get('id');
+            if (id === currentViewedUserId && !viewingSelf) {
+                thisUser = newPublicAccount;
+                user = newPublicAccount.data;
+            }
         });
 
+        // Subscribe to current user store changes
         currentUserStore.subscribe(newStore => {
-            console.log("reloading due to logged in user change: ", newStore.loading);
-            load(newStore);
+            if (!newStore.loading) {
+                const id = page.url.searchParams.get('id');
+                // Only reload if necessary
+                if ((id === null && newStore.data !== null) || 
+                    (id === newStore.data?.id.toString() && !viewingSelf)) {
+                    console.log("Reloading due to logged in user change");
+                    load(newStore, id);
+                }
+            }
         });
 
+        // Subscribe to user stats store changes
         loadUserStatsStore.subscribe(newStore => {
             thisUserStats = newStore;
         });

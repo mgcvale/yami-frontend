@@ -8,6 +8,7 @@
 
     let { children } = $props();
     load();
+    
     onMount(() => {
         initializeThemeManager(document);
         loadAppState(document);

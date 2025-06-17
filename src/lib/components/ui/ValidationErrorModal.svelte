@@ -1,7 +1,7 @@
 <script lang="ts">
     import { modalStore } from "$lib/core/store/modalStore";
     import { X } from "@lucide/svelte";
-    import Button from "./Button.svelte";
+    import Button from "./controls/Button.svelte";
 
     let { title, message } = $props();
 </script>

@@ -58,7 +58,7 @@ import type { FoodReview } from "$lib/core/model/foodReview";
     <p class="text-start pt-1">
         {review.review}
     </p>
-    <div class="w-full flex justify-end items-center gap-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
+    <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
         <Repeat2 />
         <Heart />
     </div>

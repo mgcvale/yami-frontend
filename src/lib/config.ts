@@ -8,6 +8,7 @@ export default {
         userReviews: (id: number) =>  `${apiUrl}/user/${id}/reviews`,
         userStats: (id: number) => `${apiUrl}/user/${id}/stats`,
         follow: (id: number) => `${apiUrl}/user/follow/${id}`,
+        searchUser: (searchQuery: string) => `${apiUrl}/user/search/${searchQuery}`,
 
         food: (id?: number) => id ? `${apiUrl}/food/${id}` : `${apiUrl}/food`,
         foodImage: (id: number) => `${apiUrl}/food/${id}/picture`,

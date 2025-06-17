@@ -1,7 +1,7 @@
 <script lang="ts">
     import { loadFoodReviews, loadFoodReviewStore } from "$lib/core/actions/account/loadFoodReviews";
     import { onMount } from "svelte";
-    import FoodReviewCard from "./FoodReviewCard.svelte";
+    import FoodReviewCard from "./cards/FoodReviewCard.svelte";
 
     
     let {
