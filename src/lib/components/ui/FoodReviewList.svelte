@@ -12,10 +12,10 @@
         userId: number
         className: string
     } = $props();
-
-    onMount(() => {
+    
+    $effect(() => {
         loadFoodReviews(userId);
-    })
+    });
 
 
 </script>

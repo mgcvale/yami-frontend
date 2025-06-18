@@ -100,6 +100,9 @@
             hasAttemptedLoad = false; // Reset attempt flag for new ID
             load(get(currentUserStore), id);
         }
+        if (id == null) {
+            load(get(currentUserStore), id);
+        }
     });
 
     onMount(() => {

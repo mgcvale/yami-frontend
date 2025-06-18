@@ -4,7 +4,7 @@
     import { currentUserStore } from "$lib/core/store/currentUserStore";
     import { snackbarStore } from "$lib/core/store/snackbarStore";
     import EntityStatsHeader from "./EntityStatsHeader.svelte";
-    import EntityTitleHeader from "./EntityTitleHeader.svelte";
+    import UserTitleHeader from "./UserTitleHeader.svelte";
     import ErrorSnackbar from "./ErrorSnackbar.svelte";
 
     let { user = $bindable(), viewingSelf = false }: {
@@ -91,7 +91,7 @@
         ]}
         pictureUrl={"https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}
     />
-    <EntityTitleHeader 
+    <UserTitleHeader 
         name={user.username} 
         bio={user.bio} 
         location={user.location} 
