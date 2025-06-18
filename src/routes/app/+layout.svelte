@@ -1,28 +1,16 @@
 <script lang="ts">
-    import { Search, Home, PlusCircle, User, LogOut, Bolt } from '@lucide/svelte';
+    import { Home, PlusCircle, User } from '@lucide/svelte';
     import { page } from '$app/state';
-    import { currentUserStore, Modal } from '$lib';
-    import Logo from '$lib/components/ui/Logo.svelte';
-    import ContextMenu from '$lib/components/ui/controls/ContextMenu.svelte';
-    import { appState } from '$lib/core/util/appState';
-    import { onMount } from 'svelte';
-    import type ContextMenuEntry from '$lib/core/types/contextMenuEntry';
-    import { logout } from '$lib/core/actions/account/logout';
+    import { Modal } from '$lib';
     import { goto } from '$app/navigation';
     import SnackBar from '$lib/components/util/SnackBar.svelte';
     import { isSearching } from '$lib/core/store/isSearchingStore';
-    import TextField from '$lib/components/ui/controls/TextField.svelte';
     import RegularHeader from '$lib/components/ui/RegularHeader.svelte';
     import SearchingHeader from '$lib/components/ui/SearchingHeader.svelte';
 
     let { children } = $props();
 
-    function searchButtonClicked() {
-        if (!$isSearching) {
-            goto("/app?context=search");
-            isSearching.set(true);
-        }
-    }
+    let searchFor: string = $state("user");
 
     // this is to update the header according to the context properly
     $effect(() => {
@@ -32,11 +20,15 @@
         } else {
             isSearching.set(false);
         }
-    })
+        
+        const searchForParam = page.url.searchParams.get("for");
+        searchFor = (searchForParam === "food" || searchForParam === "restaurant") ? searchFor = searchForParam : "user";
+    });
+
 </script>
 
 {#if $isSearching}
-    <SearchingHeader />
+    <SearchingHeader {searchFor}/>
 {:else}
     <RegularHeader />
 {/if}

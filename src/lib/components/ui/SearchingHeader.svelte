@@ -2,21 +2,59 @@
     import { goto } from "$app/navigation";
     import { searchUsers } from "$lib/core/actions/searches/searchUser";
     import { isSearching } from "$lib/core/store/isSearchingStore";
-    import { ChevronLeft, Search } from "@lucide/svelte";
-    import { onMount } from "svelte";
+    import type ComboBoxEntry from "$lib/core/types/comboBoxEntry";
+    import { ChevronLeft, Search, User, MapPinHouse, Sandwich } from "@lucide/svelte";
+    import TextComboBox from "./controls/TextComboBox.svelte";
+    import { page } from "$app/stores";
 
-    let inputInstance: HTMLInputElement | null = $state(null);
+    let {
+        searchFor = $bindable("user"),
+    }: {
+        searchFor: string
+    } = $props();
 
-    onMount(() => {
-        if (inputInstance !== null) inputInstance.focus();
+    const comboItems = [
+        {
+            name: "User",
+            icon: User,
+            value: "user"
+        },
+        {
+            name: "Food",
+            icon: Sandwich,
+            value: "food"
+        },
+        {
+            name: "Restaurant",
+            icon: MapPinHouse,
+            value: "restaurant",
+        },
+    ];
+
+    let inputElement: HTMLInputElement | null = $state(null);
+    let searchQuery: string = $state("");
+    let currentItem: ComboBoxEntry = $state(comboItems[0]);
+
+    $effect(() => {
+        setTimeout(() => inputElement?.focus());
     });
 
+    $effect(() => {
+        currentItem = comboItems[{
+            "restaurant": 2,
+            "food": 1,
+        }[searchFor] ?? 0];
+    });
+
+    $effect(() => {
+        $page.url.searchParams.set("for", currentItem.value); 
+    });
+    
     function doSearch() {
-        if (inputInstance) {
-            searchUsers(inputInstance.value);
+        if (inputElement) {
+            searchUsers(inputElement.value);
         }
     }
-
 </script>
 
 <header 
@@ -29,7 +67,14 @@
     }}>
     </ChevronLeft>
 
-    <input bind:this={inputInstance} type="text" placeholder="Search Yami" class="grow h-full rounded-lg bg-light-field-bg dark:bg-dark-field-bg p-2 pl-3 outline-none">
+    <TextComboBox
+        items={comboItems}
+        placeholder={`Search for ${currentItem.name}`}
+        bind:value={searchQuery}
+        bind:currentItem={currentItem}
+        className={"w-full h-full px-3"}
+        bind:inputElement={inputElement}
+    />
 
     <Search aria-label="search-button" role="button" onclick={doSearch}></Search>
 </header>

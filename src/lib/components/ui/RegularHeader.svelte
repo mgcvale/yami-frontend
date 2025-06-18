@@ -1,6 +1,6 @@
 <script lang="ts">
     import { isSearching } from "$lib/core/store/isSearchingStore";
-    import { Bolt, LogOut, Search, User } from "@lucide/svelte";
+    import { Bolt, LogOut, MapPinHouse, Sandwich, Search, User } from "@lucide/svelte";
     import Logo from "./Logo.svelte";
     import ContextMenu from "./controls/ContextMenu.svelte";
     import { appState } from "$lib/core/util/appState";
@@ -10,8 +10,17 @@
     import { goto } from "$app/navigation";
     import { currentUserStore } from "$lib/core/store/currentUserStore";
 
-
     let showingUserContextMenu = $state(false);
+    let shwoingSearchContextMenu = $state(false);
+
+    $effect(() => {
+        if (showingUserContextMenu) {
+            shwoingSearchContextMenu = false;
+        }
+        if (shwoingSearchContextMenu) {
+            showingUserContextMenu = false;
+        }
+    });
 
     onMount(() => { 
         $appState.globalOnClick.push(e => {
@@ -19,7 +28,34 @@
         });
     });
 
-    let contextMenuEntries: ContextMenuEntry[] = $state([
+    const searchContextMenuEntries: ContextMenuEntry[] = $state([
+        {
+            name: "User",
+            icon: User,
+            action: () => {
+                goto("/app?context=search&for=user");
+                isSearching.set(true);
+            }
+        },
+        {
+            name: "Food",
+            icon: Sandwich,
+            action: () => {
+                goto("/app?context=search&for=food");
+                isSearching.set(true);
+            }
+        },
+        {
+            name: "Restaurant",
+            icon: MapPinHouse,
+            action: () => {
+                goto("/app?context=search&for=restaurant");
+                isSearching.set(true);
+            }
+        },
+    ]);
+
+    let accountContextMenuEntries: ContextMenuEntry[] = $state([
         {
             name: "loading...",
             action: () => {}
@@ -29,7 +65,7 @@
 
     currentUserStore.subscribe(change => {
         if (change.loading) {
-            contextMenuEntries = [{
+            accountContextMenuEntries = [{
                 name: "loading...",
                 action: () => {}
             }];
@@ -37,7 +73,7 @@
         }
 
         if (change.data !== null) {
-            contextMenuEntries = [
+            accountContextMenuEntries = [
                 {
                     name: "Log out",
                     action: () => {
@@ -67,7 +103,7 @@
                 }
             ];
         } else {
-            contextMenuEntries = [
+            accountContextMenuEntries = [
                 {
                     name: "Log in",
                     action: () => {
@@ -99,15 +135,19 @@
     </a>
 
     <div class="flex justify-center gap-5 px-2">
-        <div class="relative flex jstify-center items-center">
-            <Search width={32} className="h-full w-auto" onclick={() => {    
-                goto("/app?context=search");
-                isSearching.set(true);
+        <div class="relative flex justify-center items-center">
+            <Search width={32} className="h-full w-auto" onclick={e => {    
+                shwoingSearchContextMenu = true;
+                e.stopPropagation();
             }}/>
+            <ContextMenu
+                entries={searchContextMenuEntries}
+                bind:showing={shwoingSearchContextMenu}
+            />
         </div>
         <div class="relative flex justify-center items-center">
             <ContextMenu 
-                bind:entries={contextMenuEntries}
+                bind:entries={accountContextMenuEntries}
                 bind:showing={showingUserContextMenu}
             />
             <User className="h-full w-auto" onclick={e => {

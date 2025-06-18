@@ -2,7 +2,7 @@ import type { Component } from "svelte";
 import { writable, type Writable } from "svelte/store";
 
 export interface SnackbarConfig {
-    component: Component;
+    component: Component<any>;
     props?: Record<string, any>;
 }
 

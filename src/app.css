@@ -20,6 +20,7 @@
   --color-dark-card-3: #50483b;
   --color-dark-placeholder: #5a5247;
   --color-dark-field-bg: #373431;
+  --color-dark-field-subbg: #413E3a;
   --color-dark-field-placeholder: #70685A;
   --color-dark-field-accent: #C2B7A6;
   --color-dark-button-accent: #50483B;
@@ -43,6 +44,7 @@
   --color-light-card-3: #e6e1d9;
   --color-light-placeholder: #a29788;
   --color-light-field-bg: #f0ede8;
+  --color-light-field-subbg: #e6e4de;
   --color-light-field-placeholder: #938976;
   --color-light-field-accent: #6a5c4b;
   --color-light-button-accent: #7f633b;
@@ -55,7 +57,6 @@
   --color-rating-good: #b9a100;
   --color-rating-great: #549c00;
   --color-rating-top: #007f8b;
-
 
 
   --font-alegreya-sans: 'Alegreya Sans', sans-serif;
