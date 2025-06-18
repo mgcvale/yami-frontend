@@ -1,27 +1,26 @@
 import config from "$lib/config";
 import type { PageableEntry } from "$lib/core/model/pageableEntry";
-import type PublicUser from "$lib/core/model/publicUser";
+import type Restaurant from "$lib/core/model/restaurant";
 import type { AsyncState } from "$lib/core/types/asyncState";
 import type { ErrorResponse } from "$lib/core/types/errorResponse";
 import { fetchWithTimeout } from "$lib/core/util/util";
-import { SearchCheck } from "@lucide/svelte";
 import { writable, type Writable } from "svelte/store";
+import { searchUserStore } from "./searchUser";
 
-export const searchUserStore: Writable<AsyncState<PageableEntry<PublicUser>>> = writable({
+export const searchRestaurantStore: Writable<AsyncState<PageableEntry<Restaurant>>> = writable({
     loading: false,
     data: null,
     error: null
 });
 
-export function searchUsers(searchQuery: string): void {
-    // start by only doing simple search, gotta wrap this in an if block afterwards
-    searchUserStore.set({
+export function searchRestaurants(searchQuery: string): void {
+    searchRestaurantStore.set({
         loading: true,
         data: null,
         error: null
     });
-    
-    fetchWithTimeout(config.apiPaths.searchUser(searchQuery), {}, config.fetchTimeout)
+
+    fetchWithTimeout(config.apiPaths.restaurantSearch(searchQuery), {}, config.fetchTimeout)
     .then(res => {
         if (!res.ok) {
             return res.json().then(json => {
@@ -34,7 +33,7 @@ export function searchUsers(searchQuery: string): void {
         return res.json();
     })
     .then(json => {
-        searchUserStore.set({
+        searchRestaurantStore.set({
             loading: false,
             data: json,
             error: null
@@ -47,5 +46,5 @@ export function searchUsers(searchQuery: string): void {
             data: null,
             error: error
         });
-    })
+    });
 }

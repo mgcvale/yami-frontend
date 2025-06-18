@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { isSearching } from "$lib/core/store/isSearchingStore";
     import { Bolt, LogOut, MapPinHouse, Sandwich, Search, User } from "@lucide/svelte";
     import Logo from "./Logo.svelte";
     import ContextMenu from "./controls/ContextMenu.svelte";
@@ -9,6 +8,7 @@
     import { logout } from "$lib/core/actions/account/logout";
     import { goto } from "$app/navigation";
     import { currentUserStore } from "$lib/core/store/currentUserStore";
+    import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
 
     let showingUserContextMenu = $state(false);
     let shwoingSearchContextMenu = $state(false);
@@ -33,24 +33,24 @@
             name: "User",
             icon: User,
             action: () => {
-                goto("/app?context=search&for=user");
-                isSearching.set(true);
+                goto("/app?context=search");
+                searchingFor.set(searchOptions['user']);
             }
         },
         {
             name: "Food",
             icon: Sandwich,
             action: () => {
-                goto("/app?context=search&for=food");
-                isSearching.set(true);
+                goto("/app?context=search");
+                searchingFor.set(searchOptions['food']);
             }
         },
         {
             name: "Restaurant",
             icon: MapPinHouse,
             action: () => {
-                goto("/app?context=search&for=restaurant");
-                isSearching.set(true);
+                goto("/app?context=search");
+                searchingFor.set(searchOptions['restaurant']);
             }
         },
     ]);

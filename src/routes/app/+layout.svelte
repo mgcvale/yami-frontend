@@ -4,7 +4,6 @@
     import { Modal } from '$lib';
     import { goto } from '$app/navigation';
     import SnackBar from '$lib/components/util/SnackBar.svelte';
-    import { isSearching } from '$lib/core/store/isSearchingStore';
     import RegularHeader from '$lib/components/ui/RegularHeader.svelte';
     import SearchingHeader from '$lib/components/ui/SearchingHeader.svelte';
 
@@ -12,13 +11,15 @@
 
     let searchFor: string = $state("user");
 
+    let isSearching: boolean = $state(false);
+
     // this is to update the header according to the context properly
     $effect(() => {
         const mode = page.url.searchParams.get("context") ?? "feed";
         if (mode == "search") {
-            isSearching.set(true);
+            isSearching = true;
         } else {
-            isSearching.set(false);
+            isSearching = false;
         }
         
         const searchForParam = page.url.searchParams.get("for");
@@ -27,7 +28,7 @@
 
 </script>
 
-{#if $isSearching}
+{#if isSearching}
     <SearchingHeader {searchFor}/>
 {:else}
     <RegularHeader />
