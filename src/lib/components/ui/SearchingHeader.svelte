@@ -1,10 +1,8 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import { searchUsers } from "$lib/core/actions/searches/searchUser";
-    import type ComboBoxEntry from "$lib/core/types/comboBoxEntry";
     import { ChevronLeft, Search, User, MapPinHouse, Sandwich } from "@lucide/svelte";
     import TextComboBox from "./controls/TextComboBox.svelte";
-    import { page } from "$app/stores";
     import { searchRestaurants } from "$lib/core/actions/searches/searchRestaurant";
     import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
 
@@ -20,6 +18,16 @@
     $effect(() => {
         setTimeout(() => inputElement?.focus());
     });
+
+    $effect(() => {
+        inputElement?.addEventListener('keyup', e => {
+            if (e.key == 'Enter') {
+                e.preventDefault();
+                doSearch();
+                inputElement?.blur();
+            }
+        });
+    })
     
     function doSearch() {
         if (inputElement) {

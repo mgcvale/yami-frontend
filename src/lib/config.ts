@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:8080';
+const apiUrl = 'http://192.168.43.221:8080';
 
 export default {
     apiUrl: apiUrl,
