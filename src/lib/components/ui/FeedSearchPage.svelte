@@ -9,6 +9,7 @@
     import UserCard from "./cards/UserCard.svelte";
     import { searchingFor } from "$lib/core/store/searchingForStore";
     import { searchRestaurantStore } from "$lib/core/actions/searches/searchRestaurant";
+    import RestaurantCard from "./cards/RestaurantCard.svelte";
 
 </script>
 
@@ -26,11 +27,11 @@
             <p>Error: {$searchRestaurantStore.error.status}</p>
         {:else if $searchRestaurantStore.data !== null}
             {#if $searchRestaurantStore.data.content.length == 0}
-                <h2>No users were found!</h2>
+                <h2>No restaurants were found!</h2>
             {:else}
                 <h2>Found restaurants:</h2>
                 {#each $searchRestaurantStore.data.content as restaurant }
-                    <p>Restaurante: {restaurant.name}</p>
+                    <RestaurantCard {restaurant} />
                 {/each}
             {/if}
         {/if}
