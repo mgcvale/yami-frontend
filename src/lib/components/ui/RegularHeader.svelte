@@ -9,6 +9,7 @@
     import { goto } from "$app/navigation";
     import { currentUserStore } from "$lib/core/store/currentUserStore";
     import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
+    import { page } from "$app/state";
 
     let showingUserContextMenu = $state(false);
     let shwoingSearchContextMenu = $state(false);
@@ -33,7 +34,7 @@
             name: "User",
             icon: User,
             action: () => {
-                goto("/app?context=search");
+                goto(`/app?context=search&then=${page.url.href}`);
                 searchingFor.set(searchOptions['user']);
             }
         },
@@ -41,7 +42,7 @@
             name: "Food",
             icon: Sandwich,
             action: () => {
-                goto("/app?context=search");
+                goto(`/app?context=search&then=${page.url.href}`);
                 searchingFor.set(searchOptions['food']);
             }
         },
@@ -49,7 +50,7 @@
             name: "Restaurant",
             icon: MapPinHouse,
             action: () => {
-                goto("/app?context=search");
+                goto(`/app?context=search&then=${page.url.href}`);
                 searchingFor.set(searchOptions['restaurant']);
             }
         },

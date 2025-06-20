@@ -1,23 +1,31 @@
 <script lang="ts">
-    import { onNavigate } from "$app/navigation";
-    import { page } from "$app/state";   
-    import { currentUserStore, LoginAsker, modalStore, type CurrentUser, type PublicUser } from "$lib";
-    import Divisor from "$lib/components/ui/Divisor.svelte";
-    import FoodReviewList from "$lib/components/ui/FoodReviewList.svelte";
-    import RatingStats from "$lib/components/ui/RatingStats.svelte";
+    import { page } from "$app/state"; 
+    import TabControl from "$lib/components/ui/controls/TabControl.svelte";
+    import FoodList from "$lib/components/ui/FoodList.svelte";
     import RestaurantHeader from "$lib/components/ui/RestaurantHeader.svelte";
-    import UserHeader from "$lib/components/ui/UserHeader.svelte";
-    import { loadPublicAccountStore, loadPublicUser } from "$lib/core/actions/account/loadPublicAccount";
-    import { loadUserStats, loadUserStatsStore } from "$lib/core/actions/account/loadUserStats";
+    import { loadFoods, loadFoodsStore } from "$lib/core/actions/food/loadFoods";
     import { loadRestaurant, loadRestaurantStore } from "$lib/core/actions/restaurant/loadRestaurant";
-    import type Restaurant from "$lib/core/model/restaurant";
-    import type ReviewStats from "$lib/core/model/reviewStats";
-    import type { AsyncState } from "$lib/core/types/asyncState";
-    import { onMount } from "svelte";
-    import { get } from "svelte/store";
+    import type TabControlEntry from "$lib/core/types/tabControlEntry";
+    import { NotebookPen, Sandwich } from "@lucide/svelte";
+
+    const pageOptions: TabControlEntry[] = [
+        {
+            name: "Foods",
+            value: "foods",
+            icon: Sandwich
+        },
+        {
+            name: "Reviews",
+            value: "reviews",
+            icon: NotebookPen
+        }
+    ];
+
+    let currentOption: TabControlEntry = $state(pageOptions[0]);
 
     function load(id: string) {
         loadRestaurant(parseInt(id));
+        loadFoods(parseInt(id));
     }
 
     $effect(() => {
@@ -58,6 +66,12 @@
 
         {:else}
             <RestaurantHeader />
+            <TabControl entries={pageOptions} className={"mb-2"} bind:currentEntry={currentOption} />
+            {#if currentOption.value === "reviews"}
+                <p>reviews </p>
+            {:else}
+                <FoodList bind:foods={$loadFoodsStore} />
+            {/if}
         {/if}
     {/if}
 </div>

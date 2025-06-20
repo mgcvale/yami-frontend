@@ -8,7 +8,9 @@
 
     let {
         searchFor = $bindable("user"),
+        onExit = $bindable()
     }: {
+        onExit: string,
         searchFor: string
     } = $props();
 
@@ -43,7 +45,7 @@
      dark:bg-dark-card-3 bg-light-card-3 *:dark:text-dark-fg-500 *:text-light-fg-500 z-50"
 >
     <ChevronLeft aria-label="back-button" role="button" onclick={() => {
-        goto("/app?context=feed")
+        goto(onExit);
     }}>
     </ChevronLeft>
 

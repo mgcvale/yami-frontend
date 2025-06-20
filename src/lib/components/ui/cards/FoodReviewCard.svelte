@@ -3,6 +3,8 @@
 import type { FoodReview } from "$lib/core/model/foodReview";
     import { Heart, Repeat2 } from "@lucide/svelte";
     import ListCard from "./ListCard.svelte";
+    import RatingPill from "../controls/RatingPill.svelte";
+    import { goto } from "$app/navigation";
 
     let {
         review = $bindable(),
@@ -29,33 +31,45 @@ import type { FoodReview } from "$lib/core/model/foodReview";
     </div>
     {:else}
     <div class="flex justify-around items-center h-10 text-start w-full gap-2">
-        <img
-            class="h-full aspect-square rounded-md"
-            src="{config.apiPaths.restaurantImage(review.restaurantId)}"
-            alt="{review.restaurantName}"
-        />
+
+        <a
+            href={`/app/restaurant?id=${review.restaurantId}`}
+            onclick={e => {
+                e.preventDefault();
+                goto(`/app/restaurant?id=${review.restaurantId}`);
+            }}
+            aria-label="View details for {review.restaurantName}"
+            class="h-full"
+        >
+            <img
+                class="h-full aspect-square rounded-md"
+                src="{config.apiPaths.restaurantImage(review.restaurantId)}"
+                alt="{review.restaurantName}"
+            />
+        </a>
         
         <div class="grow overflow-hidden">
-            <div class="text-light-fg-500 dark:text-dark-fg-500 font-alegreya text-lg leading-tight truncate" title="{review.restaurantName}">
+            
+            <a 
+                href={`/app/restaurant?id=${review.restaurantId}`}
+                onclick={e => {
+                    e.preventDefault();
+                    goto(`/app/restaurant?id=${review.restaurantId}`);
+                }}
+                aria-label="View details for {review.restaurantName}"
+                class="text-light-fg-500 dark:text-dark-fg-500 font-alegreya text-lg leading-tight truncate" title="{review.restaurantName}"
+            >
                 {review.restaurantName}
-            </div>
+            </a>
             <div class="text-light-fg-300 dark:text-dark-fg-300 text-sm truncate" title="{review.foodName} review">
                 {review.foodName} review
             </div>
         </div>
 
       
-        <span class="min-w-fit font-bold {
-                review.rating === 20 ? "text-rating-top" :
-                review.rating >= 15 ? "text-rating-great" :
-                review.rating >= 10 ? "text-rating-good" :
-                review.rating >= 5 ? "text-rating-bad" :
-                "text-rating-terrible" }"
-        >
-            {review.rating / 2} / 10
-        </span>
+        <RatingPill rating={review.rating} />
     </div>
-    <p class="text-start pt-1">
+    <p class="text-start pt-1 text-ms">
         {review.review}
     </p>
     <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">

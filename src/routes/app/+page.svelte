@@ -21,11 +21,6 @@
         }
     }
 
-    onMount(() => {
-        mode = page.url.searchParams.get("context") ?? "feed";
-        load($currentUserStore);
-    });
-
     $effect(() => {
         mode = page.url.searchParams.get("context") ?? "feed";
         load($currentUserStore);

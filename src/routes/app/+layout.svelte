@@ -10,8 +10,8 @@
     let { children } = $props();
 
     let searchFor: string = $state("user");
-
     let isSearching: boolean = $state(false);
+    let onExit: string = $state("/app?context=feed");
 
     // this is to update the header according to the context properly
     $effect(() => {
@@ -21,6 +21,8 @@
         } else {
             isSearching = false;
         }
+
+        onExit = page.url.searchParams.get("then") ?? "/app?context=feed";
         
         const searchForParam = page.url.searchParams.get("for");
         searchFor = (searchForParam === "food" || searchForParam === "restaurant") ? searchFor = searchForParam : "user";
@@ -29,7 +31,7 @@
 </script>
 
 {#if isSearching}
-    <SearchingHeader {searchFor}/>
+    <SearchingHeader {onExit} {searchFor}/>
 {:else}
     <RegularHeader />
 {/if}

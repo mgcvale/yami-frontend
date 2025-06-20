@@ -24,7 +24,8 @@
     {#if $loadFoodReviewStore.loading}
     <span>loading...</span>
     {:else if $loadFoodReviewStore.data === null}
-        <span> error: {$loadFoodReviewStore.error?.status} </span>
+        <h3 class="text-light-error dark:text-dark-error">An error occourred.</h3>
+        <span> error: {$loadFoodReviewStore.error} </span>
     {:else}
         {#each ($loadFoodReviewStore).data.content as entry }
         <FoodReviewCard review={entry} collapsed={false} />

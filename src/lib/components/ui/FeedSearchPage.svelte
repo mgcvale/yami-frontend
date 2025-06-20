@@ -1,15 +1,9 @@
 <script lang="ts">
-    import type ComboBoxEntry from "$lib/core/types/comboBoxEntry";
-    import { Search } from "@lucide/svelte";
-    import ComboBox from "./controls/ComboBox.svelte";
-    import TextField from "./controls/TextField.svelte";
-    import { onMount } from "svelte";
-    import { searchUsers, searchUserStore } from "$lib/core/actions/searches/searchUser";
-    import ErrorSnackbar from "./ErrorSnackbar.svelte";
-    import UserCard from "./cards/UserCard.svelte";
+    import { searchUserStore } from "$lib/core/actions/searches/searchUser";
     import { searchingFor } from "$lib/core/store/searchingForStore";
     import { searchRestaurantStore } from "$lib/core/actions/searches/searchRestaurant";
     import RestaurantCard from "./cards/RestaurantCard.svelte";
+    import UserCard from "./cards/UserCard.svelte";
 
 </script>
 
