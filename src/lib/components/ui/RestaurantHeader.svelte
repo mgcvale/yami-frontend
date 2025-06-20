@@ -20,12 +20,12 @@
             },
             {
                 name: "Foods",
-                nameClassName: "text-md text-light-fg-500 dark:text-dark-fg-500",
+                nameClassName: "text-ml text-light-fg-500 dark:text-dark-fg-500",
                 count: $loadRestaurantStore.data.foodCount,
-                countClassName: "text-ml"
+                countClassName: "text-lg"
             },
             {
-                name: "Followers (unavailable)",
+                name: "Followers",
                 nameClassName: "text-sm text-light-fg-700 dark:text-dark-fg-700",
                 count: -1,
                 countClassName: "text-md"

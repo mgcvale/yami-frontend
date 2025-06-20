@@ -30,13 +30,13 @@
         inputElement?.focus();
     }
 
-    $appState.globalOnClick.concat(() => {
+    $appState.globalOnClick.push(() => {
         showingItems = false;
     });
 </script>
 
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events  (the onclick event on the div is just there to ensure that the dropdown is closed, not to do any specific action. So it shouldn't be a button)-->
-<div onclick={() => showingItems = false} class="bg-light-field-bg dark:bg-dark-field-bg rounded-lg {showingItems ?  'rounded-br-none' : ''} flex flex-col justify-start relative {className}">
+<div class="bg-light-field-bg dark:bg-dark-field-bg rounded-lg {showingItems ?  'rounded-br-none' : ''} pr-1 flex flex-col justify-start relative {className}">
     
     <div class="flex w-full h-full items-center">
         <input type="text" 
@@ -46,12 +46,16 @@
             onblur={handleBlur}
             class="w-full h-full outline-none grow"
         >
-        <button class="h-full" onclick={() => setTimeout(() => showingItems = true)}>
-            <ChevronDown/>
+        <button class="h-fit p-1 bg-light-field-subbg dark:bg-dark-field-subbg rounded-md" onclick={e => {
+            e.stopPropagation();
+            setTimeout(() => showingItems = !showingItems);
+        }}>
+            <span class="duration-300 transition-transform block {showingItems ? 'rotate-180' : ''}">
+                <ChevronDown className={"block"} />
+            </span>
         </button>
     </div>
     
-
     {#if showingItems}
         <div class="flex flex-col justify-start items-center p-2 absolute right-0 top-full rounded-b-lg bg-light-field-bg dark:bg-dark-field-bg max-w-full gap-2 w-48 min-w-fit">
             <p class="w-full text-sm">Search by</p>
