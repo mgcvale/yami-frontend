@@ -24,7 +24,7 @@
 
       if (showing && newSnackbar !== null) {
         showing = false;
-        showTimeout = setTimeout(() => {
+        showTimeout = setTimeout(() => {1
           showing = true;
           hideTimeout = setTimeout(() => (showing = false), 4000);
         }, 100);

@@ -4,6 +4,7 @@ import type { AsyncState } from "$lib/core/types/asyncState";
 import { get, writable, type Writable } from "svelte/store";
 import { fetchWithTimeout } from '$lib/core/util/util';
 import { currentUserStore } from "$lib/core/store/currentUserStore";
+import { errorState, handleResponse, successState } from "../util";
 
 export const loadPublicAccountStore: Writable<AsyncState<PublicUser>> = writable({
     loading: true,
@@ -23,38 +24,7 @@ export function loadPublicUser(userid: number): void {
     fetchWithTimeout(config.apiPaths.user(userid), {
       headers,
     }, config.fetchTimeout)
-    .then(res => {
-        if (!res.ok) {
-            return res.json().then(data => {
-                throw { 
-                    status: res.status,
-                    json: data
-                };
-            });
-        }
-        return res.json();
-    })
-    .then(json => {
-        loadPublicAccountStore.set({
-            loading: false,
-            error: null,
-            data: {
-                username: json.username,
-                id: json.id,
-                bio: json.bio,
-                location: json.location,
-                followerCount: json.followerCount,
-                followingCount: json.followingCount,
-                reviewCount: json.reviewCount,
-                following: json.following,
-            }
-        });
-    })
-    .catch(error => {
-        loadPublicAccountStore.set({
-            loading: false,
-            error: error,
-            data: null
-        });
-    });
+    .then(handleResponse)
+    .then(json => loadPublicAccountStore.set(successState(json)))
+    .catch(error =>loadPublicAccountStore.set(errorState(error)));
 }

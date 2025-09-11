@@ -5,6 +5,8 @@
     import TextComboBox from "./controls/TextComboBox.svelte";
     import { searchRestaurants } from "$lib/core/actions/searches/searchRestaurant";
     import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
+    import { snackbarStore } from "$lib/core/store/snackbarStore";
+    import ErrorSnackbar from "./ErrorSnackbar.svelte";
 
     let {
         searchFor = $bindable("user"),
@@ -32,6 +34,16 @@
     })
     
     function doSearch() {
+        if (inputElement?.value.trim() === "") {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: 'You must provide a valid search!'
+                }
+            });
+            return;
+        }
+
         if (inputElement) {
             ({
                 "restaurant": searchRestaurants,
