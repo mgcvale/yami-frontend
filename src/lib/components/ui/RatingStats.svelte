@@ -1,7 +1,5 @@
 <script lang="ts">
     import type { ReviewStats } from "$lib/core/model/review-stats";
-    import type { SyncState } from "$lib/core/model/sync-state";
-    import type { AsyncOperation } from "$lib/core/runes/async-operation";
 
     import {
         Chart,
@@ -32,7 +30,7 @@
     }: {
         className: string;
         name: string | null;
-        stats: AsyncOperation<ReviewStats>;
+        stats: ReviewStats;
     } = $props();
     let canvas: HTMLCanvasElement | null = $state(null);
 
@@ -87,10 +85,10 @@
     }
 
     function updateChartData() {
-        if (!currentChart || stats.isLoading || !stats.response.data) return;
+        if (!currentChart) return;
 
         currentChart.data.datasets[0].data = Object.values(
-            stats.response.data.ratingDistribution,
+            stats.ratingDistribution,
         );
         currentChart.update();
     }
@@ -121,31 +119,25 @@
         <span
             class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-xl"
         >
-            {#if stats.isLoading}
-                Loading data...
-            {:else if stats.response.data === null}
-                Error loading stats
-            {:else if name != null}
+            {#if name != null}
                 {name}'s average rating: {(
-                    stats.response.data.averageRating / 2
+                    stats.averageRating / 2
                 ).toFixed(1)} / 10
             {:else}
                 Rating distribution
             {/if}
         </span>
         <div class="h-full w-full flex justify-center align-center flex-col">
-            {#if stats.isLoading}
-                Loading stats...
-            {:else if stats.response.error !== null}
-                {#if stats.response.error.status === 404}
+            <!--{#if stats !== null}
+                {#if stats.error.status === 404}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 404: This user doesn't seem to exist.</span
                     >
-                {:else if stats.response.error.status === 403}
+                {:else if stats.error.status === 403}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 403: You don't have access to this data.</span
                     >
-                {:else if stats.response.error.status === 401}
+                {:else if stats.error.status === 401}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 401: You must be authenticated to see this data.</span
                     >
@@ -158,8 +150,8 @@
                     <span class="text-light-error dark:text-dark-error">
                         An unknown error occurred. Error status: {stats.response.error.status}
                         </span>
-                {/if}
-            {:else if stats.response.data !== null}
+                {/if}-->
+            {#if stats !== null}
                 <canvas class="grow" bind:this={canvas}></canvas>
             {:else}
                 <span

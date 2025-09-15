@@ -8,10 +8,6 @@ import { error } from "@sveltejs/kit";
 
 export const ssr = false;
 
-export interface ResponseData {
-    restaurant: Restaurant
-};
-
 export const load: PageLoad = async (event: PageLoadEvent) => { 
     const id: string | null = event.url.searchParams.get('id');
 

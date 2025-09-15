@@ -1,9 +1,13 @@
 <script lang="ts">
     import { loadFoodReviews } from "$lib/core/actions/account/load-food-reviews";
-    import { createAsyncOperation } from "$lib/core/runes/async-operation";
+    import type { FoodReview } from "$lib/core/model/food-review";
+    import type { PageableEntry } from "$lib/core/model/pageable-entry";
+    import { type SyncState } from "$lib/core/model/sync-state";
+    import { onMount } from "svelte";
     import FoodReviewCard from "./cards/FoodReviewCard.svelte";
 
-    const loadFoodReviewsOP = createAsyncOperation(() => loadFoodReviews(userId));
+    let loading = $state(true);
+    let response = $state<SyncState<PageableEntry<FoodReview>>>({data: null, error: null});
 
     let {
         userId = $bindable(),
@@ -13,22 +17,24 @@
         userId: number
         className: string
     } = $props();
+
+    const load = async () => {
+        loading = true;
+        response = await loadFoodReviews(userId);
+        loading = false;
+    }
     
-    $effect(() => {
-        loadFoodReviews(userId);
-    });
-
-
+    onMount(async () => load());
 </script>
 
 <div class="flex flex-col w-full h-fit justify-start items-center gap-4 {className}">
-    {#if loadFoodReviewsOP.isLoading}
+    {#if loading}
     <span>loading...</span>
-    {:else if loadFoodReviewsOP.response.data === null}
+    {:else if response.data === null}
         <h3 class="text-light-error dark:text-dark-error">An error occourred.</h3>
-        <span> error: {loadFoodReviewsOP.response.error} </span>
+        <span> error: {response.error} </span>
     {:else}
-        {#each loadFoodReviewsOP.response.data.content as entry }
+        {#each response.data.content as entry }
         <FoodReviewCard review={entry} collapsed={false} />
         {/each}
     {/if}
