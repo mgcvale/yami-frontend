@@ -1,40 +1,22 @@
 import config from "$lib/config";
-import type Food from "$lib/core/model/food";
-import type { AsyncState } from "$lib/core/types/asyncState"
-import { fetchWithTimeout } from "$lib/core/util/util";
-import { type Writable, writable } from "svelte/store"
-import { handleResponse } from "../util";
+import { extractJsonOrThrow, fetchWithTimeout, syncError, syncSuccess } from "../util";
+import type { SyncState } from "$lib/core/model/sync-state";
+import { isArrayOf } from "$lib/core/model/type-checkers";
+import { isFood, type Food } from "$lib/core/model/food";
+import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
+import { handleAsSyncError } from "../generic-error-handler";
 
-export const loadFoodsStore: Writable<AsyncState<Food[]>> = writable({
-    loading: true,
-    error: null,
-    data: null
-});
+export async function loadFoods(restaurantId: number): Promise<SyncState<Food[]>> {
 
-export function loadFoods(restaurantId: number): void {
-    loadFoodsStore.set({
-        loading: true,
-        error: null,
-        data: null
-    });
+    try {
+        const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.restaurantFoods(restaurantId), {}, config.fetchTimeout));
 
-    fetchWithTimeout(config.apiPaths.restaurantFoods(restaurantId), {}, config.fetchTimeout)
-    .then(res => {
-        return handleResponse(res);
-    })
-    .then(data => {
-        loadFoodsStore.set({
-            loading: false,
-            data: data,
-            error: null
-        });
-    })
-    .catch(error => {
-        loadFoodsStore.set({
-            loading: false,
-            error: error,
-            data: null
-        });
-    });
+        if (!isArrayOf(data, isFood)) {
+            return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
+        }
 
+        return syncSuccess(data);
+    } catch (e) {
+        return handleAsSyncError(e);
+    }
 }

@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/state';
+    import { onMount } from 'svelte';
+
+    onMount(() => {
+        console.log(page.error);
+    });
 
 </script>
 
@@ -11,11 +16,9 @@
     {:else if page.error!.status === 500}
         <p>An error occurred on our end. You can try again later.</p>
         <a class="underline" href="/app">Go to home</a>
-    {:else if page.error instanceof TypeError}
-        <p>A network error occurred. Check if you're connected to the internet</p>
     {:else}
         <p>An unknown error occurred.</p>
-        <p>Error status: {page.error!.status}</p>
+        <p class="text-center">Error status: {page.error?.message}</p>
     {/if}
 </div>
 

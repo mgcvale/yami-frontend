@@ -1,11 +1,15 @@
 import { goto } from "$app/navigation";
 import config from "$lib/config";
 import { currentUserStore } from "$lib/core/store/currentUserStore";
-import type { ErrorResponse } from "$lib/core/types/errorResponse";
+import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import { writable, type Writable } from "svelte/store";
 import Cookies from 'js-cookie';
-import type { AsyncState } from "$lib/core/types/asyncState";
-import type CurrentUser from "$lib/core/model/currentUser";
+import type { AsyncState } from "$lib/core/model/async-state";
+import type { CurrentUser } from "$lib/core/model/current-user";
+import { extractJsonOrThrow, fetchWithTimeout, isAppError, syncError, syncSuccess } from "../util";
+import { isLoginUserDTO } from "$lib/core/model/dto/login-user-dto";
+import type { SyncState } from "$lib/core/model/sync-state";
+import { handleAllGeneric, handleNetwork, handleUnknownException } from "../generic-error-handler";
 
 export const loginResponse: Writable<AsyncState<null>> = writable({
     data: null,
@@ -23,34 +27,21 @@ export function validateInputs(usernameOrEmail: string, password: string): [stri
     return ["", "", true];
 }
 
-export function login(usernameOrEmail: string, password: string): void {
-    loginResponse.set({
-        loading: true,
-        data: null,
-        error: null
-    });
-    const jsonData = {
+export async function login(usernameOrEmail: string, password: string): Promise<SyncState<null>> {
+    const jsonData = JSON.stringify({
         [usernameOrEmail.match(config.emailRegex) ? 'email' : 'username']: usernameOrEmail,
         password,
-    };
+    });
 
-    fetch(config.apiPaths.login(), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(jsonData),
-    }).then(response => {
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                throw {
-                    status: response.status,
-                    json: errorData,
-                } as ErrorResponse;
-            });
+    try {
+        const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.login(), { method: "POST" , body: jsonData }, config.fetchTimeout));
+
+        console.log(data);
+        if (!isLoginUserDTO(data)) {
+            handleAllGeneric(DEFAULT_ERRORS.BAD_RESPONSE);
+            return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
         }
-        return response.json();
-    }).then((data) => {
+
         Cookies.set('accessToken', data.accessToken, { expires: 180 });
         const user: CurrentUser = {
             id: data.id,
@@ -69,18 +60,24 @@ export function login(usernameOrEmail: string, password: string): void {
             loading: false,
             error: null
         });
+
         localStorage.setItem("currentUser", JSON.stringify(user));
-        loginResponse.set({
-            loading: false,
-            error: null,
-            data: null,
-        });
         goto('/app');
-    }).catch((error) => {
-        loginResponse.set({
-            error: error,
-            data: null,
-            loading: false,
-        });
-    });
+
+        return syncSuccess(null);
+    } catch (e) {
+        if (isAppError(e)) {
+            if ([401, 409].includes(e.status)) return syncError(e);
+
+            handleAllGeneric(e);
+            return syncError(e);       
+        } else if (e instanceof TypeError) {
+            handleNetwork(e);
+            console.log("AAAAAAAAAA");
+            return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
+        }
+        console.log("AAAAAAAAAAA");
+        handleUnknownException(e);
+        return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
+    }
 }

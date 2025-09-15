@@ -1,13 +1,12 @@
 <script lang="ts">
-    import { load } from '$lib/core/actions/account/loadFromToken';
+    import { loadUserFromToken } from '$lib/core/actions/account/auth-from-token';
     import { onMount } from 'svelte';
     import '../app.css';
-    import { loadAppState } from '$lib/core/util/appState';
-    import { initializeThemeManager } from '$lib/core/util/themeManager';
+    import { loadAppState } from '$lib/core/util/app-state';
+    import { initializeThemeManager } from '$lib/core/util/theme-manager';
     export const prerender = false;
 
     let { children } = $props();
-    load();
     
     onMount(() => {
         initializeThemeManager(document);

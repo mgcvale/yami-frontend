@@ -1,5 +1,5 @@
 import { writable, type Writable } from "svelte/store";
-import type ComboBoxEntry from "../types/comboBoxEntry";
+import type ComboBoxEntry from "../types/combo-box-entry";
 import { MapPinHouse, Sandwich, User } from "@lucide/svelte";
 
 export const searchOptions: Record<string, ComboBoxEntry> = {

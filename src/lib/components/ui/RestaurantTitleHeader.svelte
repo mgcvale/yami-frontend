@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type Restaurant from "$lib/core/model/restaurant";
+    import type { Restaurant } from "$lib/core/model/restaurant";
     import Button from "./controls/Button.svelte";
 
     let { data }: { data: Restaurant } = $props(); 

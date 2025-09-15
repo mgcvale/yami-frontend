@@ -1,7 +1,6 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { searchUserStore } from "$lib/core/actions/searches/searchUser";
-    import type PublicUser from "$lib/core/model/publicUser";
+    import type { PublicUser } from "$lib/core/model/public-user";
 
     let { 
         user,
@@ -14,11 +13,6 @@
 
 <button onclick={() => {
         goto(`/app/user?id=${user.id}`);
-        searchUserStore.set({
-            loading: false,
-            data: null,
-            error: null,
-        });
     }
 } class="w-full h-fit bg-light-card-2 hover:bg-light-card-3 dark:hover:bg-dark-card-2 active:bg-light-card-3 dark:active:bg-dark-card-2 dark:bg-dark-card-1 p-2 px-4 items-start flex flex-col gap-2 jutsify-start rounded-2xl cursor-pointer"
 >

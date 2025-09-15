@@ -1,8 +1,10 @@
-import { loadRestaurant } from "$lib/core/actions/restaurant/loadRestaurant";
-import { isErrorResponse } from "$lib/core/types/errorResponse";
-import { error } from "@sveltejs/kit";
 import type { PageLoad, PageLoadEvent } from "./$types";
-import type Restaurant from "$lib/core/model/restaurant";
+import type { Restaurant } from "$lib/core/model/restaurant";
+import type { SyncState } from "$lib/core/model/sync-state";
+import { loadRestaurant } from "$lib/core/actions/restaurant/load-restaurant";
+import { syncError } from "$lib/core/actions/util";
+import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
+import { error } from "@sveltejs/kit";
 
 export const ssr = false;
 
@@ -14,17 +16,15 @@ export const load: PageLoad = async (event: PageLoadEvent) => {
     const id: string | null = event.url.searchParams.get('id');
 
     if (!id) {
-        return { id: null, error: 'Missing ID' };
+        throw error(DEFAULT_ERRORS.INVALID_PAGE_PARAMS.status, DEFAULT_ERRORS.INVALID_PAGE_PARAMS);
     }
 
     const restaurantId: number = parseInt(id);
 
-    try {
-        const data = await loadRestaurant(restaurantId);
-        return data;
-    } catch (err) {
-        if (isErrorResponse(err)) {
-            throw error(err.status, {status: err.status, json: err.json, message: ""});
-        }
+    const res: SyncState<Restaurant> = await loadRestaurant(restaurantId);
+    if (res.error) {
+        throw error(res.error.status, res.error);
     }
+
+    return { restaurant: res.data, restaurantId };
 }

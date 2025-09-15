@@ -5,7 +5,8 @@
     import Logo from "$lib/components/ui/Logo.svelte";
     import TextField from "$lib/components/ui/controls/TextField.svelte";
     import Modal from "$lib/components/util/Modal.svelte";
-    import { finishAccount, validateInputs } from "$lib/core/actions/account/finishAccount";
+    import { finishAccount, validateInputs } from "$lib/core/actions/account/finish-account";
+    import type { SyncState } from "$lib/core/model/sync-state";
 
     let bio = $state("");
     let bioError = $state("");
@@ -17,7 +18,10 @@
         [bioError, locationError, valid] = validateInputs(bio, location);
         if (!valid) return;
         
-        finishAccount(bio, location);
+        const res: SyncState<null> = await finishAccount(bio, location);
+        if (res.error !== null) {
+            return;
+        }
         goto('/app');
     }
 

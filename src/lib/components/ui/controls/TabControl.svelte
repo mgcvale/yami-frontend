@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type TabControlEntry from "$lib/core/types/tabControlEntry";
+    import type TabControlEntry from "$lib/core/types/tab-control-entry";
 
     let {
         entries = [],

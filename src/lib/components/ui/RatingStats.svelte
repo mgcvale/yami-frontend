@@ -1,6 +1,8 @@
 <script lang="ts">
-    import type ReviewStats from "$lib/core/model/reviewStats";
-    import { onMount } from "svelte";
+    import type { ReviewStats } from "$lib/core/model/review-stats";
+    import type { SyncState } from "$lib/core/model/sync-state";
+    import type { AsyncOperation } from "$lib/core/runes/async-operation";
+
     import {
         Chart,
         LineController,
@@ -11,8 +13,7 @@
         Filler,
         Tooltip,
     } from "chart.js";
-    import type { AsyncState } from "$lib/core/types/asyncState";
-
+    
     Chart.register(
         LineController,
         LineElement,
@@ -31,7 +32,7 @@
     }: {
         className: string;
         name: string | null;
-        stats: AsyncState<ReviewStats>;
+        stats: AsyncOperation<ReviewStats>;
     } = $props();
     let canvas: HTMLCanvasElement | null = $state(null);
 
@@ -86,10 +87,10 @@
     }
 
     function updateChartData() {
-        if (!currentChart || stats.loading || !stats.data) return;
+        if (!currentChart || stats.isLoading || !stats.response.data) return;
 
         currentChart.data.datasets[0].data = Object.values(
-            stats.data.ratingDistribution,
+            stats.response.data.ratingDistribution,
         );
         currentChart.update();
     }
@@ -120,46 +121,45 @@
         <span
             class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-xl"
         >
-            {#if stats.loading}
+            {#if stats.isLoading}
                 Loading data...
-            {:else if stats.data === null}
+            {:else if stats.response.data === null}
                 Error loading stats
             {:else if name != null}
                 {name}'s average rating: {(
-                    stats.data.averageRating / 2
+                    stats.response.data.averageRating / 2
                 ).toFixed(1)} / 10
             {:else}
                 Rating distribution
             {/if}
         </span>
         <div class="h-full w-full flex justify-center align-center flex-col">
-            {#if stats.loading}
+            {#if stats.isLoading}
                 Loading stats...
-            {:else if stats.error !== null}
-                {#if stats.error.status === 404}
+            {:else if stats.response.error !== null}
+                {#if stats.response.error.status === 404}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 404: This user doesn't seem to exist.</span
                     >
-                {:else if stats.error.status === 403}
+                {:else if stats.response.error.status === 403}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 403: You don't have access to this data.</span
                     >
-                {:else if stats.error.status === 401}
+                {:else if stats.response.error.status === 401}
                     <span class="text-light-error dark:text-dark-error"
                         >Error 401: You must be authenticated to see this data.</span
                     >
-                {:else if stats.error instanceof TypeError}
+                {:else if stats.response.error instanceof TypeError}
                     <span class="text-light-error dark:text-dark-error"
                         >A network error occurred. Check if your'e connected to
                         the internet and try again.</span
                     >
                 {:else}
-                    <span class="text-light-error dark:text-dark-error"
-                        >An unknown error occurred. Error status: {stats.error
-                            .status}</span
-                    >
+                    <span class="text-light-error dark:text-dark-error">
+                        An unknown error occurred. Error status: {stats.response.error.status}
+                        </span>
                 {/if}
-            {:else if stats.data !== null}
+            {:else if stats.response.data !== null}
                 <canvas class="grow" bind:this={canvas}></canvas>
             {:else}
                 <span

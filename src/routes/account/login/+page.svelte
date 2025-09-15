@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { currentUserStore, modalStore } from "$lib";
     import Button from "$lib/components/ui/controls/Button.svelte";
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import Logo from "$lib/components/ui/Logo.svelte";
@@ -7,9 +6,8 @@
     import Modal from "$lib/components/util/Modal.svelte";
     import { Eye, EyeOff } from "@lucide/svelte";
     import { login, loginResponse, validateInputs } from "$lib/core/actions/account/login";
-    import { writable, type Writable } from "svelte/store";
-    import type { AsyncState } from "$lib/core/types/asyncState";
-    import { HandleAllGeneric } from "$lib/core/actions/genericErrorHandler";
+    import { handleAllGeneric } from "$lib/core/actions/generic-error-handler";
+    import type { SyncState } from "$lib/core/model/sync-state";
 
     let usernameOrEmail = $state("");
     let usernameOrEmailErrorMessage = $state("");
@@ -24,12 +22,19 @@
         passwordHide = !passwordHide;
     }
 
-    function loginClick() {
+    async function loginClick() {
         let valid: boolean;
         [usernameOrEmailErrorMessage, passwordErrorMessage, valid] = validateInputs(usernameOrEmail, password);
         if (!valid) return;
 
-        login(usernameOrEmail, password);
+        console.log("going");
+        const res: SyncState<null> = await login(usernameOrEmail, password);
+        if (res.error !== null) {
+            switch (res.error.status) {
+                case 401:
+                    loginErrorMessage = "Your username or password is incorrect! Verify your credentials and try again."
+            }
+        }
     }
 
     loginResponse.subscribe(newResponse => {
@@ -41,7 +46,7 @@
                 loginErrorMessage = "Your username or password are incorrect.";
                 return;
             } else {
-                HandleAllGeneric(newResponse.error);
+                handleAllGeneric(newResponse.error);
             }
         }
     });

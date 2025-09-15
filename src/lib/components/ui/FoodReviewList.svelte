@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { loadFoodReviews, loadFoodReviewStore } from "$lib/core/actions/account/loadFoodReviews";
-    import { onMount } from "svelte";
+    import { loadFoodReviews } from "$lib/core/actions/account/load-food-reviews";
+    import { createAsyncOperation } from "$lib/core/runes/async-operation";
     import FoodReviewCard from "./cards/FoodReviewCard.svelte";
 
-    
+    const loadFoodReviewsOP = createAsyncOperation(() => loadFoodReviews(userId));
+
     let {
-        userId,
+        userId = $bindable(),
         className = ""
     }:
     {
@@ -21,13 +22,13 @@
 </script>
 
 <div class="flex flex-col w-full h-fit justify-start items-center gap-4 {className}">
-    {#if $loadFoodReviewStore.loading}
+    {#if loadFoodReviewsOP.isLoading}
     <span>loading...</span>
-    {:else if $loadFoodReviewStore.data === null}
+    {:else if loadFoodReviewsOP.response.data === null}
         <h3 class="text-light-error dark:text-dark-error">An error occourred.</h3>
-        <span> error: {$loadFoodReviewStore.error} </span>
+        <span> error: {loadFoodReviewsOP.response.error} </span>
     {:else}
-        {#each ($loadFoodReviewStore).data.content as entry }
+        {#each loadFoodReviewsOP.response.data.content as entry }
         <FoodReviewCard review={entry} collapsed={false} />
         {/each}
     {/if}

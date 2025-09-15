@@ -2,7 +2,7 @@
     import config from "$lib/config";
     import EntityStatsHeader from "./EntityStatsHeader.svelte";
     import RestaurantTitleHeader from "./RestaurantTitleHeader.svelte";
-    import type Restaurant from "$lib/core/model/restaurant";
+    import type { Restaurant } from "$lib/core/model/restaurant";
 
     let { data }: {data: Restaurant} = $props();
 </script>

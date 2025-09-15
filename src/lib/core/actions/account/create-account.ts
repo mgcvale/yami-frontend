@@ -1,9 +1,11 @@
 import { goto } from "$app/navigation";
 import config from "$lib/config";
-import type { ErrorResponse } from "$lib/core/types/errorResponse";
+import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import Cookies from 'js-cookie';
 import { currentUserStore } from "$lib/core/store/currentUserStore";
-import { HandleAllGeneric } from "../genericErrorHandler";
+import { handleAllGeneric, handleNetwork, handleUnknownException } from "../generic-error-handler";
+import { extractJsonOrThrow, fetchWithTimeout, isAppError, syncError } from "../util";
+import { isCreateUserDTO } from "$lib/core/model/dto/create-user-dto";
 
 
 export function validateInputs(username: string, email: string, password: string): [string, string, string, boolean] {
@@ -40,52 +42,52 @@ export function validateInputs(username: string, email: string, password: string
 
 export async function createAccount(username: string, email: string, password: string): Promise<[string, string, string]> {
     let retval: [string, string, string] = ["", "", ""];
-    await fetch(config.apiPaths.user(), {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password,
-            email: email.toLowerCase()
-        }),
-    }).then(response => {
-        if (!response.ok) {
-            return response.json().then(errorData => {
-                throw {
-                    status: response.status,
-                    json: errorData
-                } as ErrorResponse;
-            });
+
+    try {
+        const res = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.user(), {
+            method: 'POST',
+            body: JSON.stringify({ username, password, email: email.toLowerCase() })
+        }, config.fetchTimeout));
+
+        console.log("Create account response: ", res);
+        
+        if (!isCreateUserDTO(res)) {
+            handleAllGeneric(DEFAULT_ERRORS.BAD_RESPONSE);
+            return retval;
         }
-        return response.json();
-    }).then((data) => {
-        Cookies.set('accessToken', data.accessToken, { expires: 180 });
+        
+        Cookies.set('accessToken', res.accessToken, { expires: 180 });
         currentUserStore.set({
             loading: false,
             data: {
-                id: data.id,
-                username: data.username,
-                accessToken: data.accessToken,
-                email: data.email,
+                id: res.id,
+                username: res.username,
+                accessToken: res.accessToken,
+                email: res.email,
                 bio: "",
                 location: "",
-                followerCount: data.followerCount,
-                followingCount: data.followingCount,
-                reviewCount: data.reviewCount,
+                followerCount: res.followerCount,
+                followingCount: res.followingCount,
+                reviewCount: res.reviewCount,
                 following: false,
             },
             error: null
         });
         goto("/account/details");
-    }).catch((error: ErrorResponse) => {
-        if (error.status == 409) {
-            console.log("status was 409")
-            retval = ["This username is already in use", "", ""];
-            return;
+
+    } catch (e) {
+        if (isAppError(e)) {
+            if (e.status === 409) {
+                console.log("status was 409")
+                return ["This username is already in use", "", ""];
+            }
+            handleAllGeneric(e);
+        } else if (e instanceof TypeError) {
+            handleNetwork(e);
+        } else {
+            handleUnknownException(e);
         }
-        HandleAllGeneric(error);
-    });
+    }
+
     return retval;
 }

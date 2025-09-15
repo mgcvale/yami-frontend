@@ -1,6 +1,6 @@
-import type CurrentUser from "$lib/core/model/currentUser";
+import type { CurrentUser } from "$lib/core/model/current-user";
 import { currentUserStore } from "$lib/core/store/currentUserStore";
-import type { AsyncState } from "$lib/core/types/asyncState";
+import type { AsyncState } from "$lib/core/model/async-state";
 import { get } from "svelte/store";
 import Cookies from 'js-cookie';
 import { modalStore } from "$lib/core/store/modalStore";
@@ -12,7 +12,9 @@ export function logout(intermediateAction: () => void) {
 
     Cookies.remove('accessToken');
     localStorage.removeItem('currentUser');
+
     intermediateAction();
+    
     currentUserStore.set({
         loading: false,
         data: null,

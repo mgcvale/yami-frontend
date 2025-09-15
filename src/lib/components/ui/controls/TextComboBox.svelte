@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type ComboBoxEntry from "$lib/core/types/comboBoxEntry";
-    import { appState } from "$lib/core/util/appState";
+    import type ComboBoxEntry from "$lib/core/types/combo-box-entry";
+    import { appState } from "$lib/core/util/app-state";
     import { ChevronDown } from "@lucide/svelte";
 
     let showingItems: boolean = $state(false);

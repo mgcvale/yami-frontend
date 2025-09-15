@@ -1,26 +1,7 @@
 <script lang="ts">
-    import { currentUserStore, modalStore, type CurrentUser } from "$lib";
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
-    import LoginAsker from "$lib/components/ui/LoginAsker.svelte";
     import Switch from "$lib/components/ui/controls/Switch.svelte";
-    import type { AsyncState } from "$lib/core/types/asyncState";
     import { currentThemeLight } from "$lib/core/util/themeManager";
-
-    function load(currentuser: AsyncState<CurrentUser>) {
-        if (currentuser.loading) return;
-        if (currentuser.data !== null) return;
-
-        modalStore.set({
-            component: LoginAsker,
-            props: {
-                actionName: "change your settings"
-            }
-        });
-    }
-
-    currentUserStore.subscribe(newUser => {
-        load(newUser);
-    });
 
     let lightThemeSwitchState = $state($currentThemeLight);
     currentThemeLight.subscribe(change => {
@@ -34,7 +15,6 @@
             currentThemeLight.set(!lightThemeSwitchState);
         }
     });
-
 </script>
 
 <div class="p-3">

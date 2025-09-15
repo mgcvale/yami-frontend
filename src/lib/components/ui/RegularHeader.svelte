@@ -2,9 +2,9 @@
     import { Bolt, LogOut, MapPinHouse, Sandwich, Search, User } from "@lucide/svelte";
     import Logo from "./Logo.svelte";
     import ContextMenu from "./controls/ContextMenu.svelte";
-    import { appState } from "$lib/core/util/appState";
+    import { appState } from "$lib/core/util/app-state";
     import { onMount } from "svelte";
-    import type ContextMenuEntry from "$lib/core/types/contextMenuEntry";
+    import type ContextMenuEntry from "$lib/core/types/context-menu-entry";
     import { logout } from "$lib/core/actions/account/logout";
     import { goto } from "$app/navigation";
     import { currentUserStore } from "$lib/core/store/currentUserStore";

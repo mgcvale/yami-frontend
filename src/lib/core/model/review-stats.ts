@@ -1,4 +1,4 @@
-export default interface ReviewStats {
+export interface ReviewStats {
     averageRating: number
     ratingDistribution: {
         0: number,
@@ -24,3 +24,19 @@ export default interface ReviewStats {
         20: number,
     }
 };
+
+export function isReviewStats(rs: any): rs is ReviewStats {
+    if (typeof rs !== 'object' || rs === null) return false;
+    if (typeof rs.averageRating !== 'number') return false;
+
+    const dist = rs.ratingDistribution;
+    if (typeof dist !== 'object' || dist === null) return false;
+
+    for (let i = 0; i <= 20; i++) {
+        if (typeof dist[i] !== 'number') {
+            return false;
+        }
+    }
+
+    return true;
+}

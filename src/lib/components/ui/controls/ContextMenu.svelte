@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type ContextMenuEntry from "$lib/core/types/contextMenuEntry";
-    import { appState } from "$lib/core/util/appState";
+    import type ContextMenuEntry from "$lib/core/types/context-menu-entry";
+    import { appState } from "$lib/core/util/app-state";
     import bezier from "$lib/core/util/bezier";
     import { onMount } from "svelte";
     import { scale } from "svelte/transition";

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { EntityStat } from "$lib/core/types/EntityStat";
+    import type { EntityStat } from "$lib/core/types/entity-stat";
 
     let { className = "", name, headers, pictureUrl }: {
         className: string,

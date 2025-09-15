@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { currentUserStore, modalStore } from "$lib";
     import Button from "$lib/components/ui/controls/Button.svelte";
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import Logo from "$lib/components/ui/Logo.svelte";
     import TextField from "$lib/components/ui/controls/TextField.svelte";
     import Modal from "$lib/components/util/Modal.svelte";
     import { Eye, EyeOff } from "@lucide/svelte";
-    import { createAccount, validateInputs } from "$lib/core/actions/account/createAccount";
+    import { createAccount, validateInputs } from "$lib/core/actions/account/create-account";
 
     let username = $state("");
     let usernameErrorMessage = $state("");

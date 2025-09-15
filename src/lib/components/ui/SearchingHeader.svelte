@@ -1,9 +1,9 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { searchUsers } from "$lib/core/actions/searches/searchUser";
+    import { searchUsers } from "$lib/core/actions/searches/search-user";
     import { ChevronLeft, Search, User, MapPinHouse, Sandwich } from "@lucide/svelte";
     import TextComboBox from "./controls/TextComboBox.svelte";
-    import { searchRestaurants } from "$lib/core/actions/searches/searchRestaurant";
+    import { searchRestaurants } from "$lib/core/actions/searches/search-restaurant";
     import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
     import { snackbarStore } from "$lib/core/store/snackbarStore";
     import ErrorSnackbar from "./ErrorSnackbar.svelte";

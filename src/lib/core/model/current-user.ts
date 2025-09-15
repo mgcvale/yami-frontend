@@ -1,15 +1,12 @@
-export default interface PublicUser {
-    id: number,
-    username: string,
-    bio: string,
-    location: string,
-    followingCount: number,
-    followerCount: number,
-    reviewCount: number,
-    following: boolean
+import type { PublicUser } from "./public-user";
+
+export interface CurrentUser extends PublicUser {
+    accessToken: string,
+    email: string
 };
 
-export function isPublicUser(obj: any): obj is PublicUser {
+
+export function isCurrentUser(obj: any): obj is CurrentUser {
     return (
         typeof obj === "object" &&
         typeof obj.id === "number" &&
@@ -19,6 +16,7 @@ export function isPublicUser(obj: any): obj is PublicUser {
         typeof obj.followerCount === "number" &&
         typeof obj.followingCount === "number" &&
         typeof obj.reviewCount === "number" &&
-        typeof obj.following === "boolean"
+        typeof obj.accessToken === "string" &&
+        typeof obj.email === "string"
     );
 }
