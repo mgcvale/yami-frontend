@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-    import { NETWORK_ERROR_STR } from '$lib/core/types/errorCodes';
+    import { NETWORK_ERROR_STR } from '$lib/core/types/error-codes';
 
 </script>
 

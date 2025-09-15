@@ -1,7 +1,7 @@
 <script lang="ts">
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import Switch from "$lib/components/ui/controls/Switch.svelte";
-    import { currentThemeLight } from "$lib/core/util/themeManager";
+    import { currentThemeLight } from "$lib/core/util/theme-manager";
 
     let lightThemeSwitchState = $state($currentThemeLight);
     currentThemeLight.subscribe(change => {

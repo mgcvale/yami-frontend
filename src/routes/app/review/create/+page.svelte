@@ -1,7 +1,7 @@
 <script lang="ts">
     import { currentUserStore, modalStore, type CurrentUser } from "$lib";
     import LoginAsker from "$lib/components/ui/LoginAsker.svelte";
-    import type { AsyncState } from "$lib/core/types/asyncState";
+    import type { AsyncState } from "$lib/core/types/async-state";
     import { onMount } from "svelte";
 
     function load(currentUser: AsyncState<CurrentUser>) {
@@ -26,5 +26,5 @@
 </script>
 
 {#if $currentUserStore === null}
-
+    
 {/if}
