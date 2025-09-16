@@ -1,12 +1,9 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { searchUsers } from "$lib/core/actions/searches/search-user";
-    import { ChevronLeft, Search, User, MapPinHouse, Sandwich } from "@lucide/svelte";
+    import { ChevronLeft, Search } from "@lucide/svelte";
     import TextComboBox from "./controls/TextComboBox.svelte";
-    import { searchRestaurants } from "$lib/core/actions/searches/search-restaurant";
     import { searchingFor, searchOptions } from "$lib/core/store/searchingForStore";
-    import { snackbarStore } from "$lib/core/store/snackbarStore";
-    import ErrorSnackbar from "./ErrorSnackbar.svelte";
+    import { getSearchContext } from '$lib/core/store/search-context.svelte';
 
     let {
         searchFor = $bindable("user"),
@@ -15,6 +12,8 @@
         onExit: string,
         searchFor: string
     } = $props();
+
+    const searchContext = getSearchContext();
 
     let inputElement: HTMLInputElement | null = $state(null);
     let searchQuery: string = $state("");
@@ -34,20 +33,20 @@
     })
     
     function doSearch() {
-        if (inputElement?.value.trim() === "") {
-            snackbarStore.set({
-                component: ErrorSnackbar,
-                props: {
-                    warningMessage: 'You must provide a valid search!'
-                }
-            });
-            return;
-        }
-
-        if (inputElement) {
-            ({
-                "restaurant": searchRestaurants,
-            }[$searchingFor.value] ?? searchUsers)(inputElement.value);
+        if (inputElement && inputElement.value.trim()) {
+            const query = inputElement.value.trim();
+            
+            switch ($searchingFor.value) {
+                case 'restaurant':
+                    searchContext.searchRestaurants(query);
+                    break;
+                case 'food':
+                    searchContext.searchFoods(query);
+                    break;
+                default:
+                    searchContext.searchUsers(query);
+                    break;
+            }
         }
     }
 </script>

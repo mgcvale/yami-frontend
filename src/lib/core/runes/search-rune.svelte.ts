@@ -1,6 +1,6 @@
 import type { SyncState } from "$lib/core/model/sync-state";
 
-export function createSearchRune<T>(searchFunction: (query: string) => Promise<SyncState<T>>) {
+export function searchRune<T>(searchFunction: (query: string) => Promise<SyncState<T>>) {
     let results = $state<SyncState<T> | null>(null);
     let isLoading = $state(false);
     let lastQuery = $state<string>('');

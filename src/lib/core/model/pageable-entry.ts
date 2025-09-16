@@ -1,3 +1,5 @@
+import { isArrayOf, verifyObject } from "./type-checkers";
+
 export interface PageableEntry<T> {
     content: T[],
     totalPages: number,
@@ -19,23 +21,33 @@ export function isPageableEntry<T>(
   data: any,
   tTypeChecker: (t: any) => t is T
 ): data is PageableEntry<T> {
-  return (
-    typeof data === 'object' &&
-    data !== null &&
-    Array.isArray(data.content) &&
-    data.content.every(tTypeChecker) &&
-    typeof data.totalPages === 'number' &&
-    typeof data.totalElements === 'number' &&
-    typeof data.last === 'boolean' &&
-    typeof data.numberOfElements === 'number' &&
-    typeof data.size === 'number' &&
-    typeof data.number === 'number' &&
-    typeof data.sort === 'object' &&
-    data.sort !== null &&
-    typeof data.sort.sorted === 'boolean' &&
-    typeof data.sort.unsorted === 'boolean' &&
-    typeof data.sort.empty === 'boolean' &&
-    typeof data.first === 'boolean' &&
-    typeof data.empty === 'boolean'
-  );
+  const schema: Record<keyof Omit<PageableEntry<T>, 'content'>, string> = {
+    totalPages: 'number',
+    totalElements: 'number',
+    last: 'boolean',
+    numberOfElements: 'number',
+    size: 'number',
+    number: 'number',
+    sort: 'object',
+    first: 'boolean',
+    empty: 'boolean',
+  };
+
+  const sortSchema: Record<keyof PageableEntry<T>['sort'], string> = {
+    sorted: 'boolean',
+    unsorted: 'boolean',
+    empty: 'boolean',
+  };
+
+  if (!data || typeof data !== 'object' || !isArrayOf(data.content, tTypeChecker)) {
+    console.log("Failed array check");
+    
+    return false;
+  }
+
+  if (!data.sort || !verifyObject(data.sort, sortSchema)) {
+    return false;
+  }
+
+  return verifyObject(data, schema);
 }

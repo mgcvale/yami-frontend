@@ -6,28 +6,30 @@
     import SnackBar from '$lib/components/util/SnackBar.svelte';
     import RegularHeader from '$lib/components/ui/RegularHeader.svelte';
     import SearchingHeader from '$lib/components/ui/SearchingHeader.svelte';
+    import { setSearchContext } from '$lib/core/store/search-context.svelte';
 
     let { children } = $props();
+
+    const searchContext = setSearchContext();
 
     let searchFor: string = $state("user");
     let isSearching: boolean = $state(false);
     let onExit: string = $state("/app?context=feed");
 
-    // this is to update the header according to the context properly
     $effect(() => {
         const mode = page.url.searchParams.get("context") ?? "feed";
         if (mode == "search") {
             isSearching = true;
         } else {
             isSearching = false;
+            searchContext.clearResults(); 
         }
 
         onExit = page.url.searchParams.get("then") ?? "/app?context=feed";
         
         const searchForParam = page.url.searchParams.get("for");
-        searchFor = (searchForParam === "food" || searchForParam === "restaurant") ? searchFor = searchForParam : "user";
+        searchFor = (searchForParam === "food" || searchForParam === "restaurant") ? searchForParam : "user";
     });
-
 </script>
 
 {#if isSearching}
@@ -35,7 +37,6 @@
 {:else}
     <RegularHeader />
 {/if}
-
 
 <main class="pb-18 pt-16 bg-light-bg dark:bg-dark-bg">
     {@render children()}

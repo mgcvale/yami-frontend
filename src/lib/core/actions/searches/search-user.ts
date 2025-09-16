@@ -11,8 +11,9 @@ export async function searchUsers(searchQuery: string): Promise<SyncState<Pageab
     // TODO: change if the user is logged in. This is a simple search, but it should be a user-tailored search when they are logged in.
     try {
         const res = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.searchUser(searchQuery), {}, config.fetchTimeout));
+        console.log(res);
         if (isPageableEntry(res, isPublicUser)) {
-            return syncSuccess(res as PageableEntry<PublicUser>);
+            return syncSuccess(res);
         } else {
             console.error("Invalid response on searchUser.ts");
             return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
