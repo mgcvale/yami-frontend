@@ -19,6 +19,7 @@ export async function loadPublicUser(userid: number): Promise<SyncState<PublicUs
 
     try {
       const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.user(userid), { headers }, config.fetchTimeout));
+      console.log(data);
       if (!isPublicUser(data)) {
         return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
       }

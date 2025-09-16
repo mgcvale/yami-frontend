@@ -18,10 +18,10 @@ export const load: LayoutLoad = async ({url, fetch}) => {
   const userState: SyncState<CurrentUser> = await loadUserFromToken();
   
   if (userState.data == null && userState.error != null) {
+    console.log("ERROR LOADING USER: ", userState.error.status);
     if (userState.error.status !== 401) {
       throw error(userState.error.status, userState.error);
     }
-    console.log(userState.error.status);
   }
 
   currentUserStore.set(asyncSuccess(userState.data));

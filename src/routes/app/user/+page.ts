@@ -18,7 +18,6 @@ export const load: PageLoad = async (event: PageLoadEvent) => {
 
     const userId: number = id ? parseInt(id) : user!.id;
     console.log(userId);
-    console.log(user.id);
     const viewingSelf = !id || (user && userId === user.id);
 
     let thisUser: SyncState<PublicUser>;
