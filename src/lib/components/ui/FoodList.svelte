@@ -3,7 +3,7 @@
     import type { SyncState } from "$lib/core/model/sync-state";
     import { onMount } from "svelte";
     import FoodCard from "./cards/FoodCard.svelte";
-    import { loadFoods } from "$lib/core/actions/food/loadFoods";
+    import { loadFoods } from "$lib/core/actions/food/load-foods";
     import Button from "./controls/Button.svelte";
 
     let {

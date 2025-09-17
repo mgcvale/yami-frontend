@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { loadFoodReviews } from "$lib/core/actions/account/load-food-reviews";
+    import { loadUserReviews } from "$lib/core/actions/account/load-user-reviews";
     import type { FoodReview } from "$lib/core/model/food-review";
     import type { PageableEntry } from "$lib/core/model/pageable-entry";
     import { type SyncState } from "$lib/core/model/sync-state";
@@ -20,7 +20,7 @@
 
     const load = async () => {
         loading = true;
-        response = await loadFoodReviews(userId);
+        response = await loadUserReviews(userId);
         loading = false;
     }
     

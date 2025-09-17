@@ -65,7 +65,6 @@
                             autoSkip: false,
                             callback: function (value, index, ticks) {
                                 if ([0, 5, 10, 15, 20].includes(index)) {
-                                    console.log(index);
                                     return this.getLabelForValue(value as number);
                                 }
                                 return "";
@@ -117,7 +116,7 @@
         class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl w-full px-2 py-1 flex gap-2 flex-col justify-start items-start min-h-24"
     >
         <span
-            class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-xl"
+            class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-lg"
         >
             {#if name != null}
                 {name}'s average rating: {(

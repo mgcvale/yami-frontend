@@ -2,9 +2,9 @@
     import TabControl from "$lib/components/ui/controls/TabControl.svelte";
     import FoodList from "$lib/components/ui/FoodList.svelte";
     import RestaurantHeader from "$lib/components/ui/RestaurantHeader.svelte";
+    import type { Restaurant } from "$lib/core/model/restaurant";
     import type TabControlEntry from "$lib/core/types/tab-control-entry";
     import { NotebookPen, Sandwich } from "@lucide/svelte";
-    import type { PageData } from "../$types";
 
     const pageOptions: TabControlEntry[] = [
         {
@@ -21,7 +21,7 @@
 
     let currentOption: TabControlEntry = $state(pageOptions[0]);
 
-    let { data } = $props() ;
+    let { data }: { data: { restaurant: Restaurant, restaurantId: number } } = $props() ;
 </script>
 
 <div class="flex flex-col py-4 pt-6 px-2 gap-3 text-center">

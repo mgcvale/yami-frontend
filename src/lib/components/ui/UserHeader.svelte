@@ -28,7 +28,6 @@
         console.log("CURRENTUSER ON UserHeader.svelte: ", $currentUserStore.data);
     })
 
-
     let isFollowLoading = $state<boolean>(false);
 
     async function onEditClick() {}

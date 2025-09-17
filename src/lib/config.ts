@@ -12,6 +12,8 @@ export default {
 
         food: (id?: number) => id ? `${apiUrl}/food/${id}` : `${apiUrl}/food`,
         foodImage: (id: number) => `${apiUrl}/food/${id}/picture`,
+        foodStats: (id: number) => `${apiUrl}/food/${id}/stats`,
+        foodReviews: (id: number) => `${apiUrl}/food/${id}/reviews`,
 
         restaurantSearch: (searchQuery: string) => `${apiUrl}/restaurant/search/${searchQuery}`,
         restaurantImage: (id: number) => `${apiUrl}/restaurant/${id}/picture`,

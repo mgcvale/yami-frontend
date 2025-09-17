@@ -4,6 +4,7 @@ import type { AsyncState } from "$lib/core/model/async-state";
 import { get } from "svelte/store";
 import Cookies from 'js-cookie';
 import { modalStore } from "$lib/core/store/modalStore";
+import { snackbarStore } from "$lib/core/store/snackbarStore";
 
 export function logout(intermediateAction: () => void) {
     const currentUser: AsyncState<CurrentUser> = get(currentUserStore);
@@ -20,5 +21,6 @@ export function logout(intermediateAction: () => void) {
         data: null,
         error :null
     });
+    snackbarStore.set(null);
     modalStore.set(null);
 }
