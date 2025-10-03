@@ -11,7 +11,7 @@
         ]}
     >
     {#if textarea}
-        <textarea {disabled} class="w-full border-none outline-none resize-y overflow-auto" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999} rows={rows}></textarea>
+        <textarea {disabled} class="w-full border-none outline-none resize-y overflow-auto p-1" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999} rows={rows}></textarea>
         {#if maxLength}
             <span class="absolute bottom-2 right-2 w-fit h-fit text-sm">
                 {value.length} / {maxLength}

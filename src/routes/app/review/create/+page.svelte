@@ -10,11 +10,18 @@
     import { fuzzyWordMatch } from "$lib/core/util/matching";
     import TextField from "$lib/components/ui/controls/TextField.svelte";
     import Button from "$lib/components/ui/controls/Button.svelte";
+    import { createFoodReview } from "$lib/core/actions/review/create-food-review";
+    import { snackbarStore } from "$lib/core/store/snackbarStore";
+    import ErrorSnackbar from "$lib/components/ui/ErrorSnackbar.svelte";
+    import type { FoodReview } from "$lib/core/model/food-review";
+    import { goto } from "$app/navigation";
 
     let selectedRestaurant = $state<SearchDropdownItem | null>(null);
     let selectedFood = $state<SearchDropdownItem | null>(null);
     let foodDisabled = $derived(selectedRestaurant === null);
     let ratingDisabled = $derived(selectedFood === null);
+    let review = $state("");
+    let rating = $state(5);
 
     $effect(() => {
        if (selectedRestaurant === null) {
@@ -97,6 +104,31 @@
         return res as unknown as SyncState<SearchDropdownItem[]>;
     };
 
+    const onCreateReview: (e: Event) => Promise<void> = async (e: Event) => {
+        if (!selectedFood) {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: "You must select a food to post a review."
+                }
+            });
+            return;
+        }
+
+        const res: SyncState<FoodReview> = await createFoodReview(selectedFood?.id, review, rating*2);
+        if (res.error != null) {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: res.error.message
+                }
+            });
+            return;
+        }
+
+        goto(`/app/review/${res.data?.id}`);
+    }
+
 </script>
 <!--
 {#if $currentUserStore.data === null}
@@ -111,10 +143,10 @@
         <ModalTextfield disabled={false} bind:selected={selectedRestaurant} fetchFunction={restaurantFetchFunction} imageUrlFunction={config.apiPaths.restaurantImage} placeholder="Restaurant" className=""></ModalTextfield>
         <ModalTextfield bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Food" className=""></ModalTextfield>
 
-        <Slider bind:disabled={ratingDisabled} name="Rating" className="mt-4" />
-        <TextField maxLength={256} bind:disabled={ratingDisabled} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow"></TextField>
+        <Slider bind:disabled={ratingDisabled} bind:value={rating} name="Rating" className="mt-4" />
+        <TextField maxLength={256} bind:disabled={ratingDisabled} bind:value={review} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow"></TextField>
         <div class="flex justify-end">
-            <Button bind:disabled={ratingDisabled} className="py-1 px-4 mb-4">Create Review</Button>
+            <Button bind:disabled={ratingDisabled} onclick={onCreateReview} className="py-1 px-4 mb-4">Create Review</Button>
         </div>
     </div>
 <!--

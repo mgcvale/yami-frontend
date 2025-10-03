@@ -68,10 +68,10 @@ export function handleAllGeneric(error: App.Error) {
 
 export function handleAsSyncError<T>(e: unknown): SyncState<T> {
     if (isAppError(e)) {
-    return syncError(e);
+        return syncError(e);
     } if (e instanceof TypeError) {
-    return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
+        return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
     } else {
-    return syncError(DEFAULT_ERRORS.UNKNOWN(e));
+        return syncError(DEFAULT_ERRORS.UNKNOWN(e));
     }
 }
