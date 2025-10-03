@@ -7,7 +7,7 @@ import { error } from "@sveltejs/kit";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 
 export const load: PageLoad = async (event: PageLoadEvent) => {
-    const { parent } = event;
+    const { parent, depends } = event;
     const { user } = await parent();
 
     const id: string | null = event.url.searchParams.get('id');

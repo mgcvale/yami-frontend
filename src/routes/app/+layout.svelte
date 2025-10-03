@@ -38,7 +38,7 @@
     <RegularHeader />
 {/if}
 
-<main class="pb-18 pt-16 bg-light-bg dark:bg-dark-bg">
+<main class="pb-18 pt-16 min-h-dvh bg-light-bg dark:bg-dark-bg flex flex-col">
     {@render children()}
 </main>
 
@@ -57,8 +57,8 @@
             <span>Home</span>
         </li>
         <li class={["flex flex-col justify-between items-center h-full -translate-y-1"]} >
-            <button onclick={() => goto('/app/review/create', {replaceState: false})} class={["w-16 rounded-full flex justify-center align-center h-7", {"bg-light-fg-500 dark:bg-dark-fg-500 text-light-card-2 dark:text-dark-card-3":  page.url.pathname.startsWith("/app/review/create")}]}>
-                <PlusCircle size=26 class="m-auto"/>
+            <button onclick={() => goto('/app/review/create', {replaceState: false})} class={["w-16 rounded-full flex justify-center items-center align-center h-8 py-1", {"bg-light-fg-500 dark:bg-dark-fg-500 text-light-card-2 dark:text-dark-card-3":  page.url.pathname.startsWith("/app/review/create")}]}>
+                <PlusCircle size=22 class="m-auto"/>
             </button>
             <span class="text-[1.07rem]">Create</span>
         </li>

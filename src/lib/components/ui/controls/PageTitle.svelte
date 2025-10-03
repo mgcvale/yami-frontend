@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { children } = $props();
+    let { children, className="" } = $props();
 </script>
 
-<h1 class="font-alegreya text-3xl">{@render children()}</h1>
+<h1 class="font-alegreya text-3xl p-4 {className}">{@render children()}</h1>

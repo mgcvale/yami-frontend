@@ -1,7 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import config from "$lib/config";
-    import type Food from "$lib/core/model/food";
+    import { type Food } from "$lib/core/model/food";
     import RatingPill from "../controls/RatingPill.svelte";
 
     let { 
@@ -14,7 +14,6 @@
 
 </script>
 
-
 <button onclick={() => {
         goto(`/app/food?id=${food.id}`);
     }}
@@ -23,14 +22,18 @@
     <div class="flex justify-between items-start w-full gap-2 h-fit">
         <h3 class="text-lg text-ms text-left line-clamp-2 break-words">{food.name}</h3>
 
-        <RatingPill rating={food.avgRating} />
+        {#if food.avgRating === 0}
+            <span class="font-medium text-md">No ratings</span>
+        {:else}
+            <RatingPill rating={food.avgRating} />
+        {/if}
     </div>
     <div class="flex gap-2">
 
         {#if imageVisible}
-            <img 
+            <img
                 src={config.apiPaths.foodImage(food.id)} 
-                class="w-24 rounded-lg"
+                class="max-w-16 rounded-lg"
                 onerror={() => imageVisible = false}
                 alt={food.description}
             >

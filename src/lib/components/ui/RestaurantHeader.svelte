@@ -20,7 +20,7 @@
         },
         {
             name: "Foods",
-            nameClassName: "text-ml text-light-fg-500 dark:text-dark-fg-500",
+            nameClassName: "text-ml",
             count: data.foodCount,
             countClassName: "text-lg"
         },

@@ -9,11 +9,15 @@ import { get } from "svelte/store";
 export const ssr = false;
 export const prerender = false;
 
-export const load: LayoutLoad = async ({url, fetch}) => {
+export const load: LayoutLoad = async (event) => {
+  const { depends } = event;
+  depends('user:current');
+
   const userFromStore = get(currentUserStore);
   if (!userFromStore.loading && userFromStore.data !== null) {
     return { user: userFromStore.data };
   }
+
 
   const userState: SyncState<CurrentUser> = await loadUserFromToken();
   

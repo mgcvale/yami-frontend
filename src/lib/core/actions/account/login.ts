@@ -1,4 +1,4 @@
-import { goto } from "$app/navigation";
+import { goto, invalidate, replaceState } from "$app/navigation";
 import config from "$lib/config";
 import { currentUserStore } from "$lib/core/store/currentUserStore";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
@@ -10,6 +10,7 @@ import { extractJsonOrThrow, fetchWithTimeout, isAppError, syncError, syncSucces
 import { isLoginUserDTO } from "$lib/core/model/dto/login-user-dto";
 import type { SyncState } from "$lib/core/model/sync-state";
 import { handleAllGeneric, handleNetwork, handleUnknownException } from "../generic-error-handler";
+import { logout } from "./logout";
 
 export const loginResponse: Writable<AsyncState<null>> = writable({
     data: null,
@@ -34,6 +35,7 @@ export async function login(usernameOrEmail: string, password: string): Promise<
     });
 
     try {
+        logout(() => {});
         const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.login(), { method: "POST" , body: jsonData }, config.fetchTimeout));
 
         console.log(data);
@@ -62,8 +64,8 @@ export async function login(usernameOrEmail: string, password: string): Promise<
         });
 
         localStorage.setItem("currentUser", JSON.stringify(user));
-        goto('/app');
 
+        goto('/app', {replaceState: true, invalidateAll: true});
         return syncSuccess(null);
     } catch (e) {
         if (isAppError(e)) {
@@ -73,10 +75,8 @@ export async function login(usernameOrEmail: string, password: string): Promise<
             return syncError(e);       
         } else if (e instanceof TypeError) {
             handleNetwork(e);
-            console.log("AAAAAAAAAA");
             return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
         }
-        console.log("AAAAAAAAAAA");
         handleUnknownException(e);
         return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
     }

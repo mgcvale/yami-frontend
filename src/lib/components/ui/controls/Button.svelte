@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { children, className = "", outline = false, accent = false, onclick = () => {} } = $props();
+    let { children, className = "", outline = false, accent = false, onclick = () => {}, disabled = $bindable(false) } = $props(); 
 </script>
 
 <button class="
@@ -14,8 +14,9 @@
         :
             "bg-light-card-3 dark:bg-dark-card-3 border-none dark:text-fg-700"
     }    
-    border-2 rounded-md p-1 cursor-pointer {className}
+    border-2 rounded-md p-1 cursor-pointer {disabled ? 'opacity-30' : ''} {className}
 "
+    {disabled}
     onclick={() => onclick()}    
 >
     {@render children()}

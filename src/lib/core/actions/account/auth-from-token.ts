@@ -25,6 +25,7 @@ export async function loadUserFromToken(): Promise<SyncState<CurrentUser>> {
   const cachedUser = localStorage.getItem("currentUser");
   if (cachedUser) {
     try {
+      console.log("Recovered user from localStorage");
       const cachedUserJson = JSON.parse(cachedUser);
       if (isCurrentUser(cachedUserJson)) {
         return syncSuccess(cachedUserJson);
@@ -35,6 +36,7 @@ export async function loadUserFromToken(): Promise<SyncState<CurrentUser>> {
   }
 
   try {
+    console.log("Fetching user");
     const response = await fetch(config.apiPaths.login(), {
       method: 'POST',
       headers: {

@@ -6,12 +6,10 @@ import type { Food } from "$lib/core/model/food";
 import { loadFood } from "$lib/core/actions/food/load-food";
 import { loadFoodStats } from "$lib/core/actions/food/load-food-stats";
 import type { RatingDistribution } from "$lib/core/model/rating-distribution";
-import type RatingStats from "$lib/components/ui/RatingStats.svelte";
 import type { ReviewStats } from "$lib/core/model/review-stats";
 import type { PageableEntry } from "$lib/core/model/pageable-entry";
 import type { FoodReview } from "$lib/core/model/food-review";
 import { loadFoodReviews } from "$lib/core/actions/food/load-food-reviews";
-import { currentUserStore } from "$lib";
 
 export const load: PageLoad = async (event: PageLoadEvent) => {
     await event.parent();

@@ -9,11 +9,14 @@
     import type { FoodReview } from "$lib/core/model/food-review";
     import type { PageableEntry } from "$lib/core/model/pageable-entry";
     import type { ReviewStats } from "$lib/core/model/review-stats";
-    import { ChevronLeft, Heart, Image, ListFilterPlus } from "@lucide/svelte";
+    import { ChevronLeft, Edit, Heart, Image, ListFilterPlus } from "@lucide/svelte";
     import RatingWithPercentage from "$lib/components/ui/RatingWithPercentage.svelte";
-    import { modalStore } from "$lib";
+    import { currentUserStore, modalStore } from "$lib";
     import FoodReviewModal from "$lib/components/ui/modals/FoodReviewModal.svelte";
     import Button from "$lib/components/ui/controls/Button.svelte";
+    import Divisor from "$lib/components/ui/Divisor.svelte";
+    import { snackbarStore } from "$lib/core/store/snackbarStore";
+    import ErrorSnackbar from "$lib/components/ui/ErrorSnackbar.svelte";
 
     let { data }: { data: { food: Food, foodStats: ReviewStats, reviews: PageableEntry<FoodReview> } } = $props();
 
@@ -25,13 +28,24 @@
         });
     }
 
+    function onCreateReviewClick() {
+        if ($currentUserStore.data === null) {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: "You have to be logged in to create a review."
+                }
+            })
+        }
+    }
+
     console.log(data.food)
 
 </script>
 
 <div class="flex justify-start items-center gap-2 p-2">
     <ChevronLeft size={32} class="cursor-pointer" onclick={() => window.history.back()}></ChevronLeft>
-    <PageTitle>Food Information</PageTitle>
+    <PageTitle className="p-2! pl-0!">Food Information</PageTitle>
 </div>
 
 <div class="flex flex-col w-full items-center justify-start p-3 pt-1 gap-3">
@@ -53,13 +67,24 @@
             </div>
         </div>
         <p class="text-ms">R$1,00 • {data.food.description}{(!data.food.description.endsWith('.')) ? "." : ""}</p>
-        {#if data.food.review !== null}
-            <Button className="w-full">Change your review</Button>
-        {:else}
-            <Button className="w-full">Review this food</Button>
+        {#if data.food.review === null}
+            <Button className="w-full" onclick={() => onCreateReviewClick()}>Review this food</Button>
         {/if}
     </Card1>
     <RatingStats name={data.food.name} stats={data.foodStats} className={""} />
+    {#if data.food.review !== null && data.food.review !== undefined}
+        <Card1 className="w-full p-3!">
+            <div class="flex justify-between pb-3 px-1">
+                <h3 class="font-alegreya text-lg">Your review</h3>
+                <Edit class="cursor-pointer"/>
+            </div>
+            <Card2 className="flex justify-start flex-col items-start rounded-lg w-full px-3! py-2! cursor-pointer">
+                <h2 class="text-lm pb-2"><Rating rating={data.food.review.rating} className="text-sm font-medium font-alegreya"/> to {data.food.name}</h2>
+                <p class="text-sm pb-2">{data.food.review.review}</p>
+
+            </Card2>
+        </Card1>
+    {/if}
     <Card1 className="w-full p-3!">
         <div class="flex justify-between pb-3 px-1">
             <h3 class="font-alegreya text-lg">Latest reviews</h3>
