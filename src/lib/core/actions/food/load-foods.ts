@@ -10,6 +10,7 @@ export async function loadFoods(restaurantId: number): Promise<SyncState<Food[]>
 
     try {
         const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.restaurantFoods(restaurantId), {}, config.fetchTimeout));
+        
         if (!isArrayOf(data, isFood)) {
             return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
         }

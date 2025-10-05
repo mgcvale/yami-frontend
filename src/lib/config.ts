@@ -1,4 +1,4 @@
-const apiUrl = 'http://192.168.0.249:8080';
+const apiUrl = 'https://api.mgcvale.dev';
 
 export default {
     apiUrl: apiUrl,

@@ -11,6 +11,16 @@ const valueScale = spring(1, { stiffness: 0.5, damping: 0.7 });
 
 let isDragging = $state(false);
 let isHovering = $state(false);
+let inputElement: HTMLInputElement | null = $state(null);
+
+$effect(() => {
+    if (inputElement) {
+      inputElement.addEventListener('input', (e) => {
+        console.log("CHANGED FORM EL: ", inputElement?.value);
+      })
+    }
+});
+
 
 let originalOverscrollY: string;
 onMount(() => {
@@ -110,20 +120,22 @@ let dots = $derived([10, 20, 30, 40, 50, 60, 70, 80, 90].slice(Math.floor(value)
 
         <input
             type="range"
-            bind:value={value}
+            bind:this={inputElement}
+            oninput={(e) => { console.log("ONINPUT FIRED: ", e.currentTarget.value); value = Number(e.currentTarget.value); }}
+            onchange={(e) => { console.log("ONCHANGE FIRED: ", e.currentTarget.value); value = Number(e.currentTarget.value); }}            
+            value={value}
             {min}
             {max}
             {step}
-            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50 {disabled ? 'pointer-events-none' : ''}"
+            class="absolute h-full w-full opacity-0 z-50 {disabled ? 'pointer-events-none' : ''}"
             onmousedown={handleMouseDown}
             ontouchstart={handleMouseDown}
             ontouchend={handleMouseUp}
             onmouseup={handleMouseUp}
         />
-
             {#if isDragging}
                 <div 
-                class="text-xs z-20 absolute origin-center bottom-0 shadow-lg left-1/2 -translate-x-1/2 p-4 rounded-lg bg-light-card-1 dark:bg-dark-card-1 text-light-fg-700 dark:text-dark-fg-700 font-dm-sans text-center transition-opacity duration-200"
+                class="text-xs z-20 absolute origin-center bottom-0 shadow-lg left-1/2 -translate-x-1/2 p-4 rounded-lg bg-light-card-1 dark:bg-dark-card-1 text-light-fg-700 dark:text-dark-fg-700 font-dm-sans text-center transition-opacity duration-200 pointer-events-none"
                 in:scale={{ duration: 150, delay: 50 }}
                 style="transform: translateY(calc(100% + 16px));"
                 >
@@ -150,6 +162,7 @@ let dots = $derived([10, 20, 30, 40, 50, 60, 70, 80, 90].slice(Math.floor(value)
 </div>
 
 <style>
+  /*
   input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -167,7 +180,7 @@ let dots = $derived([10, 20, 30, 40, 50, 60, 70, 80, 90].slice(Math.floor(value)
   input[type="range"]::-moz-range-thumb {
     border: none;
     background: transparent;
-  }
+  }*/
   
   @keyframes pulse-glow {
     0%, 100% {

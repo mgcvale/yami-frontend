@@ -6,13 +6,19 @@
     import { type SyncState } from '$lib/core/model/sync-state';
     import type { SearchDropdownItem } from '$lib/core/types/search-dropdown-item';
     
-    let { placeholder = "option", className = "", selected = $bindable(null), fetchFunction = async (query: string) => ({data: null, error: null}), imageUrlFunction = (id: number) => ("url"), disabled = $bindable(false) }: {
+    let { placeholder = "option", className = "", selected = $bindable(null), fetchFunction = async (query: string) => ({data: null, error: null}), imageUrlFunction = (id: number) => ("url"), disabled = $bindable(false), searchOnKeydown = false, forceListUpdate = false, loading=$bindable(false), loadingMessage="Loading...", loadingControlledByComponent=false }: {
         placeholder: string,
         className?: string,
         selected: SearchDropdownItem | null,
-        fetchFunction: (query: string) => Promise<SyncState<SearchDropdownItem[]>>
-        imageUrlFunction: (id: number) => string
-        disabled: boolean
+        fetchFunction: (query: string) => Promise<SyncState<SearchDropdownItem[]>>,
+        imageUrlFunction: (id: number) => string,
+        disabled: boolean,
+        searchOnKeydown: boolean,
+        forceListUpdate: boolean,
+        loading?: boolean,
+        loadingMessage?: string,
+        loadingControlledByComponent?: boolean
+
     } = $props();
 
     let containerRef = $state<HTMLDivElement | null>(null);
@@ -41,17 +47,20 @@
         open = !open;
     }
 
-    let loading = $state(false);
     let loadedEntries = $state<SyncState<SearchDropdownItem[]>>({data: null, error: null});
     let searchValue = $state("");
 
     async function loadEntries() {
-        if (searchValue.trim() === "") return;
-        loading = true;
+        if (loadingControlledByComponent) loading = true;
         loadedEntries = await fetchFunction(searchValue);
         console.log("DATA: ", loadedEntries.data)
-        loading = false;
+        if (loadingControlledByComponent) loading = false;
     }
+
+
+    $effect(() => {
+        if (forceListUpdate) loadEntries();
+    })
 
     function selectItem(item: SearchDropdownItem) {
         toggleOpen(item);
@@ -78,7 +87,7 @@
                 <Search />
             </button>
         {:else}
-            <TextField placeholder="Search for a {placeholder}" noDecoration={true} icon={Search} bind:value={searchValue} onIconClick={loadEntries} onSubmit={loadEntries} ></TextField>
+            <TextField onKeyPress={() => {if (searchOnKeydown) loadEntries()}} placeholder="Search for a {placeholder}" noDecoration={true} icon={Search} bind:value={searchValue} onIconClick={loadEntries} onSubmit={loadEntries} ></TextField>
         {/if}
     {:else}
         <!--When there is an item selected, we can show the item here-->
@@ -95,7 +104,7 @@
     {#if open}
         {#if loading}
             <div class="m-auto">
-                <span>Loading...</span>
+                <span>{loadingMessage}<span>
             </div>
         {:else if loadedEntries.error !== null}
             <div class="m-auto">

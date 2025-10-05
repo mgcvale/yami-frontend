@@ -108,7 +108,7 @@
                 </div>
                 <div class="flex flex-col items-start justify-start dark:text-dark-fg-300 text-light-fg-300 ">
                     <h2>Review  by {review.username}</h2>
-                    <h2>Rating: <Rating rating={data.food.avgRating} className=""/></h2>
+                    <h2>Rating: <Rating rating={review.rating} className=""/></h2>
                 </div>
                 <div class="flex-grow"></div>
                 <div class="flex flex-col justify-between items-center">

@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { placeholder = "", input=$bindable(null), icon = $bindable(null), value = $bindable(""), className = "", noDecoration = false, password = $bindable(false), onIconClick=() => {}, errorMessage = $bindable(""), textarea = false, maxLength = null, rows = 3, onSubmit = () => {}, disabled = $bindable(false) } = $props();
+    let { placeholder = "", input=$bindable(null), icon = $bindable(null), value = $bindable(""), className = "", noDecoration = false, password = $bindable(false), onIconClick=() => {}, errorMessage = $bindable(""), textarea = false, maxLength = null, rows = 3, onSubmit = () => {}, disabled = $bindable(false), onKeyPress=() => {} } = $props();
 </script>
 
 <div class="flex flex-col gap-1 justify-center items-start {className} {disabled ? 'opacity-30 pointer-none' : ''}">
@@ -19,6 +19,7 @@
         {/if}
     {:else}
         <input 
+        onkeyup={onKeyPress}
         {disabled}
         bind:this={input}
         onkeypress={(e: KeyboardEvent) => {

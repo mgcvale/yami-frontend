@@ -15,6 +15,7 @@
     import ErrorSnackbar from "$lib/components/ui/ErrorSnackbar.svelte";
     import type { FoodReview } from "$lib/core/model/food-review";
     import { goto } from "$app/navigation";
+    import { syncSuccess } from "$lib/core/actions/util";
 
     let selectedRestaurant = $state<SearchDropdownItem | null>(null);
     let selectedFood = $state<SearchDropdownItem | null>(null);
@@ -26,8 +27,14 @@
     $effect(() => {
        if (selectedRestaurant === null) {
         selectedFood = null;
-       } 
+       }  else {
+        fetchRestaurantFoods();
+       }
     });
+
+    let loadedRestaurantFoods: SyncState<SearchDropdownItem[]> = $state({data: [], error: null});
+    let restaurantFoodsLoading = $state(false);
+    let forceFoodListUpdate = $state(false);
 
     const restaurantFetchFunction: (query: string) => Promise<SyncState<SearchDropdownItem[]>> = async (query: string) => {
         const res = await searchRestaurants(query);
@@ -44,65 +51,66 @@
         return res as unknown as SyncState<SearchDropdownItem[]>;
     }
 
-    const foodFetchFunction: (query: string) => Promise<SyncState<SearchDropdownItem[]>> = async (query: string) => {
-        if (!selectedRestaurant) return { data: [], error: null };
+    async function fetchRestaurantFoods() {
 
-        const res = await loadFoods(selectedRestaurant.id);
-
-        if (res.data !== null) {
-            const normalizedQuery = query.toLowerCase().trim();
-
-            if (!normalizedQuery) {
-                return {
-                    error: null,
-                    data: res.data.map(item => ({
-                        id: item.id,
-                        text: item.name,
-                        subtext: item.description,
-                    }))
-                };
-            }
-
-            const queryWords = normalizedQuery.split(/\s+/);
-
-            const scored = res.data.map(item => {
-                const name = item.name.toLowerCase();
-                const nameWords = name.split(/\s+/);
-
-                let score = 0;
-
-                for (const qWord of queryWords) {
-                    for (const nWord of nameWords) {
-                        if (qWord === nWord) score += 30;
-                        else if (nWord.startsWith(qWord)) score += 25;
-                        else if (nWord.includes(qWord)) score += 20;
-                        else if (fuzzyWordMatch(nWord, qWord)) score += 15;
-                    }
-                }
-
-                return {
-                    item: {
-                        id: item.id,
-                        text: item.name,
-                        subtext: item.description,
-                    } as SearchDropdownItem,
-                    score
-                };
-            });
-
-            const filtered = scored
-                .filter(s => s.score >= 15)
-                .sort((a, b) => b.score - a.score)
-                .map(s => s.item);
-
-            return {
-                error: null,
-                data: filtered
-            };
+        restaurantFoodsLoading = true;
+        if (!selectedRestaurant) {
+            loadedRestaurantFoods = syncSuccess([]);
+            return;
         }
 
-        return res as unknown as SyncState<SearchDropdownItem[]>;
+        const res = await loadFoods(selectedRestaurant.id);
+        if (res.data === null) {
+            loadedRestaurantFoods = (res as unknown as SyncState<SearchDropdownItem[]>);
+            return;
+        }
+
+        loadedRestaurantFoods = syncSuccess(res.data.map(item => ({
+            id: item.id,
+            text: item.name,
+            subtext: item.description
+        } as SearchDropdownItem)));
+        restaurantFoodsLoading = false;
+
+        forceFoodListUpdate = true;
+        setTimeout(() => forceFoodListUpdate = false);
+    }
+
+    const foodFetchFunction: (query: string) => Promise<SyncState<SearchDropdownItem[]>> = async (query: string) => {
+        if (!selectedRestaurant) return { data: [], error: null };
+        if (loadedRestaurantFoods.error !== null || loadedRestaurantFoods.data === null) return loadedRestaurantFoods;
+
+        const normalizedQuery = query.toLowerCase().trim();
+
+        if (!normalizedQuery) return { error: null, data: loadedRestaurantFoods.data };
+
+        const rankItem = (text: string) => {
+            text = text.toLowerCase();
+            let score = 0;
+            let qi = 0; // query index
+            for (let i = 0; i < text.length && qi < normalizedQuery.length; i++) {
+                if (text[i] === normalizedQuery[qi]) {
+                    // match found, more weight if earlier in text
+                    score += 10 - i * 0.1;
+                    qi++;
+                }
+            }
+            // small bonus for longer matches
+            score += qi * 5;
+            return score;
+        };
+
+        const ranked = loadedRestaurantFoods.data
+            .map(item => {
+                const text = item.text + " " + (item.subtext ?? "");
+                return { item, score: rankItem(text) };
+            })
+            .sort((a, b) => b.score - a.score)
+            .map(r => r.item);
+
+        return { error: null, data: ranked };
     };
+
 
     const onCreateReview: (e: Event) => Promise<void> = async (e: Event) => {
         if (!selectedFood) {
@@ -129,6 +137,7 @@
         goto(`/app/review/${res.data?.id}`);
     }
 
+    let rangeValue = $state();
 </script>
 <!--
 {#if $currentUserStore.data === null}
@@ -140,8 +149,8 @@
     <PageTitle>Create a review</PageTitle>
 
     <div class="flex flex-col mt-2 px-6 gap-3 grow">
-        <ModalTextfield disabled={false} bind:selected={selectedRestaurant} fetchFunction={restaurantFetchFunction} imageUrlFunction={config.apiPaths.restaurantImage} placeholder="Restaurant" className=""></ModalTextfield>
-        <ModalTextfield bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Food" className=""></ModalTextfield>
+        <ModalTextfield forceListUpdate={false} searchOnKeydown={false} disabled={false} bind:selected={selectedRestaurant} fetchFunction={restaurantFetchFunction} imageUrlFunction={config.apiPaths.restaurantImage} placeholder="Restaurant" className=""></ModalTextfield>
+        <ModalTextfield loadingMessage="Loading foods for {selectedRestaurant?.text}..." bind:loading={restaurantFoodsLoading} forceListUpdate={forceFoodListUpdate} searchOnKeydown={true} bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Food" className=""></ModalTextfield>
 
         <Slider bind:disabled={ratingDisabled} bind:value={rating} name="Rating" className="mt-4" />
         <TextField maxLength={256} bind:disabled={ratingDisabled} bind:value={review} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow"></TextField>
