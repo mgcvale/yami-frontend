@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { placeholder = "", input=$bindable(null), icon = $bindable(null), value = $bindable(""), className = "", noDecoration = false, password = $bindable(false), onIconClick=() => {}, errorMessage = $bindable(""), textarea = false, maxLength = null, rows = 3, onSubmit = () => {}, disabled = $bindable(false), onKeyPress=() => {} } = $props();
+    let { placeholder = "", input=$bindable(null), icon = $bindable(null), inputClassName="", value = $bindable(""), className = "", noDecoration = false, password = $bindable(false), onIconClick=() => {}, errorMessage = $bindable(""), textarea = false, maxLength = null, rows = 3, onSubmit = () => {}, disabled = $bindable(false), onKeyPress=() => {} } = $props();
 </script>
 
 <div class="flex flex-col gap-1 justify-center items-start {className} {disabled ? 'opacity-30 pointer-none' : ''}">
@@ -11,7 +11,7 @@
         ]}
     >
     {#if textarea}
-        <textarea {disabled} class="w-full border-none outline-none resize-y overflow-auto p-1" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999} rows={rows}></textarea>
+        <textarea {disabled} class="w-full border-none outline-none resize-y overflow-auto p-1 {inputClassName}" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999} rows={rows}></textarea>
         {#if maxLength}
             <span class="absolute bottom-2 right-2 w-fit h-fit text-sm">
                 {value.length} / {maxLength}
@@ -26,7 +26,7 @@
             if (e.key.toLowerCase() === "enter") {
                 onSubmit();
             }
-        }} type={password ? "password" : "text"} class="w-full border-none outline-none" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999}>
+        }} type={password ? "password" : "text"} class="w-full border-none outline-none {inputClassName}" placeholder="{placeholder}" bind:value={value} maxlength={maxLength ? maxLength : 9999}>
     {/if}
 
     {#if icon !== null}

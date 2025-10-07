@@ -9,9 +9,12 @@
     import ErrorSnackbar from "./ErrorSnackbar.svelte";
     import { onMount } from "svelte";
 
-    let { user = $bindable(), viewingSelf = false }: {
+    let { user = $bindable(), viewingSelf = false, onFollowerClick, onFollowingClick, onEditClick }: {
         user: PublicUser,
         viewingSelf: boolean,
+        onEditClick: (e: Event) => void,
+        onFollowerClick?: (e: Event) => void,
+        onFollowingClick?: (e: Event) => void
     } = $props();
 
     let followerCount = $state(user.followerCount);
@@ -29,8 +32,6 @@
     })
 
     let isFollowLoading = $state<boolean>(false);
-
-    async function onEditClick() {}
 
     async function onFollowClick() {
         console.log("Clicked user");
@@ -100,12 +101,14 @@
             nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
             count: followerCount,
             countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md",
+            onClick: onFollowerClick
         },
         {
             name: "Following",
             nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
             count: user.followingCount,
-            countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md"
+            countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md",
+            onClick: onFollowingClick
         },
     ]}
     pictureUrl={"https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}

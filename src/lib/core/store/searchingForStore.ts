@@ -4,7 +4,6 @@ import { MapPinHouse, Sandwich, User } from "@lucide/svelte";
 
 export const searchOptions: Record<string, ComboBoxEntry> = {
     user: { name: "User", icon: User, value: "user" },
-    food: { name: "Food", icon: Sandwich, value: "food" },
     restaurant: { name: "Restaurant", icon: MapPinHouse, value: "restaurant" },
 };
   

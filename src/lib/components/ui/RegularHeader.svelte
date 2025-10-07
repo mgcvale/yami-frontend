@@ -39,14 +39,6 @@
             }
         },
         {
-            name: "Food",
-            icon: Sandwich,
-            action: () => {
-                goto(`/app?context=search&then=${page.url.href}`);
-                searchingFor.set(searchOptions['food']);
-            }
-        },
-        {
             name: "Restaurant",
             icon: MapPinHouse,
             action: () => {

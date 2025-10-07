@@ -17,6 +17,7 @@
     import Divisor from "$lib/components/ui/Divisor.svelte";
     import { snackbarStore } from "$lib/core/store/snackbarStore";
     import ErrorSnackbar from "$lib/components/ui/ErrorSnackbar.svelte";
+    import HeaderWithBackButton from "$lib/components/ui/HeaderWithBackButton.svelte";
 
     let { data }: { data: { food: Food, foodStats: ReviewStats, reviews: PageableEntry<FoodReview> } } = $props();
 
@@ -40,13 +41,9 @@
     }
 
     console.log(data.food)
-
 </script>
 
-<div class="flex justify-start items-center gap-2 p-2">
-    <ChevronLeft size={32} class="cursor-pointer" onclick={() => window.history.back()}></ChevronLeft>
-    <PageTitle className="p-2! pl-0!">Food Information</PageTitle>
-</div>
+<HeaderWithBackButton title="Food Information" />
 
 <div class="flex flex-col w-full items-center justify-start p-3 pt-1 gap-3">
     <Card1 className="flex flex-col items-start justify-start max-w-full w-full gap-2">

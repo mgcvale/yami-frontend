@@ -40,9 +40,6 @@
                 case 'restaurant':
                     searchContext.searchRestaurants(query);
                     break;
-                case 'food':
-                    searchContext.searchFoods(query);
-                    break;
                 default:
                     searchContext.searchUsers(query);
                     break;

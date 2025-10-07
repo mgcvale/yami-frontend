@@ -7,6 +7,8 @@
     import type { ReviewStats } from "$lib/core/model/review-stats";
     import { modalStore, LoginAsker } from "$lib";
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
+    import EditProfileModal from "$lib/components/ui/modals/EditProfileModal.svelte";
 
     let { data }: { data: { user: PublicUser; stats: ReviewStats; userId: number; viewingSelf: boolean } } = $props();
 
@@ -24,11 +26,26 @@
             });
         }
     });
+
+    function onFollowerClick() {
+        goto(`/app/user/followers?id=${data.userId}`);
+    }
+
+    function onFollowingClick() {
+        goto(`/app/user/following?id=${data.userId}`);
+    }
+
+    function onEditClick() {
+        modalStore.set({
+            component: EditProfileModal,
+            props: {user: data.user}
+        });
+    }
 </script>
 
 <div class="flex flex-col py-4 pt-6 px-2 gap-3 text-center">
     {#if data.user}
-        <UserHeader bind:user={data.user} viewingSelf={data.viewingSelf} />
+        <UserHeader {onEditClick} {onFollowerClick} {onFollowingClick} bind:user={data.user} viewingSelf={data.viewingSelf} />
         <RatingStats className="p-2" name={data.user.username} stats={data.stats} />
         <Divisor lineClassName="bg-light-card-2 dark:bg-dark-card-2" containerClassName="px-4" />
         <h1 class="font-alegreya text-2xl text-left px-3 pt-1">{data.user.username}'s reviews</h1>

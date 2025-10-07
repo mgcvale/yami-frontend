@@ -6,6 +6,8 @@
     let data = $props();
 
     onMount(() => {
+        console.log("LOADED ERROR PAGE");
+        console.log("user on error: ", data.user);
         console.log(page.error);
     });
 </script>

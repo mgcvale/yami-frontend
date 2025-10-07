@@ -11,15 +11,6 @@ const valueScale = spring(1, { stiffness: 0.5, damping: 0.7 });
 
 let isDragging = $state(false);
 let isHovering = $state(false);
-let inputElement: HTMLInputElement | null = $state(null);
-
-$effect(() => {
-    if (inputElement) {
-      inputElement.addEventListener('input', (e) => {
-        console.log("CHANGED FORM EL: ", inputElement?.value);
-      })
-    }
-});
 
 
 let originalOverscrollY: string;
@@ -64,7 +55,6 @@ $effect(() => {
     setTimeout(() => valueScale.set(1), 100);
 })
 
-
 const percentage = $derived(((value - min) / (max - min)) * 100);
 
 const ratingColor = $derived(
@@ -78,6 +68,7 @@ const ratingColor = $derived(
 const ratingLabel = $derived(
   value <= 2 ? 'Terrible' : 
   value <= 4 ? 'Bad' : 
+  value <= 5 ? 'Decent' :
   value <= 6 ? 'Good' : 
   value <= 8 ? 'Great' : 'Top'
 );
@@ -120,9 +111,8 @@ let dots = $derived([10, 20, 30, 40, 50, 60, 70, 80, 90].slice(Math.floor(value)
 
         <input
             type="range"
-            bind:this={inputElement}
-            oninput={(e) => { console.log("ONINPUT FIRED: ", e.currentTarget.value); value = Number(e.currentTarget.value); }}
-            onchange={(e) => { console.log("ONCHANGE FIRED: ", e.currentTarget.value); value = Number(e.currentTarget.value); }}            
+            oninput={(e) => { if (navigator.vibrate) navigator.vibrate(50); value = Number(e.currentTarget.value); }}
+            onchange={(e) => { value = Number(e.currentTarget.value); }}            
             value={value}
             {min}
             {max}

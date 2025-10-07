@@ -38,14 +38,7 @@ class SearchContext {
     this.results.restaurants = await searchRestaurants(query);
     this.loading = false;
   }
-
-  async searchFoods(query: string) {
-    this.loading = true;
-    this.currentQuery = query;
-    this.results.foods = syncSuccess({} as PageableEntry<Food>); // TODO: implement
-    this.loading = false;
-  }
-
+  
   clearResults() {
     this.results = {
       users: null,

@@ -1,12 +1,12 @@
-import type { PageLoad, PageLoadEvent } from "./$types";
 import type { PublicUser } from "$lib/core/model/public-user";
 import type { SyncState } from "$lib/core/model/sync-state";
 import { loadPublicUser } from "$lib/core/actions/account/load-public-account";
 import { loadUserStats } from "$lib/core/actions/account/load-user-stats";
 import { error } from "@sveltejs/kit";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
+import type { LayoutLoad, LayoutLoadEvent } from "./$types";
 
-export const load: PageLoad = async (event: PageLoadEvent) => {
+export const load: LayoutLoad = async (event: LayoutLoadEvent) => {
     const { parent, depends } = event;
     const { user } = await parent();
 

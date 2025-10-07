@@ -1,4 +1,4 @@
-const apiUrl = 'https://api.mgcvale.dev';
+const apiUrl = 'http://localhost:8080';
 
 export default {
     apiUrl: apiUrl,
@@ -8,6 +8,8 @@ export default {
         userReviews: (id: number) =>  `${apiUrl}/food/review/from_user/${id}`,
         userStats: (id: number) => `${apiUrl}/user/${id}/stats`,
         follow: (id: number) => `${apiUrl}/user/follow/${id}`,
+        userFollowers: (id: number) => `${apiUrl}/user/follow/${id}/followers`,
+        userFollowing: (id: number) => `${apiUrl}/user/follow/${id}/following`,
         searchUser: (searchQuery: string) => `${apiUrl}/user/search/${searchQuery}`,
 
         food: (id?: number) => id ? `${apiUrl}/food/${id}` : `${apiUrl}/food`,
