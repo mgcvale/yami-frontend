@@ -40,6 +40,8 @@
         }
     }
 
+    let foodImgError: boolean = $state(false);
+
     console.log(data.food)
 </script>
 
@@ -48,11 +50,18 @@
 <div class="flex flex-col w-full items-center justify-start p-3 pt-1 gap-3">
     <Card1 className="flex flex-col items-start justify-start max-w-full w-full gap-2">
         <div class="flex justify-start items-stretch gap-3 w-full min-w-0">
-            <img
-                src={config.apiPaths.foodImage(data.food.id)}
-                alt="Food"
-                class="rounded-lg aspect-square object-cover flex-1 min-w-0 self-start"
-            />
+            {#if !foodImgError}
+                <img
+                    src={config.apiPaths.foodImage(data.food.id)}
+                    alt="Food"
+                    class="rounded-lg aspect-square object-cover flex-1 min-w-0 self-start max-w-32"
+                    onerror={() => foodImgError = true}
+                />
+            {:else}
+                <div class="flex rounded-lg aspect-square object-cover items-center justify-center flex-1 min-w-0 self-start max-w-32 w-32">
+                    <Image size={96} strokeWidth={1} class="m-auto" />
+                </div>
+            {/if}
             <div class="flex flex-col flex-shrink-0">
                 <h3 class="font-alegreya text-lg">
                     {data.food.restaurantShortName}'s {data.food.name}
@@ -82,8 +91,8 @@
             </Card2>
         </Card1>
     {/if}
-    <Card1 className="w-full p-3!">
-        <div class="flex justify-between pb-3 px-1">
+    <Card1 className="flex flex-col justify-center items-center w-full p-3! gap-3">
+        <div class="flex w-full justify-between pb-2 px-1">
             <h3 class="font-alegreya text-lg">Latest reviews</h3>
             <ListFilterPlus class="cursor-pointer"/>
         </div>
