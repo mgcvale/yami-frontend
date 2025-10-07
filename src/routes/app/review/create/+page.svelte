@@ -7,7 +7,6 @@
     import { type SearchDropdownItem } from "$lib/core/types/search-dropdown-item";
     import ModalTextfield from "$lib/components/ui/controls/ModalTextfield.svelte";
     import { loadFoods } from "$lib/core/actions/food/load-foods";
-    import { fuzzyWordMatch } from "$lib/core/util/matching";
     import TextField from "$lib/components/ui/controls/TextField.svelte";
     import Button from "$lib/components/ui/controls/Button.svelte";
     import { createFoodReview } from "$lib/core/actions/review/create-food-review";

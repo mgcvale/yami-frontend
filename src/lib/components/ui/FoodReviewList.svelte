@@ -11,9 +11,11 @@
 
     let {
         userId = $bindable(),
+        viewingSelf = false,
         className = ""
     }:
     {
+        viewingSelf: boolean
         userId: number
         className: string
     } = $props();
@@ -35,7 +37,7 @@
         <span> error: {response.error} </span>
     {:else}
         {#each response.data.content as entry }
-        <FoodReviewCard review={entry} collapsed={false} />
+            <FoodReviewCard ownsReview={viewingSelf} review={entry} collapsed={false} />
         {/each}
     {/if}
 </div>

@@ -49,7 +49,7 @@
         <RatingStats className="p-2" name={data.user.username} stats={data.stats} />
         <Divisor lineClassName="bg-light-card-2 dark:bg-dark-card-2" containerClassName="px-4" />
         <h1 class="font-alegreya text-2xl text-left px-3 pt-1">{data.user.username}'s reviews</h1>
-        <FoodReviewList userId={data.userId} className="p-2 pt-0" />
+        <FoodReviewList viewingSelf={data.viewingSelf} userId={data.userId} className="p-2 pt-0" />
     {:else}
         <p>You must be logged in to view your profile.</p>
     {/if}

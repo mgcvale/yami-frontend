@@ -40,7 +40,7 @@
             opacity: 0,
             easing: bezier(0.27, 0.37, 0.12, 1.19),
         }}
-        class="absolute top-1/2 right-1/2 p-2 flex justify-start flex-col items-start rounded-lg bg-light-card-2 dark:bg-dark-card-2 min-w-max h-fit {className}"
+        class="absolute shadow-xl top-1/2 right-1/2 p-2 flex justify-start flex-col items-start rounded-lg bg-light-card-2 dark:bg-dark-card-2 min-w-max h-fit {className}"
         style="z-index: 999;"
         bind:this={contextMenu}
     >
@@ -49,7 +49,7 @@
         {/if}
         {#each entries as entry}
             <button
-                class="w-full rounded-md p-2 flex gap-4 justify-between items-center hover:bg-light-card-1 dark:hover:bg-dark-card-1"
+                class="{entry.className ? entry.className : ''} w-full rounded-md p-2 flex gap-4 justify-between items-center hover:bg-light-card-1 dark:hover:bg-dark-card-1"
                 onclick={entry.action}
             >
                 <h3>{entry.name}</h3>
