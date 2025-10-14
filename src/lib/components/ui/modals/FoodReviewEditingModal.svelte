@@ -26,6 +26,7 @@
         } else {
             review = res.data;
             modalStore.set(null);
+            location.reload();
         }
     }
 

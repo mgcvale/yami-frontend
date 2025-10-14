@@ -34,6 +34,7 @@
             }
         });
     }
+    
     function onDeleteClick() {
         modalStore.set({
             component: ConfirmationModal,

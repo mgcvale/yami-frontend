@@ -133,7 +133,7 @@
             return;
         }
 
-        goto(`/app/review/${res.data?.id}`);
+        goto(`/app/food?id=${selectedFood?.id}`);
     }
 
     let rangeValue = $state();

@@ -1,7 +1,6 @@
 <script lang="ts">
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import Card2 from "$lib/components/ui/cards/Card2.svelte";
-    import PageTitle from "$lib/components/ui/controls/PageTitle.svelte";
     import Rating from "$lib/components/ui/Rating.svelte";
     import RatingStats from "$lib/components/ui/RatingStats.svelte";
     import config from "$lib/config";
@@ -9,17 +8,38 @@
     import type { FoodReview } from "$lib/core/model/food-review";
     import type { PageableEntry } from "$lib/core/model/pageable-entry";
     import type { ReviewStats } from "$lib/core/model/review-stats";
-    import { ChevronLeft, Edit, Heart, Image, ListFilterPlus } from "@lucide/svelte";
+    import { Edit, Heart, Image, ListFilterPlus, MoreVertical, Pencil, Trash } from "@lucide/svelte";
     import RatingWithPercentage from "$lib/components/ui/RatingWithPercentage.svelte";
     import { currentUserStore, modalStore } from "$lib";
     import FoodReviewModal from "$lib/components/ui/modals/FoodReviewModal.svelte";
     import Button from "$lib/components/ui/controls/Button.svelte";
-    import Divisor from "$lib/components/ui/Divisor.svelte";
     import { snackbarStore } from "$lib/core/store/snackbarStore";
     import ErrorSnackbar from "$lib/components/ui/ErrorSnackbar.svelte";
     import HeaderWithBackButton from "$lib/components/ui/HeaderWithBackButton.svelte";
+    import FoodReviewEditingModal from "$lib/components/ui/modals/FoodReviewEditingModal.svelte";
+    import type ContextMenuEntry from "$lib/core/types/context-menu-entry";
+    import type { SyncState } from "$lib/core/model/sync-state";
+    import { deleteFoodReview } from "$lib/core/actions/review/delete-food-review";
+    import SuccessSnackbar from "$lib/components/ui/SuccessSnackbar.svelte";
+    import ContextMenu from "$lib/components/ui/controls/ContextMenu.svelte";
+    import ConfirmationModal from "$lib/components/ui/modals/ConfirmationModal.svelte";
 
     let { data }: { data: { food: Food, foodStats: ReviewStats, reviews: PageableEntry<FoodReview> } } = $props();
+    let showingContextMenu = $state(false);
+
+    const contextMenuEntries: ContextMenuEntry[] = [
+        {
+            name: "Edit",
+            icon: Pencil,
+            action: onReviewEditClick
+        },
+        {
+            name: "Delete",
+            icon: Trash,
+            action: onReviewDeleteClick,
+            className: "text-light-error dark:text-dark-error"
+        }
+    ];
 
     function onReviewClick(review: FoodReview) {
         console.log(review);
@@ -27,6 +47,48 @@
             component: FoodReviewModal,
             props: { review }
         });
+    }
+
+    function onReviewEditClick() {
+        if (!data.food.review) return;
+        modalStore.set({
+            component: FoodReviewEditingModal,
+            props: {
+                review: data.food.review
+            }
+        });
+    }
+
+    function onReviewDeleteClick() {
+        modalStore.set({
+            component: ConfirmationModal,
+            props: {
+                actionName: "Delete this review",
+                action: (confirmed: boolean) => {if (confirmed) doDelete();}
+            }
+        });
+    }
+
+    async function doDelete() {
+        if (!data.food.review) return;
+        const res: SyncState<null> = await deleteFoodReview(data.food.review.id);
+        if (res.error !== null) {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: `Error deleting your review: ${res.error.message}`
+                }
+            });
+        } else {
+            snackbarStore.set({
+                component: SuccessSnackbar,
+                props: {
+                    successMessage: "Success deleting your review!"
+                }
+            });
+            data.food.review = undefined;
+            location.reload();
+        }
     }
 
     function onCreateReviewClick() {
@@ -82,7 +144,11 @@
         <Card1 className="w-full p-3!">
             <div class="flex justify-between pb-3 px-1">
                 <h3 class="font-alegreya text-lg">Your review</h3>
-                <Edit class="cursor-pointer"/>
+
+                <div class="flex relative">
+                    <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
+                    <ContextMenu bind:showing={showingContextMenu} entries={contextMenuEntries} className="bg-light-card-2! dark:bg-dark-card-2!"></ContextMenu>
+                </div>
             </div>
             <Card2 className="flex justify-start flex-col items-start rounded-lg w-full px-3! py-2! cursor-pointer">
                 <h2 class="text-lm pb-2"><Rating rating={data.food.review.rating} className="text-sm font-medium font-alegreya"/> to {data.food.name}</h2>

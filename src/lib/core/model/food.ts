@@ -8,7 +8,8 @@ export interface Food {
     avgRating: number;
     review: {
         review: string,
-        rating: number
+        rating: number,
+        id: number
     } | undefined;
 };
 
@@ -30,7 +31,8 @@ export function isFood(food: any): food is Food {
     if (food.review !== null && typeof food.review === 'object') {
         return (
             typeof food.review.review === 'string' &&
-            typeof food.review.rating === 'number'
+            typeof food.review.rating === 'number' &&
+            typeof food.review.id === 'number'
         );
     }
     
