@@ -18,7 +18,6 @@ export const load: LayoutLoad = async (event) => {
     return { user: userFromStore.data };
   }
 
-
   const userState: SyncState<CurrentUser> = await loadUserFromToken();
   
   if (userState.data == null && userState.error != null) {

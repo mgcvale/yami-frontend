@@ -15,6 +15,9 @@
     import type { FoodReview } from "$lib/core/model/food-review";
     import { goto } from "$app/navigation";
     import { syncSuccess } from "$lib/core/actions/util";
+    import type { CurrentUser } from "$lib/core/model/current-user";
+    import type { Food } from "$lib/core/model/food";
+    import { onMount } from "svelte";
 
     let selectedRestaurant = $state<SearchDropdownItem | null>(null);
     let selectedFood = $state<SearchDropdownItem | null>(null);
@@ -30,6 +33,21 @@
         fetchRestaurantFoods();
        }
     });
+    
+    let {
+        data
+    }: {
+        data: {
+            user: CurrentUser,    
+            restaurant?: {
+                id: number,
+                name: string,
+                shortName: string
+            },
+            food?: Food,
+            warning?: string
+        }
+    } = $props();
 
     let loadedRestaurantFoods: SyncState<SearchDropdownItem[]> = $state({data: [], error: null});
     let restaurantFoodsLoading = $state(false);
@@ -137,6 +155,31 @@
     }
 
     let rangeValue = $state();
+
+    onMount(() => {
+        if (data.restaurant) {
+            selectedRestaurant = {
+                id: data.restaurant.id,
+                text: data.restaurant.shortName,
+                subtext: data.restaurant.name
+            };
+        }
+        if (data.food) {
+            selectedFood = {
+                id: data.food.id,
+                text: data.food.name,
+                subtext: data.food.description
+            };
+        }
+        if (data.warning) {
+            snackbarStore.set({
+                component: ErrorSnackbar,
+                props: {
+                    warningMessage: data.warning
+                }
+            });
+        }
+    })
 </script>
 <!--
 {#if $currentUserStore.data === null}

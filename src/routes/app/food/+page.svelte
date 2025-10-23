@@ -23,6 +23,7 @@
     import SuccessSnackbar from "$lib/components/ui/SuccessSnackbar.svelte";
     import ContextMenu from "$lib/components/ui/controls/ContextMenu.svelte";
     import ConfirmationModal from "$lib/components/ui/modals/ConfirmationModal.svelte";
+    import { goto } from "$app/navigation";
 
     let { data }: { data: { food: Food, foodStats: ReviewStats, reviews: PageableEntry<FoodReview> } } = $props();
     let showingContextMenu = $state(false);
@@ -98,8 +99,9 @@
                 props: {
                     warningMessage: "You have to be logged in to create a review."
                 }
-            })
+            });
         }
+        goto(`/app/review/create?foodId=${data.food.id}`);
     }
 
     let foodImgError: boolean = $state(false);

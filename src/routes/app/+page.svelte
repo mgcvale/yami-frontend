@@ -3,8 +3,12 @@
     import { currentUserStore } from "$lib";
     import Feed from "$lib/components/ui/Feed.svelte";
     import FeedSearchPage from "$lib/components/ui/FeedSearchPage.svelte";
+    import type { CurrentUser } from "$lib/core/model/current-user";
+    import type { FoodReview } from "$lib/core/model/food-review";
 
     let mode: string = $state("loading");
+
+    let { data }: { data: { user: CurrentUser, feedEntries: FoodReview[] } } = $props();
 
     $effect(() => {
         mode = page.url.searchParams.get("context") ?? "feed";
@@ -21,7 +25,7 @@
             <a class="underline" href="/account/register">Create an account</a>
         </h3>
     {:else}
-        <Feed className={""}></Feed>
+        <Feed content={data.feedEntries} className={""}></Feed>
     {/if}
 {:else if mode === "search"}
     <FeedSearchPage />

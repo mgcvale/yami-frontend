@@ -1,0 +1,80 @@
+<script lang="ts">
+    import config from "$lib/config";
+    import type { FoodReview } from "$lib/core/model/food-review";
+    import RatingPill from "../controls/RatingPill.svelte";
+    import { goto } from "$app/navigation";
+    import { ImageIcon } from "@lucide/svelte";
+
+    let {
+        review = $bindable(),
+    }: {
+        review: FoodReview,
+    } = $props();
+
+    let foodImgError = $state(false);
+</script>
+
+<div class="bg-light-card-1 dark:bg-dark-card-1 rounded-lg overflow-hidden shadow-md p-4 flex flex-col gap-3 min-w-full">
+
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <a
+                href={`/app/user?id=${review.userId}`}
+                onclick={e => { e.preventDefault(); goto(`/app/user?id=${review.userId}`); }}
+            >
+                <img
+                    src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
+                    alt="{review.username}'s avatar"
+                    class="w-10 h-10 rounded-full object-cover"
+                />
+            </a>
+            <a
+                href={`/app/user?id=${review.userId}`}
+                onclick={e => { e.preventDefault(); goto(`/app/user?id=${review.userId}`); }}
+                class="font-semibold text-light-fg-900 dark:text-dark-fg-100 hover:underline"
+            >
+                {review.username}
+            </a>
+        </div>
+        <RatingPill rating={review.rating} />
+    </div>
+
+    <div class="flex flex-col">
+        <a
+            href={`/app/food?id=${review.foodId}`}
+            onclick={e => { e.preventDefault(); goto(`/app/food?id=${review.foodId}`); }}
+            class="font-semibold text-light-fg-900 dark:text-dark-fg-100 hover:underline text-md"
+        >
+            {review.foodName} review
+        </a>
+        <a
+            href={`/app/restaurant?id=${review.restaurantId}`}
+            onclick={e => { e.preventDefault(); goto(`/app/restaurant?id=${review.restaurantId}`); }}
+            class="text-light-fg-500 dark:text-dark-fg-500 text-sm hover:underline"
+        >
+            {review.restaurantName}
+        </a>
+    </div>
+
+    <div class="flex gap-4">
+        <div class="w-32 h-32 bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-md overflow-hidden shrink-0">
+            {#if !foodImgError}
+                <img
+                    src="{config.apiPaths.foodImage(review.foodId)}"
+                    alt="{review.foodName}"
+                    class="w-full h-full object-cover"
+                    onerror={() => { foodImgError = true; }}
+                />
+            {:else}
+                <ImageIcon class="w-8 h-8 text-light-fg-400 dark:text-dark-fg-400" />
+            {/if}
+        </div>
+
+        <div class="flex flex-col justify-start grow">
+            <p class="text-light-fg-700 dark:text-dark-fg-300 text-sm">
+                {review.review}
+            </p>
+        </div>
+    </div>
+
+</div>

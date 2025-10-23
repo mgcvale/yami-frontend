@@ -74,9 +74,16 @@
     </div>
 </Card1>
 
-<Card1 className="flex flex-col items-center justify-center">
-    <p>Don't have an account?</p>
-    <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Register instead</a>
+<Card1 className="flex flex-col items-center justify-center gap-4">
+    <div class="items-center text-center">
+        <p>Don't have an account?</p>
+        <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Register instead</a>
+    </div>
+
+    <div class="items-center text-center">
+        <p>Don't want to log in?</p>
+        <a href="/app" class="underline text-light-fg-100 dark:text-dark-fg-100">Return to yami</a>
+    </div>
 </Card1>
 
 <Modal />

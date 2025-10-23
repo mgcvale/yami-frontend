@@ -5,6 +5,7 @@ import { loadUserStats } from "$lib/core/actions/account/load-user-stats";
 import { error } from "@sveltejs/kit";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import type { LayoutLoad, LayoutLoadEvent } from "./$types";
+import { goto } from "$app/navigation";
 
 export const load: LayoutLoad = async (event: LayoutLoadEvent) => {
     const { parent, depends } = event;
@@ -13,7 +14,7 @@ export const load: LayoutLoad = async (event: LayoutLoadEvent) => {
     const id: string | null = event.url.searchParams.get('id');
 
     if (!id && !user) {
-        throw error(DEFAULT_ERRORS.USER_NOT_LOADED.status, DEFAULT_ERRORS.USER_NOT_LOADED);
+        goto('/account/login');
     }
 
     const userId: number = id ? parseInt(id) : user!.id;
