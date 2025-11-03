@@ -1,0 +1,1 @@
+import"../chunks/COm6N4YE.js";import{f as n,g as o,b as m,d as s,r as i}from"../chunks/FcNz6uVe.js";var l=n('<main class="w-full max-w-[500px] max-h-dvh h-dvh flex flex-col justify-center items-center gap-4"><!></main>');function f(e,r){var a=l(),t=s(a);o(t,()=>r.children),i(a),m(e,a)}export{f as component};

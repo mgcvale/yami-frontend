@@ -1,0 +1,2 @@
+import"./COm6N4YE.js";import{f as i,d as n,r as s,t as o,b as g}from"./FcNz6uVe.js";import{s as m}from"./CQT1G1Sl.js";import{s as f}from"./Cb4E-4CT.js";var l=i("<span> </span>");function b(r,t){var a=l(),e=n(a);s(a),o(()=>{f(a,1,`whitespace-nowrap font-bold
+    ${t.rating===20?"text-rating-top":t.rating>=15?"text-rating-great":t.rating>=10?"text-rating-good":t.rating>=5?"text-rating-bad":"text-rating-terrible"}`),m(e,`${t.rating/2} / 10`)}),g(r,a)}export{b as R};

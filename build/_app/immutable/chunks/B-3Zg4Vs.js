@@ -1,0 +1,1 @@
+function t(e){return typeof e=="object"&&typeof e.id=="number"&&typeof e.username=="string"&&typeof e.bio=="string"&&typeof e.location=="string"&&typeof e.followerCount=="number"&&typeof e.followingCount=="number"&&typeof e.reviewCount=="number"&&typeof e.accessToken=="string"&&typeof e.email=="string"}export{t as i};

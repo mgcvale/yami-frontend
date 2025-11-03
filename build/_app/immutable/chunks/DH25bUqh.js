@@ -1,0 +1,1 @@
+import"./COm6N4YE.js";import{f as m,g as p,t as l,b as f,d as i,r as c}from"./FcNz6uVe.js";import{s as n}from"./Cb4E-4CT.js";import{p as h}from"./BdHP4ea0.js";var d=m("<h1><!></h1>");function N(s,e){let r=h(e,"className",3,"");var a=d(),o=i(a);p(o,()=>e.children),c(a),l(()=>{var t;return n(a,1,`font-alegreya text-3xl p-4 ${(t=r())!=null?t:""}`)}),f(s,a)}export{N as P};
