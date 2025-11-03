@@ -25,7 +25,11 @@
             <a class="underline" href="/account/register">Create an account</a>
         </h3>
     {:else}
-        <Feed content={data.feedEntries} className={""}></Feed>
+        {#if data.feedEntries.length == 0}
+            <p>It seems you don not have a feed yet! Try checking out some popular restaurants, or searching for your friends' accounts.</p>
+        {:else}
+            <Feed content={data.feedEntries} className={""}></Feed>
+        {/if}
     {/if}
 {:else if mode === "search"}
     <FeedSearchPage />
