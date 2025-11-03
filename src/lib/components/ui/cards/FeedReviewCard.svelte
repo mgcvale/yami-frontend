@@ -14,7 +14,7 @@
     let foodImgError = $state(false);
 </script>
 
-<div class="bg-light-card-1 dark:bg-dark-card-1 rounded-lg overflow-hidden shadow-md p-4 flex flex-col gap-3 min-w-full">
+<div class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl overflow-hidden shadow-sm p-4 flex flex-col gap-3 min-w-full">
 
     <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
