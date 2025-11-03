@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:8080';
+const apiUrl = 'https://yami-backend-xatu.onrender.com';
 
 export default {
     apiUrl: apiUrl,
