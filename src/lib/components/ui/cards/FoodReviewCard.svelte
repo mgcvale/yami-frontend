@@ -1,6 +1,6 @@
 <script lang="ts">
     import config from "$lib/config";
-    import type { FoodReview } from "$lib/core/model/foodReview";
+    import type { FoodReview } from "$lib/core/model/food-review";
     import { Heart, MoreHorizontal, MoreVertical, Pencil, Repeat2, Trash } from "@lucide/svelte";
     import ListCard from "./ListCard.svelte";
     import RatingPill from "../controls/RatingPill.svelte";
@@ -20,7 +20,9 @@
         review = $bindable(),
         collapsed = false,
         ownsReview = false,
+        type = "user"
     }: {
+        type?: "user" | "restaurant"
         review: FoodReview,
         collapsed: boolean,
         ownsReview: boolean
@@ -67,7 +69,7 @@
 
     let deleted = $state(false);
     let showingContextMenu = $state(false);
-    const contextMenuEntries: ContextMenuEntry[] = [
+    const contextMenuEntries: ContextMenuEntry[] = ownsReview ? [
         {
             name: "Edit",
             icon: Pencil,
@@ -79,7 +81,7 @@
             action: onDeleteClick,
             className: "text-light-error dark:text-dark-error"
         }
-    ];
+    ] : [];
 </script>
 
 {#if !deleted}
@@ -97,56 +99,68 @@
         </div>
     </div>
     {:else}
-    <div class="flex justify-around items-center h-10 text-start w-full gap-2">
-
-        <a
-            href={`/app/restaurant?id=${review.restaurantId}`}
-            onclick={e => {
-                e.preventDefault();
-                goto(`/app/restaurant?id=${review.restaurantId}`);
-            }}
-            aria-label="View details for {review.restaurantName}"
-            class="h-full"
-        >
-            <img
-                class="h-full aspect-square rounded-md"
-                src="{config.apiPaths.restaurantImage(review.restaurantId)}"
-                alt="{review.restaurantName}"
-            />
-        </a>
-        
-        <div class="grow overflow-hidden">
-            
-            <a 
+        <div class="flex justify-around items-center h-10 text-start w-full gap-2">
+            {#if type == "user"}
+            <a
                 href={`/app/restaurant?id=${review.restaurantId}`}
                 onclick={e => {
                     e.preventDefault();
                     goto(`/app/restaurant?id=${review.restaurantId}`);
                 }}
                 aria-label="View details for {review.restaurantName}"
-                class="text-light-fg-500 dark:text-dark-fg-500 font-alegreya text-lg leading-tight truncate" title="{review.restaurantName}"
+                class="h-full"
             >
-                {review.restaurantName}
+                <img
+                    class="h-full aspect-square rounded-md"
+                    src="{config.apiPaths.restaurantImage(review.restaurantId)}"
+                    alt="{review.restaurantName}"
+                />
             </a>
-            <a href={`/app/food?id=${review.foodId}`} class="block text-light-fg-300 dark:text-dark-fg-300 text-sm truncate" title="{review.foodName} review">
-                {review.foodName} review
-            </a>
-        </div>
+            {:else}
+                <a
+                    href={`/app/user?id=${review.userId}`}
+                    onclick={e => {
+                        e.preventDefault();
+                        goto(`/app/restaurant?id=${review.restaurantId}`);
+                    }}
+                    aria-label="Go to {review.username}'s page"
+                    class="h-full"
+                >
+                    <img
+                        class="h-full aspect-square rounded-md"
+                        src="{config.apiPaths.userImage(review.restaurantId)}"
+                        alt="{review.username}"
+                    />
+                </a>
+            {/if}
+            
+            <div class="grow overflow-hidden">
+                <a 
+                    href={type == "user" ? `/app/restaurant?id=${review.restaurantId}` : `/app/user?id=${review.userId}`}
+                    aria-label="View details for {type == "user" ? review.restaurantName : review.username}"
+                    class="text-light-fg-500 dark:text-dark-fg-500 font-alegreya text-lg leading-tight truncate" title="{type == "user" ? review.restaurantName : review.username}"
+                >
+                    {type == "user" ? review.restaurantName : `Review by ${review.username}`}
+                </a>
+                <a href={`/app/food?id=${review.foodId}`} class="block text-light-fg-300 dark:text-dark-fg-300 text-sm truncate" title="{review.foodName} review">
+                    {review.foodName} review
+                </a>
+            </div>
 
-        <RatingPill rating={review.rating}>
-        </RatingPill>
-        <div class="flex relative">
-            <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
-            <ContextMenu bind:showing={showingContextMenu} entries={contextMenuEntries} className="bg-light-card-2! dark:bg-dark-card-2!"></ContextMenu>
+            <RatingPill rating={review.rating}>
+            </RatingPill>
+            <div class="flex relative">
+                <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
+                <ContextMenu bind:showing={showingContextMenu} entries={contextMenuEntries} className="bg-light-card-2! dark:bg-dark-card-2!"></ContextMenu>
+            </div>
         </div>
-    </div>
-    <p class="text-start pt-1 text-ms">
-        {review.review}
-    </p>
-    <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
-        <Repeat2 />
-        <Heart />
-    </div>
+        <p class="text-start pt-1 text-ms">
+            {review.review}
+        </p>
+        <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
+            <Repeat2 />
+            <Heart />
+        </div>
     {/if}
 </ListCard>
 {/if}

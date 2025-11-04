@@ -18,7 +18,9 @@ export function fetchWithTimeout(url: string, options: RequestInit = {}, timeout
 }
 
 export async function extractJsonOrThrow(res: Response) {
+  console.log(res);
     if (!res.ok) {
+      console.log("RES NOT OK");
         const json = await res.json();
         throw {
           status: res.status,

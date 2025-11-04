@@ -14,6 +14,7 @@
     })
     
 </script>
+
 <div class="yami-content h-full w-full max-w-[500px] bg-light-bg dark:bg-dark-bg">
     {@render children()}
 </div>

@@ -6,6 +6,13 @@ const config: CapacitorConfig = {
   webDir: 'build',
   android: {
     webContentsDebuggingEnabled: true
+  },
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "DARK",
+      "backgroundColor": "#aaaaaa"
+    }
   }
 };
 

@@ -45,7 +45,7 @@
                     <a href="/restaurant?id={restaurant.id}" class="h-full w-full">
                         <div class="p-4 flex flex-col items-center justify-start bg-light-card-1 dark:bg-dark-card-1 rounded-xl shadow-xs h-full w-full">
                             <h3 class="font-alegreya text-xl">{restaurant.shortName}</h3>
-                            <h4 class="text-xs">{restaurant.name}</h4>
+                            <h4 class="text-xs pb-2 ">{restaurant.name}</h4>
                             <img
                                 class="h-20 rounded-full w-auto"
                                 src={config.apiPaths.restaurantImage(restaurant.id)}

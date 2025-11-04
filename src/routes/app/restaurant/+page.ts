@@ -9,6 +9,7 @@ export const ssr = false;
 
 export const load: PageLoad = async (event: PageLoadEvent) => { 
     const id: string | null = event.url.searchParams.get('id');
+    let page: string | null = event.url.searchParams.get('page') || 'foods';
 
     if (!id) {
         throw error(DEFAULT_ERRORS.INVALID_PAGE_PARAMS.status, DEFAULT_ERRORS.INVALID_PAGE_PARAMS);
@@ -21,5 +22,5 @@ export const load: PageLoad = async (event: PageLoadEvent) => {
         throw error(res.error.status, res.error);
     }
 
-    return { restaurant: res.data, restaurantId };
+    return { restaurant: res.data, restaurantId, page };
 }

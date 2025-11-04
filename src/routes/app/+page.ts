@@ -5,12 +5,14 @@ import type { SyncState } from "$lib/core/model/sync-state";
 import type { PageableEntry } from "$lib/core/model/pageable-entry";
 import type { FoodReview } from "$lib/core/model/food-review";
 import { loadUserFeed } from "$lib/core/actions/account/load-user-feed";
+import { goto } from "$app/navigation";
 
 export const load: PageLoad = async (event: PageLoadEvent) => {
     const { parent, depends } = event;
     const { user } = await parent();
 
     if (!user) {
+        goto('/account/login');
         throw error(401, DEFAULT_ERRORS.USER_NOT_LOADED);
     }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Home, PlusCircle, User } from '@lucide/svelte';
-    import { page } from '$app/state';
+    import { navigating, page } from '$app/state';
     import { Modal } from '$lib';
     import { goto } from '$app/navigation';
     import SnackBar from '$lib/components/util/SnackBar.svelte';
@@ -39,7 +39,13 @@
 {/if}
 
 <main class="pb-18 pt-16 min-h-dvh bg-light-bg dark:bg-dark-bg flex flex-col">
-    {@render children()}
+    {#if navigating.to}
+        <div class="flex flex-col py-4 pt-6 px-2 gap-3 text-center">
+            <h2 class="w-full text-center text-xl">Loading...</h2>
+        </div>
+    {:else}
+        {@render children()}
+    {/if}
 </main>
 
 <Modal />

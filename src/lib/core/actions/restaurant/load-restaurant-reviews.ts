@@ -7,14 +7,14 @@ import { isArrayOf } from "$lib/core/model/type-checkers";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import type { SyncState } from "$lib/core/model/sync-state";
 import { handleAsSyncError } from "../generic-error-handler";
+import { isPageableEntry, type PageableEntry } from "$lib/core/model/pageable-entry";
 
-export async function loadRestaurantFoodReviews(id: number): Promise<SyncState<FoodReview[]>> {
+export async function loadRestaurantFoodReviews(id: number): Promise<SyncState<PageableEntry<FoodReview>>> {
     try {
-        console.log("LAKJDLAKJDS");
         const response = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.restaurantReviews(id), {}, config.fetchTimeout));
-        console.log(response);
+        console.log("RESPONSE: ", response);
 
-        if (!isArrayOf(response, isFoodReview)) {
+        if (!isPageableEntry(response, isFoodReview)) {
             return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
         }
 

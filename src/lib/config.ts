@@ -12,6 +12,7 @@ export default {
         userFollowing: (id: number) => `${apiUrl}/user/follow/${id}/following`,
         searchUser: (searchQuery: string) => `${apiUrl}/user/search/${searchQuery}`,
         userFeed: (offset: number) => `${apiUrl}/user/feed?offset=${offset}`,
+        userImage: (id: number) => `${apiUrl}/user/${id}/picture`,
 
         food: (id?: number) => id ? `${apiUrl}/food/${id}` : `${apiUrl}/food`,
         foodImage: (id: number) => `${apiUrl}/food/${id}/picture`,

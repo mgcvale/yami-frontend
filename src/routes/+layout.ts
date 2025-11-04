@@ -9,6 +9,7 @@ import { get } from "svelte/store";
 export const ssr = false;
 export const prerender = false;
 
+
 export const load: LayoutLoad = async (event) => {
   const { depends } = event;
   depends('user:current');

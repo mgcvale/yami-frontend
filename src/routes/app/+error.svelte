@@ -14,8 +14,6 @@
     {#if page.error?.type === NETWORK_ERROR_STR}
         <p>A network error occurred. Check if you're connected to the internet.</p>
         <a class="underline" href="/app">Go to home</a>
-    {:else if page.error?.status == 404}
-        <p>The restaurant you are looking for doesn't exist.</p>
     {:else if page.error?.status === 500}
         <p>An error occurred on our end. You can try again later.</p>
         <a class="underline" href="/app">Go to home</a>
