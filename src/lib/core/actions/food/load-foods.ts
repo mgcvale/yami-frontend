@@ -6,6 +6,22 @@ import { isFood, type Food } from "$lib/core/model/food";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import { handleAsSyncError } from "../generic-error-handler";
 
+
+export async function loadFoodsSearching(restaurantId: number, searchQuery: string): Promise<SyncState<Food[]>> {
+    try {
+        const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.restaurantFoodsSearch(restaurantId, searchQuery), {}, config.fetchTimeout));
+        
+        if (!isArrayOf(data, isFood)) {
+            return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
+        }
+
+        return syncSuccess(data);
+    } catch (e) {
+        console.log(e);
+        return handleAsSyncError(e);
+    }
+}
+
 export async function loadFoods(restaurantId: number): Promise<SyncState<Food[]>> {
 
     try {

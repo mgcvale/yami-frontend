@@ -180,6 +180,20 @@
             });
         }
     })
+    let reviewFieldRef = $state<HTMLTextAreaElement | null>(null);
+
+    function handleReviewFocus() {
+        console.log("ONFOCUSSS");
+        console.log(reviewFieldRef);
+        if (reviewFieldRef) {
+            setTimeout(() => {
+                reviewFieldRef!.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center'
+                });
+            }, 100); 
+        }
+    }
 </script>
 <!--
 {#if $currentUserStore.data === null}
@@ -195,7 +209,7 @@
         <ModalTextfield loadingMessage="Loading foods for {selectedRestaurant?.text}..." bind:loading={restaurantFoodsLoading} forceListUpdate={forceFoodListUpdate} searchOnKeydown={true} bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Food" className=""></ModalTextfield>
 
         <Slider bind:disabled={ratingDisabled} bind:value={rating} name="Rating" className="mt-4" />
-        <TextField maxLength={256} bind:disabled={ratingDisabled} bind:value={review} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow"></TextField>
+        <TextField maxLength={256} bind:disabled={ratingDisabled} bind:value={review} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow" bind:input={reviewFieldRef} onfocus={handleReviewFocus}></TextField>
         <div class="flex justify-end">
             <Button bind:disabled={ratingDisabled} onclick={onCreateReview} className="py-1 px-4 mb-4">Create Review</Button>
         </div>
