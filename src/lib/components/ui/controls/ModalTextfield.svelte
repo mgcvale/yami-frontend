@@ -1,10 +1,11 @@
 <script lang="ts">
     import bezier from '$lib/core/util/bezier';
-    import { Search, X } from '@lucide/svelte';
+    import { Image, Search, X } from '@lucide/svelte';
     import { fade } from 'svelte/transition';
     import TextField from './TextField.svelte';
     import { type SyncState } from '$lib/core/model/sync-state';
     import type { SearchDropdownItem } from '$lib/core/types/search-dropdown-item';
+    import ModalTextFieldListItem from './ModalTextFieldListItem.svelte';
     
     let { placeholder = "option", className = "", selected = $bindable(null), fetchFunction = async (query: string) => ({data: null, error: null}), imageUrlFunction = (id: number) => ("url"), disabled = $bindable(false), searchOnKeydown = false, forceListUpdate = false, loading=$bindable(false), loadingMessage="Loading...", loadingControlledByComponent=false }: {
         placeholder: string,
@@ -20,6 +21,8 @@
         loadingControlledByComponent?: boolean
 
     } = $props();
+
+    let imageErrors: Map<number, boolean> = $state(new Map());
 
     let containerRef = $state<HTMLDivElement | null>(null);
     let transformStyle = $state("");  
@@ -65,7 +68,6 @@
     function selectItem(item: SearchDropdownItem) {
         toggleOpen(item);
     }
-
 </script>
 
 {#if open}
@@ -92,7 +94,13 @@
     {:else}
         <!--When there is an item selected, we can show the item here-->
         <button class="w-full h-full flex justify-start items-center gap-2 max-h-12" onclick={() => toggleOpen(null)}>
-            <img class="max-w-12 aspect-square rounded-full" src={imageUrlFunction(selected.id)} alt="{placeholder}">
+            {#if !selected.imageError}
+                <img class="max-w-12 aspect-square rounded-full" src={imageUrlFunction(selected.id)} alt="{placeholder}" onerror={() => selected!.imageError = true}>
+            {:else}         
+                <div class="w-12 h-12 flex items-center justify-center">
+                    <Image size={32} />
+                </div>
+            {/if}
             <span class="text-light-fg-500 dark:text-dark-fg-500 text-lg">
                 {placeholder}: {selected.text}
             </span>
@@ -123,7 +131,13 @@
                 <div class="flex flex-col gap-2 py-1 px-0.5 justify-start items-center overflow-scroll max-h-120">
                     {#each loadedEntries.data as item}
                         <button class="w-full h-12 flex justify-start items-center p-2 bg-light-card-2 dark:bg-dark-card-2 rounded-md gap-2" onclick={() => selectItem(item)}>
-                            <img class="h-full w-auto aspect-square rounded-full" src={imageUrlFunction(item.id)} alt="No image">
+                            {#if !item.imageError}
+                                <img class="h-full w-auto aspect-square rounded-full" src={imageUrlFunction(item.id)} alt="img" onerror={() => item.imageError = true}>
+                            {:else}
+                                <div class="w-12">
+                                    <Image size={24} />
+                                </div>
+                            {/if}
                             <div class="flex flex-col justify-center items-start overflow-hidden">
                                 <span>
                                     {item.text}

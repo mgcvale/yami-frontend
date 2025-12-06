@@ -17,16 +17,20 @@
     let passwordHide = $state(true);
     let passwordIcon = $derived(passwordHide ? EyeOff : Eye);
 
+    let loading = $state(false);
+
     const onPasswordIconClick = () => {
         passwordHide = !passwordHide;
     }
 
     async function createAccountClick() {
+        loading = true;
         let valid: boolean;
         [usernameErrorMessage, emailErrorMessage, passwordErrorMessage, valid] = validateInputs(username, email, password);
         if (!valid) return;
 
         [usernameErrorMessage, emailErrorMessage, passwordErrorMessage] = await createAccount(username, email, password);
+        loading = false;
     }
     
 </script>
@@ -44,7 +48,7 @@
         <TextField placeholder={"Username"} maxLength={31} className="w-80 max-w-full" bind:value={username} noDecoration=true bind:errorMessage={usernameErrorMessage} />
         <TextField placeholder={"Email"} className="w-80 max-w-full" bind:value={email} noDecoration=true bind:errorMessage={emailErrorMessage} />
         <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration=true bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
-        <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={createAccountClick}>
+        <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={createAccountClick} bind:loading={loading}>
             Create account
         </Button>
     </div>
