@@ -12,17 +12,23 @@
     let bioError = $state("");
     let location = $state("");
     let locationError = $state("");
+    let loading = $state(false);
 
     async function finishAccountClick() {
         let valid: boolean = false;
         [bioError, locationError, valid] = validateInputs(bio, location);
-        if (!valid) return;
+        if (!valid) {
+            loading = false;
+            return;
+        }
         
         const res: SyncState<null> = await finishAccount(bio, location);
         if (res.error !== null) {
+            loading = false;
             return;
         }
         goto('/app');
+        loading = false;
     }
 
 </script>
@@ -56,7 +62,7 @@
             bind:errorMessage={bioError}
         ></TextField>
 
-        <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={finishAccountClick}>
+        <Button accent={true} {loading} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={finishAccountClick}>
             Ok
         </Button>
 

@@ -11,6 +11,8 @@
 
     let { user }: { user: CurrentUser } = $props();
 
+    let loading = $state(false);
+
     let username: string = $state(user.username);
     let bio: string = $state(user.bio);
     let location: string = $state(user.location);
@@ -38,17 +40,21 @@
     })
 
     async function updateInfo() {
-        const res: SyncState<null> = await updateAccount(username, bio, location);
+        loading = true;
+        const res: SyncState<null> = await updateAccount(username === user.username ? null : username, bio, location);
         if (res.error !== null) {
             if (res.error.status === 409) {
                 usernameErrorMessage = "This username is already in use!";
             } else {
                 errorMessage = res.error.message;
             }
+            loading = false;
         } else {
             modalStore.set(null);
             refreshAll();
+            loading = false;
         }
+        loading = false;
     }
 
 </script>
@@ -78,5 +84,5 @@
     {#if errorMessage && errorMessage !== ""}
         <span class="text-light-error dark:text-dark-error text-center pb-2">Error: {errorMessage}</span>
     {/if}
-    <Button accent={true} bind:disabled={buttonDisabled} onclick={updateInfo}>Update info</Button>
+    <Button accent={true} loading={loading} bind:disabled={buttonDisabled} onclick={updateInfo}>Update info</Button>
 </div>

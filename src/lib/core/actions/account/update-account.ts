@@ -9,7 +9,7 @@ import { handleAsSyncError } from "../generic-error-handler";
 import { invalidate } from "$app/navigation";
 
 
-export async function updateAccount(username: string, bio: string, location: string): Promise<SyncState<null>> {
+export async function updateAccount(username: string | null, bio: string, location: string): Promise<SyncState<null>> {
 
     if (get(currentUserStore).data === null) {
         return syncError(DEFAULT_ERRORS.USER_NOT_LOADED);
@@ -20,10 +20,16 @@ export async function updateAccount(username: string, bio: string, location: str
             "Authorization": `Bearer ${get(currentUserStore).data.accessToken}`
         }
 
+        const body = {
+        bio,
+        location,
+        ...(username != null ? { username } : {})
+        };
+
         const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.user(), {
             method: "PATCH",
             headers: { ...headers },
-            body: JSON.stringify({ bio, location, username })
+            body: JSON.stringify(body)
         }, config.fetchTimeout));
 
         if (!isCurrentUser(data)) {

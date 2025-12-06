@@ -18,7 +18,7 @@ export function validateInputs(bio: string, location: string): [string, string, 
     return ["", "", true];
 }
 
-export async function finishAccount(bio: string, location: string): Promise<SyncState<void>> {
+export async function finishAccount(bio: string, location: string): Promise<SyncState<null>> {
     try {
         const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.user(), {
             method: "PATCH",
@@ -37,7 +37,6 @@ export async function finishAccount(bio: string, location: string): Promise<Sync
             data: data,
         });
         return syncSuccess(null);
-        goto('/app');
     } catch (e) {
         if (isAppError(e)) {
             handleAllGeneric(e);
