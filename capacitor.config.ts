@@ -4,14 +4,11 @@ const config: CapacitorConfig = {
   appId: 'com.yami_app.app',
   appName: 'Yami',
   webDir: 'build',
-  android: {
-    webContentsDebuggingEnabled: true
-  },
-  "plugins": {
-    "StatusBar": {
-      "overlaysWebView": false,
-      "style": "DARK",
-      "backgroundColor": "#aaaaaa"
+  plugins: {
+    StatusBar: {
+      overlaysWebView: false,
+      backgroundColor: "#888888",
+      style: "DARK"
     }
   }
 };

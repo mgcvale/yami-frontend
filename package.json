@@ -20,6 +20,7 @@
 		"@tailwindcss/vite": "^4.1.4",
 		"@types/js-cookie": "^3.0.6",
 		"js-cookie": "^3.0.5",
+		"pulltorefreshjs": "^0.1.22",
 		"sass-embedded": "^1.86.3",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",

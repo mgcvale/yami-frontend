@@ -68,3 +68,10 @@
 
     <Search aria-label="search-button" role="button" onclick={doSearch}></Search>
 </header>
+
+<style>
+header {
+  padding-top: max(env(safe-area-inset-top), 10px);
+  height: calc(64px + env(safe-area-inset-top)) !important;
+}
+</style>

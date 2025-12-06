@@ -165,6 +165,10 @@
             <ListFilterPlus class="cursor-pointer"/>
         </div>
 
+        {#if data.reviews.content.length == 0}
+            <h1 class="center p-2">This food has no reviews!</h1>
+        {/if}
+
         {#each data.reviews.content as review: FoodReview, i}
             <div
                 onclick={() => onReviewClick(review)} 

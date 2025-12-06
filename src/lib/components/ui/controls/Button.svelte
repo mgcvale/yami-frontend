@@ -1,5 +1,7 @@
 <script lang="ts">
-    let { children, className = "", outline = false, accent = false, onclick = () => {}, disabled = $bindable(false) } = $props(); 
+    import { LoaderCircle } from "@lucide/svelte";
+
+    let { children, className = "", outline = false, accent = false, onclick = () => {}, disabled = $bindable(false), loading=$bindable(false) } = $props(); 
 </script>
 
 <button class="
@@ -19,5 +21,13 @@
     {disabled}
     onclick={() => onclick()}    
 >
-    {@render children()}
+    {#if !loading}
+        {@render children()}
+    {:else}
+        <div class="w-full flex items-center justify-center">
+            <span class="animate-spin">
+                <LoaderCircle className="animate-spin" />
+            </span>
+        </div>
+    {/if}
 </button>

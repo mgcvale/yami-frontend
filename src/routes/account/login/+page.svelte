@@ -8,6 +8,7 @@
     import { login, loginResponse, validateInputs } from "$lib/core/actions/account/login";
     import { handleAllGeneric } from "$lib/core/actions/generic-error-handler";
     import type { SyncState } from "$lib/core/model/sync-state";
+    import { goto } from "$app/navigation";
 
     let usernameOrEmail = $state("");
     let usernameOrEmailErrorMessage = $state("");
@@ -18,6 +19,8 @@
     let passwordHide = $state(true);
     let passwordIcon = $derived(passwordHide ? EyeOff : Eye);
 
+    let loading = $state(false);
+
     const onPasswordIconClick = () => {
         passwordHide = !passwordHide;
     }
@@ -27,29 +30,19 @@
         [usernameOrEmailErrorMessage, passwordErrorMessage, valid] = validateInputs(usernameOrEmail, password);
         if (!valid) return;
 
-        console.log("going");
+        loading = true;
         const res: SyncState<null> = await login(usernameOrEmail, password);
+        loading = false;
         if (res.error !== null) {
             switch (res.error.status) {
                 case 401:
                     loginErrorMessage = "Your username or password is incorrect! Verify your credentials and try again."
             }
+        } else {
+            loginErrorMessage = "";
+            goto("/app");
         }
     }
-
-    loginResponse.subscribe(newResponse => {
-        if (newResponse.loading) return;
-        loginErrorMessage = "";
-
-        if (newResponse.error !== null) {
-            if (newResponse.error.status === 401) {
-                loginErrorMessage = "Your username or password are incorrect.";
-                return;
-            } else {
-                handleAllGeneric(newResponse.error);
-            }
-        }
-    });
     
 </script>
 
@@ -68,7 +61,7 @@
         {#if loginErrorMessage}
             <p class="text-light-error dark:text-dark-error text-sm text-center">{loginErrorMessage}</p>
         {/if}
-        <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={loginClick}>
+        <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={loginClick} bind:loading={loading}>
             Log in
         </Button>
     </div>
@@ -81,11 +74,9 @@
     </div>
 
     <div class="items-center text-center">
-        <p>Don't want to log in?</p>
-        <a href="/app" class="underline text-light-fg-100 dark:text-dark-fg-100">Return to yami</a>
+        <p>Forgot your password?</p>
+        <a href="/account/request-recovery" class="underline text-light-fg-100 dark:text-dark-fg-100">Click here</a>
     </div>
 </Card1>
 
 <Modal />
-
-

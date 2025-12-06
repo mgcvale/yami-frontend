@@ -150,3 +150,10 @@
         </div>
     </div>
 </header>
+
+<style>
+header {
+  padding-top: max(env(safe-area-inset-top), 10px);
+  height: calc(64px + env(safe-area-inset-top)) !important;
+}
+</style>
