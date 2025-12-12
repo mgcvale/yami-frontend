@@ -24,6 +24,7 @@ export default {
         createFoodReview: (id: number) => `${apiUrl}/food/review/${id}`,
         deleteFoodReview: (id: number) => `${apiUrl}/food/review/${id}`,
         updateFoodReview: (id: number) => `${apiUrl}/food/review/${id}`,
+        likeFoodReview: (id: number) => `${apiUrl}/food/review/${id}/like`,
 
         restaurantSearch: (searchQuery: string) => `${apiUrl}/restaurant/search/${searchQuery}`,
         restaurantImage: (id: number) => `${apiUrl}/restaurant/${id}/picture`,

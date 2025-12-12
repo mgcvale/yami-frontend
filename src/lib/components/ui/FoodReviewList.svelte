@@ -32,7 +32,7 @@
         }
         loading = false;
     }
-    
+
     onMount(async () => load());
 </script>
 

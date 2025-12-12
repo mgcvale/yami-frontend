@@ -26,7 +26,9 @@
         </h3>
     {:else}
         {#if data.feedEntries.length == 0}
-            <p>It seems you don not have a feed yet! Try checking out some popular restaurants, or searching for your friends' accounts.</p>
+            <div class="flex flex-1 justify-center items-center h-full">
+                <p class="p-3 px-8 text-center">It seems you don't have a feed yet! Try checking out some popular restaurants, or searching for your friends' accounts.</p>
+            </div>
         {:else}
             <Feed content={data.feedEntries} className={""}></Feed>
         {/if}

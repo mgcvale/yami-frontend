@@ -9,6 +9,8 @@ export interface FoodReview {
     restaurantShortName: string
     review: string,
     rating: number,
+    liked: boolean,
+    likeCount: number
 };
 
 export function isFoodReview(fr: any): fr is FoodReview {
@@ -24,6 +26,8 @@ export function isFoodReview(fr: any): fr is FoodReview {
         typeof fr.restaurantName === 'string' &&
         typeof fr.restaurantShortName === 'string' &&
         typeof fr.review === 'string' &&
-        typeof fr.rating === 'number'
+        typeof fr.rating === 'number' &&
+        typeof fr.liked === 'boolean' &&
+        typeof fr.likeCount === 'number'
     );
 }

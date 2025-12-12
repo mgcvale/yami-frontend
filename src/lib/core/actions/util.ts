@@ -17,17 +17,19 @@ export function fetchWithTimeout(url: string, options: RequestInit = {}, timeout
   ]);
 }
 
-export async function extractJsonOrThrow(res: Response) {
+export async function extractJsonOrThrow(res: Response): Promise<any> {
   console.log(res);
+  const isBodyExpected = res.status !== 204 && res.headers.get('Content-Length') !== '0';
     if (!res.ok) {
       console.log("RES NOT OK");
-        const json = await res.json();
-        throw {
-          status: res.status,
-          message: json.message ?? 'Server error',
-          type: SERVER_ERROR_STR
-        } as App.Error;
+      const json = isBodyExpected ? await res.json() : ""; // "".message will default to "Unknown Server Error" due to the nullish coalescing
+      throw {
+        status: res.status,
+        message: json.message ?? 'Unknown erver error',
+        type: SERVER_ERROR_STR
+      } as App.Error;
     }
+    if (!isBodyExpected) return null;
     return await res.json();
 }
 

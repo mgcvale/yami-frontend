@@ -15,6 +15,7 @@
     import ErrorSnackbar from "../ErrorSnackbar.svelte";
     import SuccessSnackbar from "../SuccessSnackbar.svelte";
     import FoodReviewEditingModal from "../modals/FoodReviewEditingModal.svelte";
+    import ReviewLikeButton from "../ReviewLikeButton.svelte";
 
     let {
         review = $bindable(),
@@ -127,9 +128,9 @@
                     class="h-full"
                 >
                     <img
-                        class="h-full aspect-square rounded-md"
-                        src="{config.apiPaths.userImage(review.restaurantId)}"
-                        alt="{review.username}"
+                        src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
+                        alt="{review.username}'s avatar"
+                        class="w-10 h-10 rounded-full object-cover"
                     />
                 </a>
             {/if}
@@ -158,8 +159,7 @@
             {review.review}
         </p>
         <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
-            <Repeat2 />
-            <Heart />
+            <ReviewLikeButton bind:review />
         </div>
     {/if}
 </ListCard>
