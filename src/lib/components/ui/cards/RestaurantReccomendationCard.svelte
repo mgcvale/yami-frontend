@@ -42,7 +42,7 @@
                 <p>No restaurant recommendations were found for you!</p>
             {:else}
                 {#each data.data as restaurant}
-                    <a href="/restaurant?id={restaurant.id}" class="h-full w-full">
+                    <a href="/restaurant?id={restaurant.id}&page=foods" class="h-full w-full">
                         <div class="p-4 flex flex-col items-center justify-start bg-light-card-1 dark:bg-dark-card-1 rounded-xl shadow-xs h-full w-full">
                             <h3 class="font-alegreya text-xl">{restaurant.shortName}</h3>
                             <h4 class="text-xs pb-2 ">{restaurant.name}</h4>
