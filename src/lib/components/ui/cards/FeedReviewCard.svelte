@@ -1,16 +1,8 @@
 <script lang="ts">
-    import config from "$lib/config";
     import type { FoodReview } from "$lib/core/model/food-review";
     import RatingPill from "../controls/RatingPill.svelte";
     import { goto } from "$app/navigation";
-    import { Heart, ImageIcon, Repeat2, Send } from "@lucide/svelte";
-    import { doLike, doUnlike } from "$lib/core/actions/review/like-food-review";
-    import { snackbarStore } from "$lib/core/store/snackbarStore";
-    import ErrorSnackbar from "../ErrorSnackbar.svelte";
-    import { scale } from "svelte/transition";
-    import { backOut } from "svelte/easing";
-    import { currentThemeLight } from "$lib/core/util/theme-manager";
-    import ReviewLikeButton from "../ReviewLikeButton.svelte";
+    import ReviewInteractionbar from "../ReviewInteractionbar.svelte";
 
     let {
         review = $bindable(),
@@ -19,6 +11,7 @@
     } = $props();
 
     let foodImgError = $state(false);
+    
 </script>
 
 <div class="flex flex-col gap-1 w-full">
@@ -88,15 +81,5 @@
             </div>
         </div>
     </div>
-    <div class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl overflow-hidden shadow-sm p-3 flex justify-between min-w-full rounded-t-lg">
-        <div>
-            <p class="text-sm pl-1">Posted 5 days ago</p>
-        </div>
-        <div class="flex justify-end items-center text-light-fg-700 dark:text-dark-fg-700 self-end gap-4 pr-1">
-            <Send size={20} />
-            <div class="flex gap-2">
-                <ReviewLikeButton bind:review />
-            </div>
-        </div>
-    </div>
+    <ReviewInteractionbar bind:review />
 </div>

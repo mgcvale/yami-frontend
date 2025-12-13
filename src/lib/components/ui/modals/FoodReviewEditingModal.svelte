@@ -8,26 +8,32 @@
     import TextField from "../controls/TextField.svelte";
     import { updateFoodReview } from "$lib/core/actions/review/update-food-review";
 
+    type FoodReviewProps = {
+        review: FoodReview,
+        onUpdated: (r: FoodReview) => void;
+    };
+
     let {
-        review = $bindable()
-    }: {
-        review: FoodReview
-    } = $props();
+        review,
+        onUpdated
+    }: FoodReviewProps = $props();
 
     let actualRating = $state(review.rating/2);
     let actualReview = $state(review.review);
     let errorMessage = $state("");
     let buttonDisabled = $derived(actualRating === review.rating/2 && actualReview === review.review);
+    let loading = $state(false);
 
     async function updateReview() {
+        loading = true;
         const res = await updateFoodReview(review.id, actualReview, actualRating * 2);
         if (res.error !== null) {
             errorMessage = "An error ocurred: ".concat(res.error.message);
         } else {
-            review = res.data;
+            onUpdated(res.data!);
             modalStore.set(null);
-            location.reload();
         }
+        loading = false;
     }
 
 </script>
@@ -48,6 +54,6 @@
     {#if errorMessage && errorMessage !== ""}
         <span class="text-light-error dark:text-dark-error text-center pb-2">Error: {errorMessage}</span>
     {/if}
-    <Button accent={true} bind:disabled={buttonDisabled} onclick={updateReview}>Update info</Button>
+    <Button accent={true} bind:loading={loading} bind:disabled={buttonDisabled} onclick={updateReview}>Update info</Button>
 </div>
 

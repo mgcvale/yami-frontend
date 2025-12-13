@@ -15,17 +15,15 @@
     import ErrorSnackbar from "../ErrorSnackbar.svelte";
     import SuccessSnackbar from "../SuccessSnackbar.svelte";
     import FoodReviewEditingModal from "../modals/FoodReviewEditingModal.svelte";
-    import ReviewLikeButton from "../ReviewLikeButton.svelte";
+    import ReviewInteractionbar from "../ReviewInteractionbar.svelte";
 
     let {
         review = $bindable(),
-        collapsed = false,
         ownsReview = false,
         type = "user"
     }: {
         type?: "user" | "restaurant"
         review: FoodReview,
-        collapsed: boolean,
         ownsReview: boolean
     } = $props();
 
@@ -33,7 +31,10 @@
         modalStore.set({
             component: FoodReviewEditingModal,
             props: {
-                review
+                review: review,
+                onUpdated: (r: FoodReview) => {
+                    review = r;
+                }
             }
         });
     }
@@ -86,20 +87,8 @@
 </script>
 
 {#if !deleted}
-<ListCard className={(collapsed ? "bg-light-card-2 dark:bg-dark-card-2" : "") + " pt-4"}>
-    {#if collapsed}
-    <div class="flex justify-start items-center h-8">
-        <img class="h-full aspect-square w-auto rounded-md" src="{config.apiPaths.foodImage(review.foodId)}" alt="{review.foodName}'s food">
-        <div class="flex flex-col justify-between items-start">
-            <span class="text-light-fg-100 dark:text-dark-fg-100">
-                Review by {review.username}
-            </span>
-            <span class="text-light-fg-300 dark:text-dark-fg-300">
-                Rating: {review.rating * 2}
-            </span>
-        </div>
-    </div>
-    {:else}
+<div class="flex flex-col gap-1 w-full">
+    <div class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl overflow-hidden shadow-sm p-5 flex flex-col gap-3 min-w-full rounded-b-lg">
         <div class="flex justify-around items-center h-10 text-start w-full gap-2">
             {#if type == "user"}
             <a
@@ -150,17 +139,17 @@
 
             <RatingPill rating={review.rating}>
             </RatingPill>
-            <div class="flex relative">
-                <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
-                <ContextMenu bind:showing={showingContextMenu} entries={contextMenuEntries} className="bg-light-card-2! dark:bg-dark-card-2!"></ContextMenu>
-            </div>
+            {#if contextMenuEntries.length !== 0}
+                <div class="flex relative">
+                    <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
+                    <ContextMenu bind:showing={showingContextMenu} entries={contextMenuEntries} className="bg-light-card-2! dark:bg-dark-card-2!"></ContextMenu>
+                </div>
+            {/if}
         </div>
         <p class="text-start pt-1 text-ms">
             {review.review}
         </p>
-        <div class="w-full flex justify-end items-center gap-4 plr-2 pt-1 text-light-fg-700 dark:text-dark-fg-700">
-            <ReviewLikeButton bind:review />
-        </div>
-    {/if}
-</ListCard>
+    </div>
+    <ReviewInteractionbar bind:review />
+</div>
 {/if}
