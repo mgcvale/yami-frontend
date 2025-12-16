@@ -25,6 +25,7 @@ export default {
         deleteFoodReview: (id: number) => `${apiUrl}/food/review/${id}`,
         updateFoodReview: (id: number) => `${apiUrl}/food/review/${id}`,
         likeFoodReview: (id: number) => `${apiUrl}/food/review/${id}/like`,
+        loadLikedFoodReviews: (offset: number = 0, count: number = 25) => `${apiUrl}/food/review/liked?offset=${offset}&count=${count}`,
 
         restaurantSearch: (searchQuery: string) => `${apiUrl}/restaurant/search/${searchQuery}`,
         restaurantImage: (id: number) => `${apiUrl}/restaurant/${id}/picture`,

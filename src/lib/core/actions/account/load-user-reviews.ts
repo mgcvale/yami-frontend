@@ -5,6 +5,8 @@ import { extractJsonOrThrow, fetchWithTimeout, isAppError, syncError, syncSucces
 import type { SyncState } from "$lib/core/model/sync-state";
 import { DEFAULT_ERRORS } from "$lib/core/types/error-codes";
 import { handleAsSyncError } from "../generic-error-handler";
+import { currentUserStore } from "$lib/core/store/currentUserStore";
+import { get } from "svelte/store";
 
 export async function loadUserReviews(userId: number): Promise<SyncState<PageableEntry<FoodReview>>> {
     try {

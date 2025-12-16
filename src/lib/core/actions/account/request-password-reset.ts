@@ -16,7 +16,7 @@ export async function requestPasswordReset(email: string): Promise<SyncState<nul
         if (isAppError(e) && e.status == 404) {
             return syncError({
                 ...e,
-                message: "A user with this e-mail doesn't exist. Make sure you've typed the correct email."
+                message: "Um usuário com este e-mail não existe. Verifique que você digitou o e-mail correto."
             } as App.Error);
         }
         console.log(e);

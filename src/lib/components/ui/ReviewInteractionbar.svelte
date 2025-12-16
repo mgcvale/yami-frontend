@@ -28,6 +28,11 @@
         reviewLikeCount++;
         const res = await doLike(review.id);
         if (res.error !== null) {
+            if (res.error.status === 409) {
+                // this means this was already liked somehow
+                reviewLikeCount --;
+                return;
+            }
             isReviewLiked = false;
             reviewLikeCount--;
             likeError(res.error);

@@ -18,17 +18,27 @@ export const loginResponse: Writable<AsyncState<null>> = writable({
     error: null
 });
 
-export function validateInputs(usernameOrEmail: string, password: string): [string, string, boolean] {
+export function validateInputs(
+    usernameOrEmail: string,
+    password: string
+): [string, string, boolean] {
+
     if (usernameOrEmail.length === 0) {
-        return ["The username/email can't be empty", "", false];
+        return ["O nome de usuário ou e-mail não pode estar vazio", "", false];
     }
+
     if (password.length === 0) {
-        return ["", "The password can't be empty", false];
+        return ["", "A senha não pode estar vazia", false];
     }
+
     return ["", "", true];
 }
 
-export async function login(usernameOrEmail: string, password: string): Promise<SyncState<null>> {
+export async function login(
+    usernameOrEmail: string,
+    password: string
+): Promise<SyncState<null>> {
+
     const jsonData = JSON.stringify({
         [usernameOrEmail.match(config.emailRegex) ? 'email' : 'username']: usernameOrEmail,
         password,
@@ -36,15 +46,24 @@ export async function login(usernameOrEmail: string, password: string): Promise<
 
     try {
         logout(() => {});
-        const data = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.login(), { method: "POST" , body: jsonData }, config.fetchTimeout));
+
+        const data = await extractJsonOrThrow(
+            await fetchWithTimeout(
+                config.apiPaths.login(),
+                { method: "POST", body: jsonData },
+                config.fetchTimeout
+            )
+        );
 
         console.log(data);
+
         if (!isLoginUserDTO(data)) {
             handleAllGeneric(DEFAULT_ERRORS.BAD_RESPONSE);
             return syncError(DEFAULT_ERRORS.BAD_RESPONSE);
         }
 
         Cookies.set('accessToken', data.accessToken, { expires: 180 });
+
         const user: CurrentUser = {
             id: data.id,
             username: data.username,
@@ -56,7 +75,8 @@ export async function login(usernameOrEmail: string, password: string): Promise<
             followingCount: data.followingCount,
             reviewCount: data.reviewCount,
             following: false,
-        }
+        };
+
         currentUserStore.set({
             data: user,
             loading: false,
@@ -65,18 +85,23 @@ export async function login(usernameOrEmail: string, password: string): Promise<
 
         localStorage.setItem("currentUser", JSON.stringify(user));
 
-        goto('/app', {replaceState: true, invalidateAll: true});
+        goto('/app', { replaceState: true, invalidateAll: true });
         return syncSuccess(null);
+
     } catch (e) {
         if (isAppError(e)) {
-            if ([401, 409].includes(e.status)) return syncError(e);
+            if ([401, 409].includes(e.status)) {
+                return syncError(e);
+            }
 
             handleAllGeneric(e);
-            return syncError(e);       
+            return syncError(e);
+
         } else if (e instanceof TypeError) {
             handleNetwork(e);
             return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
         }
+
         handleUnknownException(e);
         return syncError(DEFAULT_ERRORS.NETWORK_ERROR);
     }

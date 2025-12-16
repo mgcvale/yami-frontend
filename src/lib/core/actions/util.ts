@@ -1,9 +1,18 @@
 import type { AsyncState } from "../model/async-state";
 import { SERVER_ERROR_STR } from "../types/error-codes";
 import type { SyncState } from "../model/sync-state";
+import { currentUserStore } from "../store/currentUserStore";
+import { get } from "svelte/store";
 
-export function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 5000): Promise<Response> {
+export function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 5000, applyAuthHeaders=true): Promise<Response> {
   const headers = new Headers(options.headers);
+    
+  if (!headers.has("Authorization")) {
+    const user = get(currentUserStore);
+    if (user.data !== null) {
+      headers.set("Authorization", `Bearer ${user.data.accessToken}`);
+    }
+  }
 
   if (!headers.has('content-type')) {
     headers.set('content-type', 'application/json');
@@ -22,10 +31,10 @@ export async function extractJsonOrThrow(res: Response): Promise<any> {
   const isBodyExpected = res.status !== 204 && res.headers.get('Content-Length') !== '0';
     if (!res.ok) {
       console.log("RES NOT OK");
-      const json = isBodyExpected ? await res.json() : ""; // "".message will default to "Unknown Server Error" due to the nullish coalescing
+      const json = isBodyExpected ? await res.json() : ""; // "".message will default to "Erro interno desconhecido" due to the nullish coalescing
       throw {
         status: res.status,
-        message: json.message ?? 'Unknown erver error',
+        message: json.message ?? 'Erro interno desconhecido',
         type: SERVER_ERROR_STR
       } as App.Error;
     }

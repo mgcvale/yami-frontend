@@ -8,48 +8,68 @@ import { extractJsonOrThrow, fetchWithTimeout, isAppError, syncError } from "../
 import { isCreateUserDTO } from "$lib/core/model/dto/create-user-dto";
 
 
-export function validateInputs(username: string, email: string, password: string): [string, string, string, boolean] {
+export function validateInputs(
+    username: string,
+    email: string,
+    password: string
+): [string, string, string, boolean] {
+
     if (username.length === 0) {
-        return ["You must provide a username", "", "", false];
+        return ["Você deve informar um nome de usuário", "", "", false];
     }
 
     if (username.length < 3) {
-        return ["The username must be at least 3 characters long", "", "", false];
+        return ["O nome de usuário deve ter pelo menos 3 caracteres", "", "", false];
     }
     
     if (username.length > 31) {
-        return ["The username must be at most 32 characters long", "", "", false];
+        return ["O nome de usuário deve ter no máximo 32 caracteres", "", "", false];
     }
     
     if (email.length === 0) {
-        return ["", "You must provide an email", "", false]
+        return ["", "Você deve informar um e-mail", "", false];
     }
     
     if (!email.match(config.emailRegex)) {
-        return ["", "You must provide a valid email", "", false]
+        return ["", "Você deve informar um e-mail válido", "", false];
     }
     
     if (password.length === 0) {
-        return ["", "", "You must provide a password", false];
+        return ["", "", "Você deve informar uma senha", false];
     }
 
     if (password.length < 8) {
-        return ["", "", "Your password must have at least 8 characters", false];
+        return ["", "", "Sua senha deve ter pelo menos 8 caracteres", false];
     }
 
-    return ["", "" , "", true];
+    return ["", "", "", true];
 }
 
-export async function createAccount(username: string, email: string, password: string): Promise<[string, string, string]> {
+export async function createAccount(
+    username: string,
+    email: string,
+    password: string
+): Promise<[string, string, string]> {
+
     let retval: [string, string, string] = ["", "", ""];
 
     try {
-        const res = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.user(), {
-            method: 'POST',
-            body: JSON.stringify({ username, password, email: email.toLowerCase() })
-        }, config.fetchTimeout));
+        const res = await extractJsonOrThrow(
+            await fetchWithTimeout(
+                config.apiPaths.user(),
+                {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username,
+                        password,
+                        email: email.toLowerCase()
+                    })
+                },
+                config.fetchTimeout
+            )
+        );
 
-        console.log("Create account response: ", res);
+        console.log("Resposta de criação de conta: ", res);
         
         if (!isCreateUserDTO(res)) {
             handleAllGeneric(DEFAULT_ERRORS.BAD_RESPONSE);
@@ -57,6 +77,7 @@ export async function createAccount(username: string, email: string, password: s
         }
         
         Cookies.set('accessToken', res.accessToken, { expires: 180 });
+
         currentUserStore.set({
             loading: false,
             data: {
@@ -73,13 +94,14 @@ export async function createAccount(username: string, email: string, password: s
             },
             error: null
         });
+
         goto("/account/details");
 
     } catch (e) {
         if (isAppError(e)) {
             if (e.status === 409) {
-                console.log("status was 409")
-                return ["This username is already in use", "", ""];
+                console.log("status foi 409");
+                return ["Este nome de usuário já está em uso", "", ""];
             }
             handleAllGeneric(e);
         } else if (e instanceof TypeError) {
