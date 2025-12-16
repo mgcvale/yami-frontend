@@ -29,15 +29,15 @@
 
 </script>
 
-<HeaderWithBackButton title="Users {data.viewingSelf ? 'you follow' : data.user.username.concat(' follows')}"></HeaderWithBackButton>
+<HeaderWithBackButton title="Usuários que {data.viewingSelf ? 'você segue' : data.user.username.concat(' segue')}"></HeaderWithBackButton>
 
 <div class="w-full grow flex flex-col p-4">
     <Card1 className="w-full h-full grow p-3! gap-2! flex flex-col justify-start items-center overflow-scroll">
 
-        <TextField bind:value={searchQuery} noDecoration={true} placeholder="Search Followers" className="w-full rounded-xl! h-12 bg-light-card-2! dark:bg-dark-card-2! px-2" inputClassName="bg-light-card-2 dark:bg-dark-card-2" />
+        <TextField bind:value={searchQuery} noDecoration={true} placeholder="Pesquisar seguidores" className="w-full rounded-xl! h-12 bg-light-card-2! dark:bg-dark-card-2! px-2" inputClassName="bg-light-card-2 dark:bg-dark-card-2" />
 
         {#if actualFollowing.length === 0}
-            <Card2 className="w-full flex"><span class="m-auto">No users found!</span></Card2>
+            <Card2 className="w-full flex"><span class="m-auto">Nenhum usuário encontrado!</span></Card2>
         {:else}
             {#each actualFollowing as follower: isPublicUserWithoutCounts, i}
                 <div

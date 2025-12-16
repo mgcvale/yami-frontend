@@ -46,9 +46,9 @@
         <p>Loading</p>
     {:else}
         {#if foods.error !== null}
-            <h2>An error ocurred while loading this restaurant's foods: {foods.error.message}</h2>
+            <h2>Ocorreu um erro ao carregar os pratos deste restaurante: {foods.error.message}</h2>
             <div class="flex justify-center w-full">
-                <Button onclick={load}>Reload Restaurant</Button>
+                <Button onclick={load}>Recarregar restaurante</Button>
             </div>
         {:else}
             {#each foods.data! as food}

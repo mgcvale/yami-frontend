@@ -8,7 +8,7 @@
     import type { FoodReview } from "$lib/core/model/food-review";
     import type { PageableEntry } from "$lib/core/model/pageable-entry";
     import type { ReviewStats } from "$lib/core/model/review-stats";
-    import { Edit, Heart, Image, ListFilterPlus, MoreVertical, Pencil, Trash } from "@lucide/svelte";
+    import { Heart, Image, ListFilterPlus, MoreVertical, Pencil, Trash } from "@lucide/svelte";
     import RatingWithPercentage from "$lib/components/ui/RatingWithPercentage.svelte";
     import { currentUserStore, modalStore } from "$lib";
     import FoodReviewModal from "$lib/components/ui/modals/FoodReviewModal.svelte";
@@ -30,12 +30,12 @@
 
     const contextMenuEntries: ContextMenuEntry[] = [
         {
-            name: "Edit",
+            name: "Editar",
             icon: Pencil,
             action: onReviewEditClick
         },
         {
-            name: "Delete",
+            name: "Deletar",
             icon: Trash,
             action: onReviewDeleteClick,
             className: "text-light-error dark:text-dark-error"
@@ -64,7 +64,7 @@
         modalStore.set({
             component: ConfirmationModal,
             props: {
-                actionName: "Delete this review",
+                actionName: "Deletar essa avaliação",
                 action: (confirmed: boolean) => {if (confirmed) doDelete();}
             }
         });
@@ -77,14 +77,14 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: `Error deleting your review: ${res.error.message}`
+                    warningMessage: `Erro deletando sua avaliação: ${res.error.message}`
                 }
             });
         } else {
             snackbarStore.set({
                 component: SuccessSnackbar,
                 props: {
-                    successMessage: "Success deleting your review!"
+                    successMessage: "Successo deletando sua avaliação!"
                 }
             });
             data.food.review = undefined;
@@ -97,7 +97,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: "You have to be logged in to create a review."
+                    warningMessage: "Você deve estar logado para criar uma avaliação."
                 }
             });
         }
@@ -109,7 +109,7 @@
     console.log(data.food)
 </script>
 
-<HeaderWithBackButton title="Food Information" />
+<HeaderWithBackButton title="Informações sobre o Prato" />
 
 <div class="flex flex-col w-full items-center justify-start p-3 pt-1 gap-3">
     <Card1 className="flex flex-col items-start justify-start max-w-full w-full gap-2">
@@ -117,7 +117,7 @@
             {#if !foodImgError}
                 <img
                     src={config.apiPaths.foodImage(data.food.id)}
-                    alt="Food"
+                    alt="Prato"
                     class="rounded-lg aspect-square object-cover flex-1 min-w-0 self-start max-w-32"
                     onerror={() => foodImgError = true}
                 />
@@ -128,24 +128,24 @@
             {/if}
             <div class="flex flex-col flex-shrink-0">
                 <h3 class="font-alegreya text-lg">
-                    {data.food.restaurantShortName}'s {data.food.name}
+                    {data.food.restaurantShortName} - {data.food.name}
                 </h3>
                 <a href={`/app/restaurant?id=${data.food.restaurantId}`} class="underline">{data.food.restaurantName}</a>
                 <div class="flex-1 flex flex-col justify-center">
-                <RatingWithPercentage rating={data.food.avgRating} className={""}/>
+                    <RatingWithPercentage rating={data.food.avgRating} className={""}/>
                 </div>
             </div>
         </div>
         <p class="text-ms">R$1,00 • {data.food.description}{(!data.food.description.endsWith('.')) ? "." : ""}</p>
         {#if data.food.review === null}
-            <Button className="w-full" onclick={() => onCreateReviewClick()}>Review this food</Button>
+            <Button className="w-full" onclick={() => onCreateReviewClick()}>Avalie este prato</Button>
         {/if}
     </Card1>
     <RatingStats name={data.food.name} stats={data.foodStats} className={""} />
     {#if data.food.review !== null && data.food.review !== undefined}
         <Card1 className="w-full p-3!">
             <div class="flex justify-between pb-3 px-1">
-                <h3 class="font-alegreya text-lg">Your review</h3>
+                <h3 class="font-alegreya text-lg">Sua avaliação</h3>
 
                 <div class="flex relative">
                     <MoreVertical size={20} onclick={() => setTimeout(() => showingContextMenu = true)}/>
@@ -153,7 +153,7 @@
                 </div>
             </div>
             <Card2 className="flex justify-start flex-col items-start rounded-lg w-full px-3! py-2! cursor-pointer">
-                <h2 class="text-lm pb-2"><Rating rating={data.food.review.rating} className="text-sm font-medium font-alegreya"/> to {data.food.name}</h2>
+                <h2 class="text-lm pb-2"><Rating rating={data.food.review.rating} className="text-sm font-medium font-alegreya"/> para {data.food.name}</h2>
                 <p class="text-sm pb-2">{data.food.review.review}</p>
 
             </Card2>
@@ -161,12 +161,12 @@
     {/if}
     <Card1 className="flex flex-col justify-center items-center w-full p-3! gap-3">
         <div class="flex w-full justify-between pb-2 px-1">
-            <h3 class="font-alegreya text-lg">Latest reviews</h3>
+            <h3 class="font-alegreya text-lg">Últimas avaliações</h3>
             <ListFilterPlus class="cursor-pointer"/>
         </div>
 
         {#if data.reviews.content.length == 0}
-            <h1 class="center p-2">This food has no reviews!</h1>
+            <h1 class="center p-2">Esse prato não tem avaliações!</h1>
         {/if}
 
         {#each data.reviews.content as review: FoodReview, i}
@@ -185,8 +185,8 @@
                     <Image size={32}/>
                 </div>
                 <div class="flex flex-col items-start justify-start dark:text-dark-fg-300 text-light-fg-300 ">
-                    <h2>Review  by {review.username}</h2>
-                    <h2>Rating: <Rating rating={review.rating} className=""/></h2>
+                    <h2>Avaliação por {review.username}</h2>
+                    <h2>Avaliação: <Rating rating={review.rating} className=""/></h2>
                 </div>
                 <div class="flex-grow"></div>
                 <div class="flex flex-col justify-between items-center">

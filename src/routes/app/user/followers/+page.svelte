@@ -25,15 +25,15 @@
 
 </script>
 
-<HeaderWithBackButton title="Users following {data.viewingSelf ? 'you' : data.user.username}"></HeaderWithBackButton>
+<HeaderWithBackButton title="Usuários seguindo {data.viewingSelf ? 'você' : data.user.username}"></HeaderWithBackButton>
 
 <div class="w-full grow flex flex-col p-4">
     <Card1 className="w-full h-full grow p-3! gap-2! flex flex-col justify-start items-center overflow-scroll">
 
-        <TextField bind:value={searchQuery} noDecoration={true} placeholder="Search Followers" className="w-full rounded-xl! h-12 bg-light-card-2! dark:bg-dark-card-2! px-2" inputClassName="bg-light-card-2 dark:bg-dark-card-2" />
+        <TextField bind:value={searchQuery} noDecoration={true} placeholder="Pesquisar seguidores" className="w-full rounded-xl! h-12 bg-light-card-2! dark:bg-dark-card-2! px-2" inputClassName="bg-light-card-2 dark:bg-dark-card-2" />
 
         {#if actualFollowers.length === 0}
-            <Card2 className="w-full flex"><span class="m-auto">No users found!</span></Card2>
+            <Card2 className="w-full flex"><span class="m-auto">Nenhum usuário encontrado!</span></Card2>
         {:else}
             {#each actualFollowers as follower: isPublicUserWithoutCounts, i}
                 <div

@@ -19,15 +19,15 @@
 
 <div class="p-3">
 
-    <h1 class="font-alegreya text-2.5xl mb-5">Yami settings</h1>
-    <p class="text-light-fg-700 dark:text-dark-fg-500 pb-2">These settings are synced acrross your account.</p>
+    <h1 class="font-alegreya text-2.5xl mb-5">Configurações do Yami</h1>
+    <p class="text-light-fg-700 dark:text-dark-fg-500 pb-2">Essas configurações são persistentes neste dispositivo.</p>
 
     <Card1 className="w-full bg-light-card-2 dark:bg-dark-card-1 flex flex-col gap-2 justify-start items-start pt-2!">
-        <h1 class="font-alegreya text-z2xl pb-2">Visuals</h1>
+        <h1 class="font-alegreya text-z2xl pb-2">Visual</h1>
         <ul>
             <li class="flex justify-start items-center gap-3">
                 <Switch bind:enabled={lightThemeSwitchState}></Switch>
-                <span class="text-lg">Use light theme</span>
+                <span class="text-lg">Usar tema claro</span>
             </li>
         </ul> 
     </Card1>

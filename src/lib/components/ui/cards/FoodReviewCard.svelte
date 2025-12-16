@@ -1,8 +1,7 @@
 <script lang="ts">
     import config from "$lib/config";
     import type { FoodReview } from "$lib/core/model/food-review";
-    import { Heart, MoreHorizontal, MoreVertical, Pencil, Repeat2, Trash } from "@lucide/svelte";
-    import ListCard from "./ListCard.svelte";
+    import { Heart, MoreHorizontal, MoreVertical, Pencil, Trash } from "@lucide/svelte";
     import RatingPill from "../controls/RatingPill.svelte";
     import { goto } from "$app/navigation";
     import ContextMenu from "../controls/ContextMenu.svelte";
@@ -43,7 +42,7 @@
         modalStore.set({
             component: ConfirmationModal,
             props: {
-                actionName: "Delete this review",
+                actionName: "Deletar essa review",
                 action: (confirmed: boolean) => {if (confirmed) doDelete();}
             }
         });
@@ -55,14 +54,14 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: `Error deleting your review: ${res.error.message}`
+                    warningMessage: `Erro deletando sua review: ${res.error.message}`
                 }
             });
         } else {
             snackbarStore.set({
                 component: SuccessSnackbar,
                 props: {
-                    successMessage: "Success deleting your review!"
+                    successMessage: "Sucesso deletando sua review!"
                 }
             });
             deleted = true;
@@ -73,12 +72,12 @@
     let showingContextMenu = $state(false);
     const contextMenuEntries: ContextMenuEntry[] = ownsReview ? [
         {
-            name: "Edit",
+            name: "Editar",
             icon: Pencil,
             action: onEditClick
         },
         {
-            name: "Delete",
+            name: "Deletar",
             icon: Trash,
             action: onDeleteClick,
             className: "text-light-error dark:text-dark-error"
@@ -130,10 +129,10 @@
                     aria-label="View details for {type == "user" ? review.restaurantName : review.username}"
                     class="text-light-fg-500 dark:text-dark-fg-500 font-alegreya text-lg leading-tight truncate" title="{type == "user" ? review.restaurantName : review.username}"
                 >
-                    {type == "user" ? review.restaurantName : `Review by ${review.username}`}
+                    {type == "user" ? review.restaurantName : `Review por ${review.username}`}
                 </a>
                 <a href={`/app/food?id=${review.foodId}`} class="block text-light-fg-300 dark:text-dark-fg-300 text-sm truncate" title="{review.foodName} review">
-                    {review.foodName} review
+                    {review.foodName}
                 </a>
             </div>
 

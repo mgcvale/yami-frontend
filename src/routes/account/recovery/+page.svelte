@@ -68,11 +68,11 @@
 
     <div class="flex flex-col gap-4 items-center mt-4 mb-1">
         <h2 class="font-alegreya text-2xl pb-3">
-            Password Recovery
+            Recuperação de senha
         </h2>
 
         {#if !success}
-            <p class="px-3 text-center w-full">Hi, {data.username}! To recover your account, type your new password below.</p>
+            <p class="px-3 text-center w-full">Olá, {data.username}! Para recuperar sua conta, insira sua nova senha abaixo.</p>
             
             <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration={true} bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
             <TextField placeholder={"Confirm Password"} className="w-80 max-w-full" bind:value={confirmPassword} noDecoration={true} bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={confirmPasswordErrorMessage} />
@@ -80,19 +80,19 @@
                 <p class="text-light-error dark:text-dark-error text-sm text-center">{updatePasswordErrorMessage}</p>
             {/if}
             <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={updatePasswordClick} bind:loading={loading}>
-                Update Password
+                Atualizar senha
             </Button>
         {:else}
-            <p class="px-3 text-center w-full">Your password has been updated successfully!</p>
-            <p class="px-3 text-center w-full">You can now <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Login</a>.</p>
+            <p class="px-3 text-center w-full">Sua senha foi atualizada com sucesso!</p>
+            <p class="px-3 text-center w-full">Você pode agora <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">fazer log-in</a>.</p>
         {/if}
     </div>
 </Card1>
 
 <Card1 className="flex flex-col items-center justify-center gap-4">
     <div class="items-center text-center">
-        <p>Have your password?</p>
-        <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Login</a>
+        <p>Tem sua senha?</p>
+        <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Fazer log-in</a>
     </div>
 </Card1>
 

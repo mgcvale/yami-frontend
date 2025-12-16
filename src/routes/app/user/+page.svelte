@@ -21,7 +21,7 @@
             modalStore.set({
                 component: LoginAsker,
                 props: {
-                    actionName: "view your profile"
+                    actionName: "ver seu perfil"
                 }
             });
         }
@@ -48,9 +48,9 @@
         <UserHeader {onEditClick} {onFollowerClick} {onFollowingClick} bind:user={data.user} viewingSelf={data.viewingSelf} />
         <RatingStats className="p-2" name={data.user.username} stats={data.stats} />
         <Divisor lineClassName="bg-light-card-2 dark:bg-dark-card-2" containerClassName="px-4" />
-        <h1 class="font-alegreya text-2xl text-left px-3 pt-1">{data.user.username}'s reviews</h1>
+        <h1 class="font-alegreya text-2xl text-left px-3 pt-1">Avaliações de {data.user.username}</h1>
         <FoodReviewList userReviews={true} viewingSelf={data.viewingSelf} id={data.userId} className="p-2 pt-0" />
     {:else}
-        <p>You must be logged in to view your profile.</p>
+        <p>Você deve estar logado para ver seu perfil.</p>
     {/if}
 </div>

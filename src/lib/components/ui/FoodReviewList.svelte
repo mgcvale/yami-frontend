@@ -38,14 +38,14 @@
 
 <div class="flex flex-col w-full h-fit justify-start items-center gap-4 {className}">
     {#if loading}
-    <span>loading...</span>
+        <span>carregando...</span>
     {:else if response.data === null}
-        <h3 class="text-light-error dark:text-dark-error">An error occourred.</h3>
-        <span> error: {response.error?.message} </span>
-        <button class="underline py-1" onclick={() => load()}>Retry</button>
+        <h3 class="text-light-error dark:text-dark-error">Ocorreu um erro.</h3>
+        <span> Erro: {response.error?.message} </span>
+        <button class="underline py-1" onclick={() => load()}>Tentar novamente</button>
     {:else}
         {#each response.data.content as entry }
-            <FoodReviewCard type={userReviews ? "user" : "restaurant"} ownsReview={viewingSelf} review={entry} collapsed={false} />
+            <FoodReviewCard type={userReviews ? "user" : "restaurant"} ownsReview={viewingSelf} review={entry} />
         {/each}
     {/if}
 </div>

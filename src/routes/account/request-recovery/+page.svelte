@@ -43,34 +43,34 @@
 
     <div class="flex flex-col gap-4 items-center mt-4 mb-1">
         <h2 class="font-alegreya text-2xl pb-3">
-            Account recovery
+            Recuperação de conta
         </h2>
         {#if !success}
-            <p>To recover your account, tell us your email</p>
+            <p>Para recuperar sua conta, informe-nos seu e-mail.</p>
             
             <TextField placeholder={"email"} className="w-80 max-w-full" bind:value={email} noDecoration={true} bind:errorMessage={emailErrorMessage} />
             {#if requestErrorMessage}
                 <p class="text-light-error dark:text-dark-error text-sm text-center">{requestErrorMessage}</p>
             {/if}
             <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={requestClick} bind:loading={loading}>
-                Send recovery email
+                Enviar e-mail de recuperação
             </Button>
         {:else}
-            <p class="px-3 text-center w-full">Recovery e-mail sent. Check your inbox, and follow the link provided.</p>
-            <p class="px-3 text-center w-full">Didn't recieve an e-mail? Try <button class="border-none bg-transparent underline text-light-fg-100 dark:text-dark-fg-100" onclick={() => success=false}>making another request</button>.</p>
+            <p class="px-3 text-center w-full">E-mail de recuperação enviado. Veja sua inbox e siga as instruções.</p>
+            <p class="px-3 text-center w-full">Não recebeu um e-mail? Tente <button class="border-none bg-transparent underline text-light-fg-100 dark:text-dark-fg-100" onclick={() => success=false}>fazer outra requisição</button>.</p>
         {/if}
     </div>
 </Card1>
 
 <Card1 className="flex flex-col items-center justify-center gap-4">
     <div class="items-center text-center">
-        <p>Don't have an account?</p>
-        <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Register instead</a>
+        <p>Não tem uma conta?</p>
+        <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Crie sua conta</a>
     </div>
 
     <div class="items-center text-center">
-        <p>Have your password?</p>
-        <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Login</a>
+        <p>Tem sua senha?</p>
+        <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Fazer log-in</a>
     </div>
 </Card1>
 

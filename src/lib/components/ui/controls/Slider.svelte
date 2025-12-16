@@ -66,11 +66,12 @@ const ratingColor = $derived(
 );
 
 const ratingLabel = $derived(
-  value <= 2 ? 'Terrible' : 
-  value <= 4 ? 'Bad' : 
-  value <= 5 ? 'Decent' :
-  value <= 6 ? 'Good' : 
-  value <= 8 ? 'Great' : 'Top'
+  value <= 2 ? 'Terrível' : 
+  value <= 3.5 ? 'Ruim' : 
+  value <= 5.5 ? 'Decente' :
+  value <= 7.5 ? 'Bom' : 
+  value <= 9 ? 'Ótimo' :
+  value <= 9 ? 'Divino' : 'Divino'
 );
 
 let dots = $derived([10, 20, 30, 40, 50, 60, 70, 80, 90].slice(Math.floor(value)));

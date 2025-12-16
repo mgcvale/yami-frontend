@@ -59,7 +59,7 @@
 
     <TextComboBox
         items={Object.values(searchOptions)}
-        placeholder={`Search for ${$searchingFor.name}`}
+        placeholder={`Pesquisar por ${$searchingFor.name}`}
         bind:value={searchQuery}
         bind:currentItem={$searchingFor}
         className={"w-full h-full px-3"}
@@ -70,8 +70,8 @@
 </header>
 
 <style>
-header {
-  padding-top: max(env(safe-area-inset-top), 10px);
-  height: calc(64px + env(safe-area-inset-top)) !important;
-}
+    header {
+    padding-top: max(env(safe-area-inset-top), 10px);
+    height: calc(64px + env(safe-area-inset-top)) !important;
+    }
 </style>

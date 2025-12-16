@@ -36,7 +36,7 @@
         if (res.error !== null) {
             switch (res.error.status) {
                 case 401:
-                    loginErrorMessage = "Your username or password is incorrect! Verify your credentials and try again."
+                    loginErrorMessage = "Seu nome de usuário ou senha estão incorretos! Verifique suas credenciais e tente novamente."
             }
         } else {
             loginErrorMessage = "";
@@ -53,7 +53,7 @@
 
     <div class="flex flex-col gap-4 items-center mt-4 mb-1">
         <h2 class="font-alegreya text-2xl pb-3">
-            Welcome back!
+            Bem-vindo de volta!
         </h2>
         
         <TextField placeholder={"Username or Email"} className="w-80 max-w-full" bind:value={usernameOrEmail} noDecoration={true} bind:errorMessage={usernameOrEmailErrorMessage} />
@@ -62,20 +62,20 @@
             <p class="text-light-error dark:text-dark-error text-sm text-center">{loginErrorMessage}</p>
         {/if}
         <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={loginClick} bind:loading={loading}>
-            Log in
+            Fazer log-in
         </Button>
     </div>
 </Card1>
 
 <Card1 className="flex flex-col items-center justify-center gap-4">
     <div class="items-center text-center">
-        <p>Don't have an account?</p>
-        <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Register instead</a>
+        <p>Não tem uma conta?</p>
+        <a href="/account/register" class="underline text-light-fg-100 dark:text-dark-fg-100">Crie uma conta</a>
     </div>
 
     <div class="items-center text-center">
-        <p>Forgot your password?</p>
-        <a href="/account/request-recovery" class="underline text-light-fg-100 dark:text-dark-fg-100">Click here</a>
+        <p>Esqueceu sua senha?</p>
+        <a href="/account/request-recovery" class="underline text-light-fg-100 dark:text-dark-fg-100">Recuperar senha</a>
     </div>
 </Card1>
 

@@ -50,7 +50,7 @@
 
     let accountContextMenuEntries: ContextMenuEntry[] = $state([
         {
-            name: "loading...",
+            name: "Carregando...",
             action: () => {}
         }
     ]);
@@ -59,7 +59,7 @@
     currentUserStore.subscribe(change => {
         if (change.loading) {
             accountContextMenuEntries = [{
-                name: "loading...",
+                name: "Carregando...",
                 action: () => {}
             }];
             return;
@@ -68,7 +68,7 @@
         if (change.data !== null) {
             accountContextMenuEntries = [
                 {
-                    name: "Log out",
+                    name: "Sair",
                     action: () => {
                         logout(() => goto('/account/login', {
                             replaceState: true,
@@ -77,7 +77,7 @@
                     icon: LogOut
                 },
                 {
-                    name: "Your profile",
+                    name: "Seu perfil",
                     action: () => {
                         goto('/app/user', {
                             replaceState: false,
@@ -86,7 +86,7 @@
                     icon: User
                 },
                 {
-                    name: "Settings",
+                    name: "Configurações",
                     action: () => {
                         goto('/app/settings', {
                             replaceState: false,
@@ -98,7 +98,7 @@
         } else {
             accountContextMenuEntries = [
                 {
-                    name: "Log in",
+                    name: "Fazer login",
                     action: () => {
                         goto('/account/login', {
                             replaceState: true,
@@ -106,7 +106,7 @@
                     }
                 },
                 {
-                    name: "Register",
+                    name: "Registrar-se",
                     action: () => {
                         goto('/account/register', {
                             replaceState: true,

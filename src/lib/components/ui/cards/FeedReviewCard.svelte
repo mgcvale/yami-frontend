@@ -25,7 +25,7 @@
                 >
                     <img
                         src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
-                        alt="{review.username}'s avatar"
+                        alt="Avatar de {review.username}"
                         class="w-10 h-10 rounded-full object-cover"
                     />
                 </a>
@@ -52,7 +52,7 @@
                     onclick={e => { e.preventDefault(); goto(`/app/food?id=${review.foodId}`); }}
                     class="font-semibold font-alegreya text-light-fg-900 dark:text-dark-fg-100 hover:underline text-xl"
                 >
-                    {review.foodName} review
+                    {review.foodName}
                 </a>
                 <a
                     href={`/app/restaurant?id=${review.restaurantId}`}

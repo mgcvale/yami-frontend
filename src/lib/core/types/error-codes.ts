@@ -20,45 +20,52 @@ export const NETWORK_ERROR_STR = "NETWORK_ERROR";
 
 export const SERVER_ERRORS = {
   BAD_RESPONSE: 502
-}
+};
 
 export const SERVER_ERROR_STR = "SERVER_ERROR";
 
 export const DEFAULT_ERRORS = {
     NETWORK_ERROR: {
         status: NETWORK_ERRORS.NETWORK_ERROR,
-        message: 'Network error occurred. Please check your connection and try again.',
+        message: "Ocorreu um erro de rede. Verifique sua conexão e tente novamente.",
         type: NETWORK_ERROR_STR
     } as App.Error,
-    UNKNOWN: (error: unknown): App.Error => { return {
+
+    UNKNOWN: (error: unknown): App.Error => {
+      return {
         status: CLIENT_ERRORS.UNKNOWN,
         type: CLIENT_ERROR_STR,
-        message: "An unknown error occurred with your client. Try again later."
+        message: "Ocorreu um erro desconhecido no cliente. Tente novamente mais tarde."
       } as App.Error;
     },
+
     INVALID_BROWSER: {
         status: CLIENT_ERRORS.INVALID_BROWSER,
-        message: "This page is being server-rendered, but it shouldn't.",
+        message: "Esta página está sendo renderizada no servidor, mas não deveria.",
         type: CLIENT_ERROR_STR
     } as App.Error,
+
     INVALID_TOKEN: {
         status: CLIENT_ERRORS.NO_TOKEN,
-        message: "Invalid access token present",
+        message: "Token de acesso inválido.",
         type: CLIENT_ERROR_STR
     } as App.Error,
+
     BAD_RESPONSE: {
       status: SERVER_ERRORS.BAD_RESPONSE,
-      message: "The server returned an invalid or unexpected response.",
+      message: "O servidor retornou uma resposta inválida ou inesperada.",
       type: SERVER_ERROR_STR
     } as App.Error,
+
     USER_NOT_LOADED: {
       status: CLIENT_ERRORS.NOT_AUTHENTICATED,
-      message: "There is no user authenticated, so this action can't be performed.",
+      message: "Não há nenhum usuário autenticado, portanto esta ação não pode ser realizada.",
       type: CLIENT_ERROR_STR
     } as App.Error,
+
     INVALID_PAGE_PARAMS: {
       status: CLIENT_ERRORS.PAGE_NOT_FOUND,
-      message: "This page was not found, or its URL is malformed.",
+      message: "Esta página não foi encontrada ou a URL está malformada.",
       type: CLIENT_ERROR_STR
     } as App.Error
 } as const;

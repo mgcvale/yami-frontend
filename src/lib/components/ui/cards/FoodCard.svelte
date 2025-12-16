@@ -23,7 +23,7 @@
         <h3 class="text-lg text-ms text-left line-clamp-2 break-words">{food.name}</h3>
 
         {#if food.avgRating === 0}
-            <span class="font-medium text-md">No ratings</span>
+            <span class="font-medium text-md">Sem avaliações</span>
         {:else}
             <RatingPill rating={food.avgRating} />
         {/if}

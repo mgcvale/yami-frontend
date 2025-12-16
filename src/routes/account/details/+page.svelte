@@ -40,10 +40,10 @@
 
     <div class="flex flex-col gap-1 items-center mt-4 mb-1">
         <h2 class="font-alegreya text-2xl pb-0 mb-0">
-            Tell us more about you
+            Conte mais sobre você
         </h2>
         <h4 class="text-md text-light-fg-700 dark:text-dark-fg-700 text-center pb-5">
-            You can also leave the fields empty, if you prefer
+            Você também pode deixar os campos em branco, se preferir.
         </h4>
 
         <TextField

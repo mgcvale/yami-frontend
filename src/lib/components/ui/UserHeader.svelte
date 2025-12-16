@@ -39,7 +39,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: `You must be logged in to follow a user`
+                    warningMessage: `Você deve estar logado para seguir um usuário.`
                 }
             });
             return;
@@ -49,7 +49,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: "You can't follow yourself"
+                    warningMessage: "Você não pode seguir você mesmo(a)."
                 }
             });
             return;
@@ -75,7 +75,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: `An error occurred: ${result.error.message}`
+                    warningMessage: `Ocorreu um erro: ${result.error.message}`
                 }
             });
         }
@@ -91,20 +91,20 @@
     name={user.username}
     headers={[
         {
-            name: "Reviews",
+            name: "Avaliações",
             nameClassName: "text-ml",
             count: user.reviewCount,
             countClassName: "text-lg text-light-fg-hc dark:text-dark-fg-hc",
         },
         {
-            name: "Followers",
+            name: "Seguidores",
             nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
             count: followerCount,
             countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md",
             onClick: onFollowerClick
         },
         {
-            name: "Following",
+            name: "Seguindo",
             nameClassName: "text-light-fg-900 dark:text-dark-fg-900 text-sm",
             count: user.followingCount,
             countClassName: "text-light-fg-700 dark:text-dark-fg-700 text-md",
@@ -121,19 +121,17 @@
     <h4 class="text-md font-dm-sans text-light-fg-500 dark:text-dark-fg-500 text-ms mx-1">
         {user.bio}
         {#if user.location !== null && user.location.trim() !== ""}
-            <span class="text-sm text-light-fg-700 dark:text-dark-fg-700">• From <span>{user.location}</span></span>
+            <span class="text-sm text-light-fg-700 dark:text-dark-fg-700">• De <span>{user.location}</span></span>
         {/if}
     </h4>
     {#if viewingSelf}
         <Button onclick={onEditClick} accent={false} outline={false} className="w-full rounded-ml py-0.5 mt-2">
-            Edit profile
+            Editar perfil
         </Button>
     {:else}
         <Button onclick={onFollowClick} accent={following} outline={following} className="w-full rounded-ml py-0.5 mt-2">
-            {following ? "Unfollow" : "Follow"}
+            {following ? "Parar de seguir" : "Seguir"}
         </Button>
     {/if}
-    
-
 </div>
 {/if}

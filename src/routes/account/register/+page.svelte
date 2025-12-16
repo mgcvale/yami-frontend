@@ -42,27 +42,22 @@
 
     <div class="flex flex-col gap-4 items-center mt-4 mb-1">
         <h2 class="font-alegreya text-2xl">
-            Create an account
+            Criar uma conta
         </h2>
         
-        <TextField placeholder={"Username"} maxLength={31} className="w-80 max-w-full" bind:value={username} noDecoration=true bind:errorMessage={usernameErrorMessage} />
-        <TextField placeholder={"Email"} className="w-80 max-w-full" bind:value={email} noDecoration=true bind:errorMessage={emailErrorMessage} />
-        <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration=true bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
+        <TextField placeholder={"Username"} maxLength={31} className="w-80 max-w-full" bind:value={username} noDecoration={true} bind:errorMessage={usernameErrorMessage} />
+        <TextField placeholder={"Email"} className="w-80 max-w-full" bind:value={email} noDecoration={true} bind:errorMessage={emailErrorMessage} />
+        <TextField placeholder={"Password"} className="w-80 max-w-full" bind:value={password} noDecoration={true} bind:password={passwordHide} bind:icon={passwordIcon} onIconClick={onPasswordIconClick} bind:errorMessage={passwordErrorMessage} />
         <Button accent={true} className="text-light-card-1 dark:text-dark-card-1 w-80 max-w-full" onclick={createAccountClick} bind:loading={loading}>
-            Create account
+            Criar conta
         </Button>
     </div>
 </Card1>
 
 <Card1 className="flex flex-col items-center justify-center gap-4">
     <div class="items-center text-center">
-        <p>Already have an account?</p>
+        <p>Já tem uma conta?</p>
         <a href="/account/login" class="underline text-light-fg-100 dark:text-dark-fg-100">Log-in instead</a>
-    </div>
-
-    <div class="items-center text-center">
-        <p>Don't want to log in?</p>
-        <a href="/app" class="underline text-light-fg-100 dark:text-dark-fg-100">Return to yami</a>
     </div>
 </Card1>
 <Modal />

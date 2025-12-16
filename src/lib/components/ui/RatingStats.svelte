@@ -119,11 +119,11 @@
             class="pl-1 text-light-fg-100 dark:text-dark-fg-300 font-alegreya-sans font-normal text-lg"
         >
             {#if name != null}
-                {name}'s average rating: {(
+                Avaliação média de {name}: {(
                     stats.averageRating / 2
                 ).toFixed(1)} / 10
             {:else}
-                Rating distribution
+                Distribuição de avaliação
             {/if}
         </span>
         <div class="h-full w-full flex justify-center align-center flex-col">
@@ -153,9 +153,9 @@
             {#if stats !== null}
                 <canvas class="grow" bind:this={canvas}></canvas>
             {:else}
-                <span
-                    >An unknown error occurred while processing your data.</span
-                >
+                <span>
+                    Um erro desconhecido ocorreu ao processar esses dados.
+                </span>
             {/if}
         </div>
     </div>

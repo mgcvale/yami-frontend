@@ -38,7 +38,7 @@
         console.log(isReviewLiked);
         if (!isReviewLiked) {
             likeError({
-                message: "You cannot unlike a review that is not liked"
+                message: "Você não pode remover um like que não existe."
             } as App.Error);
         }
         isReviewLiked = false;
@@ -55,7 +55,7 @@
         snackbarStore.set({
             component: ErrorSnackbar,
             props: {
-                warningMessage: `Unable to like review: ${error.message}`
+                warningMessage: `Erro ao dar like: ${error.message}`
             }
         });
     }
@@ -64,7 +64,7 @@
 
 <div class="bg-light-card-1 dark:bg-dark-card-1 rounded-xl overflow-hidden shadow-sm p-3 flex justify-between min-w-full rounded-t-lg">
     <div>
-        <p class="text-sm pl-1">Posted {formatRelativeTime(review.ageInDays)}</p>
+        <p class="text-sm pl-1">Postado {formatRelativeTime(review.ageInDays)}</p>
     </div>
     <div class="flex justify-end items-center text-light-fg-700 dark:text-dark-fg-700 self-end gap-4 pr-1">
         <Send size={20} />

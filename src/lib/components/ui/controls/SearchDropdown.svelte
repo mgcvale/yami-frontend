@@ -39,11 +39,9 @@
         clearTimeout(debounceTimeout);
         if (value.trim() !== "" ) {
             debounceTimeout = setTimeout(async () => {
-                console.log("SearchDropDown is running the fetchFunction");
                 loadingData = true;
                 loadedData = await fetchFunction(value);
 
-                console.log(loadedData);
                 loadingData = false;
             }, debounceDelay);
         } else if (!selected) {
@@ -80,7 +78,6 @@
     class="bg-light-field-bg dark:bg-dark-field-bg rounded-t-lg pr-1 flex flex-col justify-start relative {className}"
 >
     {#if selected}
-        <!-- Selected state UI -->
         <div
             class="w-full h-full items-center bg-light-field-subbg dark:bg-dark-field-subbg border-light-field-accent dark:border-dark-field-accent border-2 rounded-t-md px-2 py-2 pr-1 flex gap-2"
         >
@@ -110,7 +107,6 @@
             </div>
         </div>
     {:else}
-        <!-- Search state UI -->
         <div
             class="w-full h-full items-center bg-light-field-bg dark:bg-dark-field-bg border-light-field-accent dark:border-dark-field-accent border-b-2 px-2 py-2 pr-1 flex gap-2"
         >

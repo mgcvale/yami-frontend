@@ -5,7 +5,6 @@
     import TextField from './TextField.svelte';
     import { type SyncState } from '$lib/core/model/sync-state';
     import type { SearchDropdownItem } from '$lib/core/types/search-dropdown-item';
-    import ModalTextFieldListItem from './ModalTextFieldListItem.svelte';
     
     let { placeholder = "option", className = "", selected = $bindable(null), fetchFunction = async (query: string) => ({data: null, error: null}), imageUrlFunction = (id: number) => ("url"), disabled = $bindable(false), searchOnKeydown = false, forceListUpdate = false, loading=$bindable(false), loadingMessage="Loading...", loadingControlledByComponent=false }: {
         placeholder: string,
@@ -116,16 +115,16 @@
             </div>
         {:else if loadedEntries.error !== null}
             <div class="m-auto">
-                <span>An error ocurred: {loadedEntries.error.message}</span>
+                <span>Um erro ocorreu: {loadedEntries.error.message}</span>
             </div>
         {:else}
             {#if !loadedEntries.data}
                 <div class="m-auto">
-                    <span>Make a search to select a {placeholder}.</span>
+                    <span>Faça uma busca para selecionar um(a) {placeholder}.</span>
                 </div>
             {:else if loadedEntries.data.length === 0}
                 <div class="m-auto">
-                    <span>No {placeholder} was found with your search.</span>
+                    <span>Nenhum(a) {placeholder} foi encontrado(a) com sua busca.</span>
                 </div>
             {:else}
                 <div class="flex flex-col gap-2 py-1 px-0.5 justify-start items-center overflow-scroll max-h-120">

@@ -41,7 +41,7 @@
 <main class="pb-18 pt-16 min-h-dvh bg-light-bg dark:bg-dark-bg flex flex-col">
     {#if navigating.to}
         <div class="flex flex-col py-4 pt-6 px-2 gap-3 text-center">
-            <h2 class="w-full text-center text-xl">Loading...</h2>
+            <h2 class="w-full text-center text-xl">Carregando...</h2>
         </div>
     {:else}
         {@render children()}
@@ -56,23 +56,23 @@
     dark:bg-dark-card-3 bg-light-card-3 *:dark:text-dark-fg-500 *:text-light-fg-500"
 >
     <ul class="flex items-center justify-around w-full h-full text-sm">
-        <li class={["flex flex-col justify-between items-center h-full"]} >
+        <li class={["flex flex-col justify-center items-center h-full gap-1.5"]} >
             <a href="/app" class={["w-14 rounded-full flex justify-center align-center h-6", {"bg-light-fg-500 dark:bg-dark-fg-500 text-light-card-2 dark:text-dark-card-3": page.url.pathname === "/app"}]}>
                 <Home size=20 class="m-auto"/>
             </a>
             <span>Home</span>
         </li>
-        <li class={["flex flex-col justify-between items-center h-full -translate-y-1"]} >
+        <li class={["flex flex-col justify-center items-center h-full -translate-y-1"]} >
             <a href="/app/review/create" class={["w-16 rounded-full flex justify-center items-center align-center h-8 py-1", {"bg-light-fg-500 dark:bg-dark-fg-500 text-light-card-2 dark:text-dark-card-3":  page.url.pathname.startsWith("/app/review/create")}]}>
                 <PlusCircle size=22 class="m-auto"/>
             </a>
-            <span class="text-[1.07rem]">Create</span>
+            <span class="text-[1.07rem]">Criar</span>
         </li>
-        <li class={["flex flex-col justify-between items-center h-full"]} >
+        <li class={["flex flex-col justify-center items-center h-full gap-1.5"]} >
             <a href="/app/user" class={["w-14 rounded-full flex justify-center align-center h-6", {"bg-light-fg-500 dark:bg-dark-fg-500 text-light-card-2 dark:text-dark-card-3": page.url.pathname === "/app/user"}]}>
                 <User size=20 class="m-auto"/>
             </a>
-            <span>Profile</span>
+            <span>Perfil</span>
         </li>
     </ul>
 </nav>

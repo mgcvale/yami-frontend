@@ -12,12 +12,12 @@
 
     const pageOptions: TabControlEntry[] = [
         {
-            name: "Foods",
+            name: "Pratos",
             value: "foods",
             icon: Sandwich
         },
         {
-            name: "Reviews",
+            name: "Avaliações",
             value: "reviews",
             icon: NotebookPen
         }

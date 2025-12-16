@@ -20,7 +20,7 @@
         <img class="h-full w-auto block rounded-full" src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" alt="user">
         <h3 class="text-lg">{user.username}</h3>
         {#if user.location && user.location !== ""}
-        <span class="text-sm text-light-fg-700 dark:text-dark-fg-700">• From <span>{user.location}</span></span>
+        <span class="text-sm text-light-fg-700 dark:text-dark-fg-700">• De <span>{user.location}</span></span>
         {/if}
     </div>
     <p class="text-start text-sm text-light-fg-700 dark:text-dark-fg-700">

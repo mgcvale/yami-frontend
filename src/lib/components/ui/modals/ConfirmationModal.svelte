@@ -20,11 +20,11 @@
 <div class="p-4 relative">
     <X class="absolute top-3 right-3 cursor-pointer" onclick={() => confirm(false)} />
 
-    <h1 class="font-alegreya text-xl pb-2">Confirm {actionName}</h1>
-    <p class="text-sm pb-4">Are you sure you want to {actionName.toLowerCase()}?</p>
+    <h1 class="font-alegreya text-xl pb-2">Confirmação para {actionName}</h1>
+    <p class="text-sm pb-4">Tem certeza que quer {actionName.toLowerCase()}?</p>
 
     <div class="flex justify-end gap-3">
-        <Button onclick={() => confirm(false)} className="px-4">Cancel</Button>
-        <Button accent={true} onclick={() => confirm(true)} className="px-4">Confirm</Button>
+        <Button onclick={() => confirm(false)} className="px-4">Cancelar</Button>
+        <Button accent={true} onclick={() => confirm(true)} className="px-4">Confirmar</Button>
     </div>
 </div>

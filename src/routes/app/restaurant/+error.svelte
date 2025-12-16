@@ -9,25 +9,28 @@
     });
 </script>
 
-<h2 class="text-xl text-light-error dark:text-dark-error w-full text-center py-2">An error occurred!</h2>
+<h2 class="text-xl text-light-error dark:text-dark-error w-full text-center py-2">
+    Ocorreu um erro!
+</h2>
+
 <div class="flex flex-col justify-start items-center px-4 text-center gap-1">
     {#if page.error?.type === NETWORK_ERROR_STR}
-        <p>A network error occurred. Check if you're connected to the internet.</p>
-        <a class="underline" href="/app">Go to home</a>
+        <p>Ocorreu um erro de rede. Verifique se você está conectado à internet.</p>
+        <a class="underline" href="/app">Ir para a página inicial</a>
     {:else if page.error?.status == 404}
-        <p>The restaurant you are looking for doesn't exist.</p>
+        <p>O restaurante que você está procurando não existe.</p>
     {:else if page.error?.status === 500}
-        <p>An error occurred on our end. You can try again later.</p>
-        <a class="underline" href="/app">Go to home</a>
+        <p>Ocorreu um erro do nosso lado. Você pode tentar novamente mais tarde.</p>
+        <a class="underline" href="/app">Ir para a página inicial</a>
     {:else if page.error?.status === 401}
-        <p>You must be logged in to view this page.</p>
-        <a class="underline" href="/app">Go to home</a>
+        <p>Você precisa estar logado para visualizar esta página.</p>
+        <a class="underline" href="/app">Ir para a página inicial</a>
     {:else}
-        <p>An unknown error occurred.</p>
-        <p class="text-center">Error message: {page.error?.message}</p>
+        <p>Ocorreu um erro desconhecido.</p>
+        <p class="text-center">Mensagem de erro: {page.error?.message}</p>
     {/if}
 
     <button class="underline py-2" onclick={() => goto(page.url.href, { invalidateAll: true })}>
-        Retry
+        Tentar novamente
     </button>
 </div>

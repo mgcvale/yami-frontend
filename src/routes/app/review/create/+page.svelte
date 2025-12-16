@@ -134,7 +134,7 @@
             snackbarStore.set({
                 component: ErrorSnackbar,
                 props: {
-                    warningMessage: "You must select a food to post a review."
+                    warningMessage: "Você deve selecionar um prato para fazer uma avaliação."
                 }
             });
             return;
@@ -183,7 +183,7 @@
     let reviewFieldRef = $state<HTMLTextAreaElement | null>(null);
 
     function handleReviewFocus() {
-        console.log("ONFOCUSSS");
+        console.log("ONFOCUS");
         console.log(reviewFieldRef);
         if (reviewFieldRef) {
             setTimeout(() => {
@@ -202,16 +202,16 @@
         <p><a href="/account/login" class="underline">Login</a> or <a href="/account/register" class="underline">Create an account</a>.</p>
     </div>
 {:else}-->
-    <PageTitle>Create a review</PageTitle>
+    <PageTitle>Criar uma avaliação</PageTitle>
 
     <div class="flex flex-col mt-2 px-6 gap-3 grow">
-        <ModalTextfield forceListUpdate={false} searchOnKeydown={false} disabled={false} bind:selected={selectedRestaurant} fetchFunction={restaurantFetchFunction} imageUrlFunction={config.apiPaths.restaurantImage} placeholder="Restaurant" className=""></ModalTextfield>
-        <ModalTextfield loadingMessage="Loading foods for {selectedRestaurant?.text}..." bind:loading={restaurantFoodsLoading} forceListUpdate={forceFoodListUpdate} searchOnKeydown={true} bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Food" className=""></ModalTextfield>
+        <ModalTextfield forceListUpdate={false} searchOnKeydown={false} disabled={false} bind:selected={selectedRestaurant} fetchFunction={restaurantFetchFunction} imageUrlFunction={config.apiPaths.restaurantImage} placeholder="Restaurante" className=""></ModalTextfield>
+        <ModalTextfield loadingMessage="Carregando pratos para {selectedRestaurant?.text}..." bind:loading={restaurantFoodsLoading} forceListUpdate={forceFoodListUpdate} searchOnKeydown={true} bind:disabled={foodDisabled} bind:selected={selectedFood} fetchFunction={foodFetchFunction} imageUrlFunction={config.apiPaths.foodImage} placeholder="Prato" className=""></ModalTextfield>
 
         <Slider bind:disabled={ratingDisabled} bind:value={rating} name="Rating" className="mt-4" />
         <TextField maxLength={256} bind:disabled={ratingDisabled} bind:value={review} textarea={true} noDecoration={true} placeholder="Review (optional)" className="grow" bind:input={reviewFieldRef} onfocus={handleReviewFocus}></TextField>
         <div class="flex justify-end">
-            <Button bind:disabled={ratingDisabled} onclick={onCreateReview} className="py-1 px-4 mb-4">Create Review</Button>
+            <Button bind:disabled={ratingDisabled} onclick={onCreateReview} className="py-1 px-4 mb-4">Criar avaliação</Button>
         </div>
     </div>
 <!--

@@ -18,16 +18,16 @@
 {#if mode === "feed"}
     {#if $currentUserStore.data === null}
         <h2 class="text-center text-lg p-4">
-            You must be logged in to have a feed!
+            Você deve estar logado para ver seu feed!
         </h2>
         <h3 class="text-center text-md p-4">
-            <a class="underline" href="/account/login">Login</a> or 
-            <a class="underline" href="/account/register">Create an account</a>
+            <a class="underline" href="/account/login">Fazer log-in</a> ou 
+            <a class="underline" href="/account/register">Criar uma conta</a>
         </h3>
     {:else}
         {#if data.feedEntries.length == 0}
             <div class="flex flex-1 justify-center items-center h-full">
-                <p class="p-3 px-8 text-center">It seems you don't have a feed yet! Try checking out some popular restaurants, or searching for your friends' accounts.</p>
+                <p class="p-3 px-8 text-center">Parece que seu feed está vazio! Tente dar uma olhada em alguns restaurantes populares, ou pesquise as contas de seus amigos.</p>
             </div>
         {:else}
             <Feed content={data.feedEntries} className={""}></Feed>
