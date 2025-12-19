@@ -1,7 +1,7 @@
 // lib/contexts/search-context.ts
 import { getContext, setContext } from 'svelte';
 import type { PageableEntry } from "$lib/core/model/pageable-entry";
-import type { Restaurant } from "$lib/core/model/restaurant";
+import type { BasicRestaurant, Restaurant } from "$lib/core/model/restaurant";
 import type { PublicUser } from "$lib/core/model/public-user";
 import type { SyncState } from "$lib/core/model/sync-state";
 import { searchRestaurants } from "$lib/core/actions/searches/search-restaurant";
@@ -11,7 +11,7 @@ import { syncSuccess } from '../actions/util';
 
 type SearchResults = {
   users: SyncState<PageableEntry<PublicUser>> | null;
-  restaurants: SyncState<PageableEntry<Restaurant>> | null;
+  restaurants: SyncState<PageableEntry<BasicRestaurant>> | null;
   foods: SyncState<PageableEntry<Food>> | null;
 };
 

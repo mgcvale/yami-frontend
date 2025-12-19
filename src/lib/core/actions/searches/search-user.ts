@@ -10,7 +10,7 @@ import { handleAsSyncError } from "../generic-error-handler";
 export async function searchUsers(searchQuery: string): Promise<SyncState<PageableEntry<PublicUser>>> {
     // TODO: change if the user is logged in. This is a simple search, but it should be a user-tailored search when they are logged in.
     try {
-        const res = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.searchUser(searchQuery), {}, config.fetchTimeout));
+        const res = await extractJsonOrThrow(await fetchWithTimeout(config.apiPaths.searchUser(searchQuery), {}, config.fetchTimeout, false));
         console.log(res);
         if (isPageableEntry(res, isPublicUser)) {
             return syncSuccess(res);

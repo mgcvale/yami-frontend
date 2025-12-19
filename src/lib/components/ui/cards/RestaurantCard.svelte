@@ -1,12 +1,12 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
     import config from "$lib/config";
-    import type { Restaurant } from "$lib/core/model/restaurant";
+    import type { BasicRestaurant } from "$lib/core/model/restaurant";
 
     let { 
         restaurant,
     }: {
-        restaurant: Restaurant,
+        restaurant: BasicRestaurant
     } = $props();
 
 </script>
@@ -19,7 +19,7 @@
     <div class="flex justify-start items-center gap-2 h-10 pt-1">
         <img class="h-full w-auto block rounded-full" src={config.apiPaths.restaurantImage(restaurant.id)} alt="restaurant">
         <h3 class="text-lg">{restaurant.shortName}</h3>
-        <span class="text-sm text-light-fg-700 dark:text-dark-fg-700"><span>{restaurant.name}</span></span>
+        <span class="text-sm text-light-fg-700 dark:text-dark-fg-700">{restaurant.name}</span>
     </div>
     <p class="text-start text-sm text-light-fg-700 dark:text-dark-fg-700">
         {restaurant.description}

@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { page } from "$app/state";
     import TabControl from "$lib/components/ui/controls/TabControl.svelte";
     import FoodList from "$lib/components/ui/FoodList.svelte";
     import FoodReviewList from "$lib/components/ui/FoodReviewList.svelte";

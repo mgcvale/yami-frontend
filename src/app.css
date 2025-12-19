@@ -40,7 +40,7 @@
   --color-light-fg-100: #6a5332;
   --color-light-fg-50: #7f633b;
   --color-light-card-1: #ffffff;
-  --color-light-card-2: #f7f4f0;
+  --color-light-card-2: #f6f3ef;
   --color-light-card-3: #e6e1d9;
   --color-light-placeholder: #a29788;
   --color-light-field-bg: #f0ede8;
@@ -69,7 +69,6 @@
   --radius-ml: 0.625rem;
 
   --spacing-90dvw: 90dvw; 
-  
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

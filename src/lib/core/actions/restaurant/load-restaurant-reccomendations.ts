@@ -8,7 +8,7 @@ import { extractJsonOrThrow, fetchWithTimeout, syncSuccess } from "../util";
 
 export async function loadRestaurantReccomendations(accessToken: string): Promise<SyncState<Restaurant[]>> {
     try {
-        const res = await extractJsonOrThrow(await fetchWithTimeout( config.apiPaths.restaurantReccomendations(), {
+        const res = await extractJsonOrThrow(await fetchWithTimeout( config.apiPaths.restaurantRecommendations(), {
             headers: {
                 "Authorization": `Bearer ${accessToken}`
             }

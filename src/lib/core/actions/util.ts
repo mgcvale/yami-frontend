@@ -3,11 +3,12 @@ import { SERVER_ERROR_STR } from "../types/error-codes";
 import type { SyncState } from "../model/sync-state";
 import { currentUserStore } from "../store/currentUserStore";
 import { get } from "svelte/store";
+import config from "$lib/config";
 
-export function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 5000, applyAuthHeaders=true): Promise<Response> {
+export function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = config.fetchTimeout, applyAuthHeaders=true): Promise<Response> {
   const headers = new Headers(options.headers);
     
-  if (!headers.has("Authorization")) {
+  if (!headers.has("Authorization") && applyAuthHeaders) {
     const user = get(currentUserStore);
     if (user.data !== null) {
       headers.set("Authorization", `Bearer ${user.data.accessToken}`);

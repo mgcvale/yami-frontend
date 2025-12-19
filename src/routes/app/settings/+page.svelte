@@ -2,7 +2,7 @@
     import Card1 from "$lib/components/ui/cards/Card1.svelte";
     import Switch from "$lib/components/ui/controls/Switch.svelte";
     import { currentThemeLight } from "$lib/core/util/theme-manager";
-    import { ChevronRight, Heart } from "@lucide/svelte";
+    import { ChevronRight, HandPlatter, Heart } from "@lucide/svelte";
 
     let lightThemeSwitchState = $state($currentThemeLight);
     currentThemeLight.subscribe(change => {
@@ -35,10 +35,17 @@
 
     <Card1 className="w-full bg-light-card-2 dark:bg-dark-card-1 flex flex-col gap-2 justify-start items-start pt-2!">
         <h1 class="font-alegreya text-2xl pb-2">Arquivo</h1>
-        <ul class="w-full">
+        <ul class="w-full space-y-2">
             <li class="flex justify-start items-center gap-3 w-full">
-                <a href="/app/settings/archive/liked-reviews" class="flex justify-start items-center gap-2 p-2 pt-3 rounded-md w-full grow bg-neutral-500/5 dark:bg-black/10 ">
+                <a href="/app/settings/archive/liked-reviews" class="flex justify-start items-center gap-2 p-2 pt-3 rounded-lg w-full grow bg-neutral-500/5 dark:bg-black/15 ">
                     <Heart /> Avaliações curtidas
+                    <div class="grow"></div>
+                    <ChevronRight />
+                </a>
+            </li>
+            <li class="flex justify-start items-center gap-3 w-full">
+                <a href="/app/settings/archive/followed-restaurants" class="flex justify-start items-center gap-2 p-2 pt-3 rounded-lg w-full grow bg-neutral-500/5 dark:bg-black/15 ">
+                    <HandPlatter /> Restaurantes Seguidos
                     <div class="grow"></div>
                     <ChevronRight />
                 </a>
